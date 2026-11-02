@@ -1,558 +1,59 @@
 {
- "sample": true,
  "stake": 10,
  "picks": [
   {
-   "id": "h0|away",
-   "event_id": "h0",
-   "sport": "icehockey_nhl",
-   "side": "away",
-   "pick": "Ottawa Senators",
-   "home_team": "Toronto Maple Leafs",
-   "away_team": "Ottawa Senators",
-   "start_time_utc": "2026-10-25T23:30:00+00:00",
-   "odds": 105,
-   "sportsbook": "FanDuel",
-   "fair_win_prob": 0.48,
-   "expected_value": 0.03,
-   "books": 6,
-   "line_movement": null,
-   "confidence": 55,
-   "rating": "Medium",
-   "reasons": [
-    {
-     "type": "value",
-     "text": "3.0% better than the market's fair price"
-    }
-   ],
-   "three_way": false,
-   "logged_at": "2026-10-25T23:30:00+00:00",
-   "result": "win",
-   "final_score": "Ottawa Senators 2, Toronto Maple Leafs 1",
-   "profit": 10.5
-  },
-  {
-   "id": "h1|home",
-   "event_id": "h1",
-   "sport": "basketball_nba",
-   "side": "home",
-   "pick": "New York Knicks",
-   "home_team": "New York Knicks",
-   "away_team": "Toronto Raptors",
-   "start_time_utc": "2026-10-25T23:00:00+00:00",
-   "odds": 140,
-   "sportsbook": "FanDuel",
-   "fair_win_prob": 0.48,
-   "expected_value": 0.03,
-   "books": 6,
-   "line_movement": null,
-   "confidence": 48,
-   "rating": "Medium",
-   "reasons": [
-    {
-     "type": "value",
-     "text": "3.0% better than the market's fair price"
-    }
-   ],
-   "three_way": false,
-   "logged_at": "2026-10-25T23:00:00+00:00",
-   "result": "loss",
-   "final_score": "Toronto Raptors 112, New York Knicks 111",
-   "profit": -10
-  },
-  {
-   "id": "h2|home",
-   "event_id": "h2",
-   "sport": "icehockey_nhl",
-   "side": "home",
-   "pick": "Vancouver Canucks",
-   "home_team": "Vancouver Canucks",
-   "away_team": "Calgary Flames",
-   "start_time_utc": "2026-10-26T23:30:00+00:00",
-   "odds": -120,
-   "sportsbook": "FanDuel",
-   "fair_win_prob": 0.48,
-   "expected_value": 0.03,
-   "books": 6,
-   "line_movement": null,
-   "confidence": 78,
-   "rating": "High",
-   "reasons": [
-    {
-     "type": "value",
-     "text": "3.0% better than the market's fair price"
-    }
-   ],
-   "three_way": false,
-   "logged_at": "2026-10-26T23:30:00+00:00",
-   "result": "loss",
-   "final_score": "Calgary Flames 5, Vancouver Canucks 4",
-   "profit": -10
-  },
-  {
-   "id": "h3|home",
-   "event_id": "h3",
-   "sport": "americanfootball_nfl",
-   "side": "home",
-   "pick": "Green Bay Packers",
-   "home_team": "Green Bay Packers",
-   "away_team": "Detroit Lions",
-   "start_time_utc": "2026-10-26T23:00:00+00:00",
-   "odds": 115,
-   "sportsbook": "FanDuel",
-   "fair_win_prob": 0.48,
-   "expected_value": 0.03,
-   "books": 6,
-   "line_movement": null,
-   "confidence": 78,
-   "rating": "High",
-   "reasons": [
-    {
-     "type": "value",
-     "text": "3.0% better than the market's fair price"
-    }
-   ],
-   "three_way": false,
-   "logged_at": "2026-10-26T23:00:00+00:00",
-   "result": "win",
-   "final_score": "Detroit Lions 30, Green Bay Packers 31",
-   "profit": 11.5
-  },
-  {
-   "id": "h4|home",
-   "event_id": "h4",
-   "sport": "basketball_nba",
-   "side": "home",
-   "pick": "Cleveland Cavaliers",
-   "home_team": "Cleveland Cavaliers",
-   "away_team": "Milwaukee Bucks",
-   "start_time_utc": "2026-10-27T23:30:00+00:00",
-   "odds": -110,
-   "sportsbook": "FanDuel",
-   "fair_win_prob": 0.48,
-   "expected_value": 0.03,
-   "books": 6,
-   "line_movement": null,
-   "confidence": 72,
-   "rating": "High",
-   "reasons": [
-    {
-     "type": "value",
-     "text": "3.0% better than the market's fair price"
-    }
-   ],
-   "three_way": false,
-   "logged_at": "2026-10-27T23:30:00+00:00",
-   "result": "win",
-   "final_score": "Milwaukee Bucks 115, Cleveland Cavaliers 116",
-   "profit": 9.09
-  },
-  {
-   "id": "h5|home",
-   "event_id": "h5",
-   "sport": "icehockey_nhl",
-   "side": "home",
-   "pick": "Montreal Canadiens",
-   "home_team": "Montreal Canadiens",
-   "away_team": "Boston Bruins",
-   "start_time_utc": "2026-10-27T23:00:00+00:00",
-   "odds": 165,
-   "sportsbook": "FanDuel",
-   "fair_win_prob": 0.48,
-   "expected_value": 0.03,
-   "books": 6,
-   "line_movement": null,
-   "confidence": 78,
-   "rating": "High",
-   "reasons": [
-    {
-     "type": "value",
-     "text": "3.0% better than the market's fair price"
-    }
-   ],
-   "three_way": false,
-   "logged_at": "2026-10-27T23:00:00+00:00",
-   "result": "loss",
-   "final_score": "Boston Bruins 2, Montreal Canadiens 1",
-   "profit": -10
-  },
-  {
-   "id": "h6|home",
-   "event_id": "h6",
-   "sport": "basketball_nba",
-   "side": "home",
-   "pick": "Orlando Magic",
-   "home_team": "Orlando Magic",
-   "away_team": "Miami Heat",
-   "start_time_utc": "2026-10-28T23:30:00+00:00",
-   "odds": 125,
-   "sportsbook": "FanDuel",
-   "fair_win_prob": 0.48,
-   "expected_value": 0.03,
-   "books": 6,
-   "line_movement": null,
-   "confidence": 55,
-   "rating": "Medium",
-   "reasons": [
-    {
-     "type": "value",
-     "text": "3.0% better than the market's fair price"
-    }
-   ],
-   "three_way": false,
-   "logged_at": "2026-10-28T23:30:00+00:00",
-   "result": "loss",
-   "final_score": "Miami Heat 113, Orlando Magic 112",
-   "profit": -10
-  },
-  {
-   "id": "h7|home",
-   "event_id": "h7",
-   "sport": "icehockey_nhl",
-   "side": "home",
-   "pick": "Tampa Bay Lightning",
-   "home_team": "Tampa Bay Lightning",
-   "away_team": "Florida Panthers",
-   "start_time_utc": "2026-10-28T23:00:00+00:00",
-   "odds": 125,
-   "sportsbook": "FanDuel",
-   "fair_win_prob": 0.48,
-   "expected_value": 0.03,
-   "books": 6,
-   "line_movement": null,
-   "confidence": 48,
-   "rating": "Medium",
-   "reasons": [
-    {
-     "type": "value",
-     "text": "3.0% better than the market's fair price"
-    }
-   ],
-   "three_way": false,
-   "logged_at": "2026-10-28T23:00:00+00:00",
-   "result": "win",
-   "final_score": "Florida Panthers 2, Tampa Bay Lightning 3",
-   "profit": 12.5
-  },
-  {
-   "id": "h8|home",
-   "event_id": "h8",
-   "sport": "americanfootball_nfl",
-   "side": "home",
-   "pick": "Baltimore Ravens",
-   "home_team": "Baltimore Ravens",
-   "away_team": "Pittsburgh Steelers",
-   "start_time_utc": "2026-10-29T23:30:00+00:00",
-   "odds": 140,
-   "sportsbook": "FanDuel",
-   "fair_win_prob": 0.48,
-   "expected_value": 0.03,
-   "books": 6,
-   "line_movement": null,
-   "confidence": 78,
-   "rating": "High",
-   "reasons": [
-    {
-     "type": "value",
-     "text": "3.0% better than the market's fair price"
-    }
-   ],
-   "three_way": false,
-   "logged_at": "2026-10-29T23:30:00+00:00",
-   "result": "loss",
-   "final_score": "Pittsburgh Steelers 30, Baltimore Ravens 15",
-   "profit": -10
-  },
-  {
-   "id": "h9|home",
-   "event_id": "h9",
-   "sport": "basketball_nba",
-   "side": "home",
-   "pick": "Golden State Warriors",
-   "home_team": "Golden State Warriors",
-   "away_team": "Los Angeles Lakers",
-   "start_time_utc": "2026-10-29T23:00:00+00:00",
-   "odds": 115,
-   "sportsbook": "FanDuel",
-   "fair_win_prob": 0.48,
-   "expected_value": 0.03,
-   "books": 6,
-   "line_movement": null,
-   "confidence": 55,
-   "rating": "Medium",
-   "reasons": [
-    {
-     "type": "value",
-     "text": "3.0% better than the market's fair price"
-    }
-   ],
-   "three_way": false,
-   "logged_at": "2026-10-29T23:00:00+00:00",
-   "result": "win",
-   "final_score": "Los Angeles Lakers 116, Golden State Warriors 117",
-   "profit": 11.5
-  },
-  {
-   "id": "h10|away",
-   "event_id": "h10",
-   "sport": "icehockey_nhl",
-   "side": "away",
-   "pick": "Colorado Avalanche",
-   "home_team": "Dallas Stars",
-   "away_team": "Colorado Avalanche",
-   "start_time_utc": "2026-10-30T23:30:00+00:00",
-   "odds": 140,
-   "sportsbook": "FanDuel",
-   "fair_win_prob": 0.48,
-   "expected_value": 0.03,
-   "books": 6,
-   "line_movement": null,
-   "confidence": 55,
-   "rating": "Medium",
-   "reasons": [
-    {
-     "type": "value",
-     "text": "3.0% better than the market's fair price"
-    }
-   ],
-   "three_way": false,
-   "logged_at": "2026-10-30T23:30:00+00:00",
-   "result": "win",
-   "final_score": "Colorado Avalanche 4, Dallas Stars 3",
-   "profit": 14.0
-  },
-  {
-   "id": "h11|away",
-   "event_id": "h11",
+   "id": "fe9664deb3e21a28b10a3de39adfb82a|away",
+   "event_id": "fe9664deb3e21a28b10a3de39adfb82a",
    "sport": "basketball_nba",
    "side": "away",
-   "pick": "Indiana Pacers",
-   "home_team": "Atlanta Hawks",
-   "away_team": "Indiana Pacers",
-   "start_time_utc": "2026-10-30T23:00:00+00:00",
-   "odds": 115,
-   "sportsbook": "FanDuel",
-   "fair_win_prob": 0.48,
-   "expected_value": 0.03,
-   "books": 6,
-   "line_movement": null,
-   "confidence": 33,
-   "rating": "Low",
-   "reasons": [
-    {
-     "type": "value",
-     "text": "3.0% better than the market's fair price"
-    }
-   ],
-   "three_way": false,
-   "logged_at": "2026-10-30T23:00:00+00:00",
-   "result": "loss",
-   "final_score": "Indiana Pacers 100, Atlanta Hawks 117",
-   "profit": -10
-  },
-  {
-   "id": "h12|home",
-   "event_id": "h12",
-   "sport": "icehockey_nhl",
-   "side": "home",
-   "pick": "Philadelphia Flyers",
-   "home_team": "Philadelphia Flyers",
-   "away_team": "New York Rangers",
-   "start_time_utc": "2026-10-31T23:30:00+00:00",
-   "odds": -110,
-   "sportsbook": "FanDuel",
-   "fair_win_prob": 0.48,
-   "expected_value": 0.03,
-   "books": 6,
-   "line_movement": null,
-   "confidence": 48,
-   "rating": "Medium",
-   "reasons": [
-    {
-     "type": "value",
-     "text": "3.0% better than the market's fair price"
-    }
-   ],
-   "three_way": false,
-   "logged_at": "2026-10-31T23:30:00+00:00",
-   "result": "push",
-   "final_score": "New York Rangers 4, Philadelphia Flyers 4",
-   "profit": 0
-  },
-  {
-   "id": "h13|away",
-   "event_id": "h13",
-   "sport": "americanfootball_nfl",
-   "side": "away",
-   "pick": "Seattle Seahawks",
-   "home_team": "San Francisco 49ers",
-   "away_team": "Seattle Seahawks",
-   "start_time_utc": "2026-10-31T23:00:00+00:00",
-   "odds": 190,
-   "sportsbook": "FanDuel",
-   "fair_win_prob": 0.48,
-   "expected_value": 0.03,
-   "books": 6,
-   "line_movement": null,
-   "confidence": 63,
-   "rating": "Medium",
-   "reasons": [
-    {
-     "type": "value",
-     "text": "3.0% better than the market's fair price"
-    }
-   ],
-   "three_way": false,
-   "logged_at": "2026-10-31T23:00:00+00:00",
-   "result": "loss",
-   "final_score": "Seattle Seahawks 15, San Francisco 49ers 16",
-   "profit": -10
-  },
-  {
-   "id": "s1|away",
-   "event_id": "s1",
-   "sport": "icehockey_nhl",
-   "side": "away",
-   "pick": "Montreal Canadiens",
-   "home_team": "Toronto Maple Leafs",
-   "away_team": "Montreal Canadiens",
-   "start_time_utc": "2026-11-04T00:00:00+00:00",
-   "odds": 150,
-   "sportsbook": "Bet365",
-   "fair_win_prob": 0.418,
-   "expected_value": 0.045,
-   "books": 7,
-   "line_movement": 0.034,
-   "confidence": 74,
-   "rating": "High",
-   "reasons": [
-    {
-     "type": "value",
-     "text": "4.5% better than the market's fair price"
-    },
-    {
-     "type": "move",
-     "text": "Win chance up 3.4% since the last update"
-    }
-   ],
-   "three_way": false,
-   "logged_at": "2026-11-03T15:07:00+00:00",
-   "result": null,
-   "profit": null
-  },
-  {
-   "id": "s2|away",
-   "event_id": "s2",
-   "sport": "basketball_nba",
-   "side": "away",
-   "pick": "Toronto Raptors",
-   "home_team": "Boston Celtics",
-   "away_team": "Toronto Raptors",
-   "start_time_utc": "2026-11-04T00:30:00+00:00",
-   "odds": 320,
-   "sportsbook": "FanDuel",
-   "fair_win_prob": 0.251,
-   "expected_value": 0.054,
-   "books": 6,
-   "line_movement": null,
-   "confidence": 61,
-   "rating": "Medium",
-   "reasons": [
-    {
-     "type": "value",
-     "text": "5.4% better than the market's fair price"
-    }
-   ],
-   "three_way": false,
-   "logged_at": "2026-11-03T15:07:00+00:00",
-   "result": null,
-   "profit": null
-  },
-  {
-   "id": "s3|away",
-   "event_id": "s3",
-   "sport": "americanfootball_nfl",
-   "side": "away",
-   "pick": "Buffalo Bills",
-   "home_team": "Kansas City Chiefs",
-   "away_team": "Buffalo Bills",
-   "start_time_utc": "2026-11-08T21:25:00+00:00",
-   "odds": 135,
+   "pick": "Utah Jazz",
+   "home_team": "San Antonio Spurs",
+   "away_team": "Utah Jazz",
+   "start_time_utc": "2026-11-03T01:40:00+00:00",
+   "odds": 800,
    "sportsbook": "DraftKings",
-   "fair_win_prob": 0.442,
-   "expected_value": 0.039,
-   "books": 8,
+   "fair_win_prob": 0.116,
+   "expected_value": 0.0436,
+   "books": 9,
    "line_movement": null,
-   "confidence": 58,
+   "confidence": 60,
    "rating": "Medium",
    "reasons": [
     {
      "type": "value",
-     "text": "3.9% better than the market's fair price"
+     "text": "4.4% better than the market's fair price"
     }
    ],
    "three_way": false,
-   "logged_at": "2026-11-03T15:07:00+00:00",
+   "logged_at": "2026-11-02T06:15:21.487028+00:00",
    "result": null,
    "profit": null
   },
   {
-   "id": "s4|home",
-   "event_id": "s4",
-   "sport": "icehockey_nhl",
-   "side": "home",
-   "pick": "Winnipeg Jets",
-   "home_team": "Winnipeg Jets",
-   "away_team": "Edmonton Oilers",
-   "start_time_utc": "2026-11-04T01:00:00+00:00",
-   "odds": 115,
-   "sportsbook": "BetMGM",
-   "fair_win_prob": 0.482,
-   "expected_value": 0.036,
+   "id": "9760d8f19f84bfee300a74ceb656c95d|away",
+   "event_id": "9760d8f19f84bfee300a74ceb656c95d",
+   "sport": "americanfootball_nfl",
+   "side": "away",
+   "pick": "Tampa Bay Buccaneers",
+   "home_team": "Chicago Bears",
+   "away_team": "Tampa Bay Buccaneers",
+   "start_time_utc": "2026-11-09T01:20:00+00:00",
+   "odds": 240,
+   "sportsbook": "BetRivers",
+   "fair_win_prob": 0.3038,
+   "expected_value": 0.0329,
    "books": 5,
    "line_movement": null,
-   "confidence": 52,
-   "rating": "Medium",
-   "reasons": [
-    {
-     "type": "value",
-     "text": "3.6% better than the market's fair price"
-    }
-   ],
-   "three_way": false,
-   "logged_at": "2026-11-03T15:07:00+00:00",
-   "result": null,
-   "profit": null
-  },
-  {
-   "id": "s5|away",
-   "event_id": "s5",
-   "sport": "basketball_nba",
-   "side": "away",
-   "pick": "Denver Nuggets",
-   "home_team": "Phoenix Suns",
-   "away_team": "Denver Nuggets",
-   "start_time_utc": "2026-11-04T03:00:00+00:00",
-   "odds": -105,
-   "sportsbook": "Caesars",
-   "fair_win_prob": 0.522,
-   "expected_value": 0.019,
-   "books": 4,
-   "line_movement": -0.031,
-   "confidence": 24,
+   "confidence": 43,
    "rating": "Low",
    "reasons": [
     {
      "type": "value",
-     "text": "2.1% better than the market's fair price"
-    },
-    {
-     "type": "caution",
-     "text": "Win chance down 3.1% since the last update"
+     "text": "3.3% better than the market's fair price"
     }
    ],
    "three_way": false,
-   "logged_at": "2026-11-03T15:07:00+00:00",
+   "logged_at": "2026-11-02T06:15:21.487028+00:00",
    "result": null,
    "profit": null
   }
