@@ -1,12 +1,13 @@
 # Picks Board
 
-A personal sports betting dashboard that finds moneyline value bets, tracks line
-movement, and grades its own picks once games finish. It runs entirely on free
+A personal sports betting dashboard for the NHL, NBA and NFL. It finds value bets
+across moneylines, spreads and totals, lets you build your own singles and parlays,
+and grades both its picks and your saved bets once games finish. It runs entirely on free
 GitHub services, with no server to keep alive.
 
 ```
-GitHub Actions (3x a day)                  GitHub Pages
-  ├─ The Odds API: odds + final scores        └─ docs/index.html
+GitHub Actions (daily)                  GitHub Pages
+  ├─ The Odds API: odds + final scores        └─ odds-picks/docs/index.html
   ├─ pipeline/  → finds and grades picks           reads docs/data/*.json
   └─ commits docs/data/*.json  ───────────────▶   (loads instantly)
 ```
@@ -30,13 +31,23 @@ GitHub Actions (3x a day)                  GitHub Pages
    `https://<your-username>.github.io/<repo-name>/`. Bookmark it, or use
    "Add to Home Screen" on your phone.
 
-From then on it updates itself three times a day. The page shows sample data until
+From then on it updates itself once a day, around 3 PM. The page shows sample data until
 the first run finishes.
 
 ## Using it
 
-- **Featured pick** is the highest-confidence pick that hasn't started yet. Games
-  drop off the board when they start.
+- **Picks**: the featured pick is the highest-confidence one that hasn't started.
+  Games drop off when they start. "Add to slip" puts a pick in your bet slip.
+- **Build a bet**: every upcoming game with its spread, total and moneyline, at the
+  best price across the sportsbooks checked. Tap prices to add them to the slip.
+  Blue percentages mark prices that beat the market's fair odds. With two or more
+  picks you can switch between one parlay and separate singles, and the slip
+  shows the payout, the parlay's fair chance of hitting, and its edge. Same-game
+  legs are flagged, because sportsbooks price those parlays lower than straight
+  multiplication. "Copy" puts the slip on your clipboard to enter at your sportsbook.
+- **My bets**: bets you save from the slip, graded automatically from final scores,
+  with your record and profit. They're stored in your browser, so each device
+  keeps its own list.
 - **Run an update** in the header opens the GitHub page with the "Run workflow"
   button, for when you want fresher odds than the schedule gives you.
 - **How the picks have done** grades every pick as a flat $10 bet at the odds shown
@@ -48,11 +59,13 @@ the first run finishes.
 
 All the logic is in `pipeline/analyze.py`.
 
-1. **Fair win chance:** each sportsbook's odds include a margin. That is removed for
-   every book, and the books are averaged into a consensus probability.
+1. **Fair chance:** each sportsbook's odds include a margin. That is removed for
+   every book, and the books are averaged into a consensus probability. Spreads and
+   totals are compared at the line most books offer (say −1.5 or 6.5), so every
+   price in the average is for the same bet.
 2. **Value:** a pick needs a book whose price pays at least 2% more than that fair
    chance implies (positive expected value).
-3. **Line move:** if a team's win chance moved 3+ points since the previous run,
+3. **Line move:** if a bet's fair chance moved 3+ points since the previous run,
    that can qualify it on its own, as long as the price is still fair. A move
    against a pick lowers its confidence.
 4. **Confidence (0–100):** edge size (up to 50), number of books (up to 20), how
@@ -60,13 +73,15 @@ All the logic is in `pipeline/analyze.py`.
 
 ## Settings
 
-Everything you'd want to change is in `pipeline/config.py`: sports, thresholds,
-the $10 stake, and the credit safety floor. The update times are in
+Everything you'd want to change is in `pipeline/config.py`: sports, bet types,
+thresholds, the $10 stake, and the credit safety floor. The update time is in
 `.github/workflows/update-picks.yml`.
 
-**API credits:** the free plan gives 500 a month. Each run costs 1 credit per
-in-season sport, and checking results costs 2 per sport, only when a pick is waiting
-on a result. Three sports at three runs a day comes to roughly 300–450 a month.
+**API credits:** the free plan gives 500 a month. Each run costs 1 credit per bet
+type per in-season sport (3 x 3 = 9), and checking final scores costs 2 per sport,
+only when a game is waiting on a result. One run a day comes to roughly 400 a month.
+A manual run costs about 9–15. Player props are priced one game at a time, so they'd
+need a paid plan.
 Off-season sports are skipped for free, and the pipeline stops spending at 25 left.
 The page footer shows your remaining credits.
 
@@ -99,13 +114,15 @@ The workflow also rebuilds it on every run.
 | --- | --- |
 | `pipeline/update.py` | One full run: fetch, analyze, log, grade, save |
 | `pipeline/analyze.py` | Odds math and pick rules |
-| `pipeline/grade.py` | Win/loss grading from final scores |
+| `pipeline/grade.py` | Final scores and win/loss/push grading |
 | `pipeline/odds_client.py` | The Odds API calls |
 | `pipeline/config.py` | Settings |
 | `docs/index.html` | The dashboard |
 | `docs/data/picks.json` | Current picks (rewritten each run) |
+| `docs/data/board.json` | Every upcoming game's prices, for Build a bet |
+| `docs/data/scores.json` | Recent final scores, for grading |
 | `docs/data/history.json` | Every pick ever made, with results |
-| `docs/data/snapshots.json` | Last run's fair odds, for line movement |
+| `docs/data/snapshots.json` | Last run's fair chances, for line movement |
 | `.github/workflows/update-picks.yml` | The schedule |
 
 Picks come from a statistical model and are not guarantees. 19+ in Ontario.

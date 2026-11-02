@@ -1,6 +1,6 @@
 """
-One update run: fetch odds, find picks, log them, grade finished ones,
-and write the JSON files the dashboard reads.
+One update run: fetch odds, price every game's main bets, find picks, log
+them, collect final scores, grade, and write the JSON files the dashboard reads.
 
     ODDS_API_KEY=yourkey python -m pipeline.update
 
@@ -14,11 +14,13 @@ from datetime import datetime, timezone
 
 from . import config
 from .analyze import analyze_games
-from .grade import expire_old, grade_picks, needs_grading
+from .grade import grade_history, prune, record_finals, sports_needing_scores
 from .odds_client import OddsAPI, OddsAPIError, parse_games, parse_time
 
 PICKS_FILE = config.DATA_DIR / "picks.json"
+BOARD_FILE = config.DATA_DIR / "board.json"
 HISTORY_FILE = config.DATA_DIR / "history.json"
+SCORES_FILE = config.DATA_DIR / "scores.json"
 SNAPSHOT_FILE = config.DATA_DIR / "snapshots.json"
 
 
@@ -29,10 +31,10 @@ def load(path, default):
         return default
 
 
-def save(path, data):
+def save(path, data, indent=1):
     path.parent.mkdir(parents=True, exist_ok=True)
     tmp = path.with_suffix(".tmp")
-    tmp.write_text(json.dumps(data, indent=1))
+    tmp.write_text(json.dumps(data, indent=indent))
     tmp.replace(path)
 
 
@@ -42,12 +44,14 @@ def credits_ok(api: OddsAPI, cost: int) -> bool:
 
 def run(api: OddsAPI, now: datetime | None = None) -> dict:
     now = now or datetime.now(timezone.utc)
-    old = load(PICKS_FILE, {})
-    if old.get("sample"):
-        old = {}  # first real run: drop the sample data
+    old_picks = load(PICKS_FILE, {})
+    old_board = load(BOARD_FILE, {})
     history = load(HISTORY_FILE, {"picks": []})
+    if old_picks.get("sample"):
+        old_picks, old_board = {}, {}
     if history.get("sample"):
         history = {"picks": []}
+    scores = load(SCORES_FILE, {"finals": {}, "awaiting": {}})
     snapshots = load(SNAPSHOT_FILE, {})
 
     notes = []
@@ -57,57 +61,71 @@ def run(api: OddsAPI, now: datetime | None = None) -> dict:
         print(f"Couldn't check which sports are in season: {e}", file=sys.stderr)
         active = set(config.SPORTS)
 
-    picks, checked, off_season = [], [], []
+    picks, board, checked, off_season = [], [], [], []
     for sport in config.SPORTS:
         if sport not in active:
             off_season.append(sport)
             continue
-        carry = [p for p in old.get("picks", [])
-                 if p["sport"] == sport and parse_time(p["start_time_utc"]) > now]
-        if not credits_ok(api, 1):
-            notes.append("API credits are almost used up, so these picks weren't refreshed.")
-            picks += carry
+
+        def carry_over():
+            picks.extend(p for p in old_picks.get("picks", [])
+                         if p["sport"] == sport and parse_time(p["start_time_utc"]) > now)
+            board.extend(g for g in old_board.get("games", [])
+                         if g["sport"] == sport and parse_time(g["start_time_utc"]) > now)
+
+        cost = len(config.MARKETS)
+        if not credits_ok(api, cost):
+            notes.append("API credits are almost used up, so odds weren't refreshed.")
+            carry_over()
             continue
         try:
-            events = api.odds(sport, config.REGION)
+            events = api.odds(sport, config.REGION, config.MARKETS)
         except OddsAPIError as e:
             print(f"{sport}: {e}", file=sys.stderr)
-            notes.append(f"Couldn't refresh {sport}; showing its previous picks.")
-            picks += carry
+            notes.append(f"Couldn't refresh {sport}; showing its previous odds.")
+            carry_over()
             continue
 
         games = parse_games(events, now)
-        prev_fair = snapshots.get(sport, {}).get("games", {})
-        found, fair = analyze_games(games, sport, prev_fair)
-        snapshots[sport] = {"taken_at": now.isoformat(), "games": fair}
+        prev = snapshots.get(sport, {}).get("lines", {})
+        found, fair, sport_board = analyze_games(games, sport, prev)
+        snapshots[sport] = {"taken_at": now.isoformat(), "lines": fair}
         picks += found
+        board += sport_board
         checked.append(sport)
 
     picks.sort(key=lambda p: (p["confidence"], p["expected_value"]), reverse=True)
+    board.sort(key=lambda g: g["start_time_utc"])
 
     # Log each pick the first time it appears, at the odds shown then.
     logged = {p["id"] for p in history["picks"]}
     for p in picks:
         if p["id"] not in logged:
-            history["picks"].append({**p, "logged_at": now.isoformat(),
-                                     "result": None, "profit": None})
+            history["picks"].append({**p, "logged_at": now.isoformat(), "result": None, "profit": None})
 
-    # Grade finished games, one scores lookup per sport that needs it.
-    expire_old(history["picks"], now)
-    pending = [p for p in history["picks"] if needs_grading(p, now)]
-    for sport in sorted({p["sport"] for p in pending}):
+    # Every game on the board (and every pending pick) needs a final score later,
+    # both for grading picks and for bets saved in the browser.
+    for g in board:
+        scores["awaiting"].setdefault(g["event_id"], {"sport": g["sport"], "start_time_utc": g["start_time_utc"]})
+    for p in history["picks"]:
+        if p.get("result") is None and p["event_id"] not in scores["finals"]:
+            scores["awaiting"].setdefault(p["event_id"], {"sport": p["sport"], "start_time_utc": p["start_time_utc"]})
+    prune(scores, now)
+
+    for sport in sorted(sports_needing_scores(scores, now)):
         if not credits_ok(api, 2):
-            notes.append("Skipped checking results to save API credits.")
+            notes.append("Skipped checking final scores to save API credits.")
             break
         try:
-            events = api.scores(sport, config.SCORES_DAYS_BACK)
+            new = record_finals(scores, sport, api.scores(sport, config.SCORES_DAYS_BACK))
+            print(f"{sport}: {new} new final score(s)")
         except OddsAPIError as e:
             print(f"{sport} scores: {e}", file=sys.stderr)
-            continue
-        n = grade_picks([p for p in pending if p["sport"] == sport], events)
-        print(f"{sport}: graded {n} pick(s)")
 
-    out = {
+    graded = grade_history(history["picks"], scores["finals"], now)
+    prune(scores, now)
+
+    meta = {
         "generated_at": now.isoformat(),
         "sports_checked": checked,
         "off_season": off_season,
@@ -115,14 +133,15 @@ def run(api: OddsAPI, now: datetime | None = None) -> dict:
         "credits_used_this_run": api.used_this_run,
         "notes": sorted(set(notes)),
         "stake": config.STAKE,
-        "picks": picks,
     }
-    save(PICKS_FILE, out)
+    save(PICKS_FILE, {**meta, "picks": picks})
+    save(BOARD_FILE, {"generated_at": meta["generated_at"], "games": board}, indent=None)
     save(HISTORY_FILE, {"stake": config.STAKE, "picks": history["picks"]})
-    save(SNAPSHOT_FILE, snapshots)
-    print(f"{len(picks)} pick(s) from {', '.join(checked) or 'no sports'}; "
-          f"used {api.used_this_run} credit(s), {api.remaining} left.")
-    return out
+    save(SCORES_FILE, scores)
+    save(SNAPSHOT_FILE, snapshots, indent=None)
+    print(f"{len(picks)} pick(s), {len(board)} game(s) from {', '.join(checked) or 'no sports'}; "
+          f"graded {graded}; used {api.used_this_run} credit(s), {api.remaining} left.")
+    return meta
 
 
 if __name__ == "__main__":

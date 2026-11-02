@@ -1,10 +1,13 @@
 name: Update picks
 
 on:
+  # Once a day at 3:07 PM Toronto time in winter (4:07 PM in summer); times are UTC.
+  # Budget on the free 500 credits/month plan: 3 bet types x 3 sports = 9 credits
+  # per run, plus 2 per sport when checking final scores, so roughly 400 a month.
+  # A manual "Run workflow" costs about 9-15 credits. Adding a second daily run
+  # would run out partway through the month.
   schedule:
-    - cron: "7 15 * * *"
     - cron: "7 20 * * *"
-    - cron: "37 23 * * *"
   workflow_dispatch:
   push:
     branches: [main]

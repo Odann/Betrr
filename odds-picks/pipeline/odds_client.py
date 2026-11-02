@@ -33,10 +33,10 @@ class OddsAPI:
         """Keys of in-season sports. Free: doesn't use credits."""
         return {s["key"] for s in self._get("/sports")}
 
-    def odds(self, sport: str, region: str) -> list:
-        """Moneyline odds for upcoming games. Costs 1 credit."""
+    def odds(self, sport: str, region: str, markets: list[str]) -> list:
+        """Odds for upcoming games. Costs 1 credit per market."""
         return self._get(f"/sports/{sport}/odds", {
-            "regions": region, "markets": "h2h",
+            "regions": region, "markets": ",".join(markets),
             "oddsFormat": "american", "dateFormat": "iso",
         })
 
@@ -50,31 +50,30 @@ def parse_time(iso: str) -> datetime:
 
 
 def parse_games(events: list, now: datetime | None = None) -> list[dict]:
-    """Turn raw odds events into games with each book's home/away/draw moneyline."""
+    """
+    Turn raw odds events into games. Each game gets, per market, one entry per
+    book listing that book's outcomes: {"name", "price", "point"}.
+    """
     now = now or datetime.now(timezone.utc)
     games = []
     for ev in events:
         start = parse_time(ev["commence_time"])
         if start <= now:
             continue  # already started; live odds aren't useful here
-        lines = []
+        markets: dict[str, list] = {}
         for book in ev.get("bookmakers", []):
-            h2h = next((m for m in book.get("markets", []) if m["key"] == "h2h"), None)
-            if not h2h:
-                continue
-            prices = {o["name"]: o["price"] for o in h2h["outcomes"]}
-            lines.append({
-                "bookmaker": book["title"],
-                "home": prices.get(ev["home_team"]),
-                "away": prices.get(ev["away_team"]),
-                "draw": prices.get("Draw"),
-            })
-        if lines:
+            for m in book.get("markets", []):
+                markets.setdefault(m["key"], []).append({
+                    "bookmaker": book["title"],
+                    "outcomes": [{"name": o["name"], "price": o["price"], "point": o.get("point")}
+                                 for o in m["outcomes"]],
+                })
+        if markets:
             games.append({
                 "event_id": ev["id"],
                 "home_team": ev["home_team"],
                 "away_team": ev["away_team"],
                 "start_time_utc": start.isoformat(),
-                "lines": lines,
+                "markets": markets,
             })
     return games

@@ -12,10 +12,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
-<body class="bg-ice text-boards font-sans antialiased min-h-screen flex flex-col">
+<body class="bg-ice text-boards font-sans antialiased min-h-screen flex flex-col" data-view="picks">
 
   <header class="bg-boards text-white">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 pt-4 pb-3 flex items-start justify-between gap-4">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 pt-4 flex items-start justify-between gap-4">
       <div>
         <h1 class="font-cond font-bold text-3xl leading-none tracking-tight">Picks Board</h1>
         <p id="today" class="text-sm text-slush mt-1"></p>
@@ -27,31 +27,73 @@
           Run an update</a>
       </div>
     </div>
-    <nav id="filters" aria-label="Filter by sport"
-         class="max-w-6xl mx-auto px-4 sm:px-6 pb-3 flex gap-2 overflow-x-auto"></nav>
+    <nav aria-label="Sections" class="max-w-6xl mx-auto px-4 sm:px-6 mt-3 flex gap-1">
+      <a href="#picks" data-tab="picks" class="tab">Picks</a>
+      <a href="#build" data-tab="build" class="tab">Build a bet</a>
+      <a href="#bets" data-tab="bets" class="tab">My bets <span id="bets-count" class="text-slush"></span></a>
+    </nav>
   </header>
 
   <main class="flex-1 w-full max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
     <div id="notice" class="hidden mb-6 rounded-md border border-slush bg-white px-4 py-3 text-sm text-frost space-y-1"></div>
 
-    <section id="featured" aria-label="Featured pick" class="mb-10"></section>
+    <!-- Picks -->
+    <div id="view-picks" class="view">
+      <div id="picks-filters" class="mb-5 flex gap-2 overflow-x-auto"></div>
+      <section id="featured" aria-label="Featured pick" class="mb-10"></section>
+      <section id="more" aria-labelledby="grid-heading" class="mb-12">
+        <div class="flex items-baseline justify-between mb-4">
+          <h2 id="grid-heading" class="font-cond font-semibold text-2xl">More picks</h2>
+          <p id="count" class="text-sm text-frost"></p>
+        </div>
+        <div id="grid" class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"></div>
+      </section>
+      <section aria-labelledby="results-heading">
+        <h2 id="results-heading" class="font-cond font-semibold text-2xl mb-1">How the picks have done</h2>
+        <p id="results-sub" class="text-sm text-frost mb-4"></p>
+        <div id="results"></div>
+      </section>
+    </div>
 
-    <section id="more" aria-labelledby="grid-heading" class="mb-12">
-      <div class="flex items-baseline justify-between mb-4">
-        <h2 id="grid-heading" class="font-cond font-semibold text-2xl">More picks</h2>
-        <p id="count" class="text-sm text-frost"></p>
+    <!-- Bet builder -->
+    <div id="view-build" class="view hidden">
+      <div class="lg:grid lg:grid-cols-[minmax(0,1fr)_20rem] lg:gap-6 lg:items-start">
+        <div>
+          <div id="build-filters" class="mb-5 flex gap-2 overflow-x-auto"></div>
+          <p class="text-sm text-frost mb-5">Tap any price to add it to your slip. Each price is the best one across the sportsbooks checked.
+            <span class="text-blueline font-semibold">Blue percentages</span> mark prices that beat the market's fair odds.</p>
+          <div id="board" class="space-y-8"></div>
+        </div>
+        <aside id="slip-side" aria-label="Bet slip" class="hidden lg:block sticky top-4"></aside>
       </div>
-      <div id="grid" class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"></div>
-    </section>
+    </div>
 
-    <section aria-labelledby="results-heading">
-      <h2 id="results-heading" class="font-cond font-semibold text-2xl mb-1">How the picks have done</h2>
-      <p id="results-sub" class="text-sm text-frost mb-4"></p>
-      <div id="results"></div>
-    </section>
+    <!-- My bets -->
+    <div id="view-bets" class="view hidden">
+      <h2 class="font-cond font-semibold text-2xl mb-1">My bets</h2>
+      <p class="text-sm text-frost mb-5">Bets you save from the slip. They're kept in this browser only and graded automatically when games finish.</p>
+      <div id="bets"></div>
+    </div>
   </main>
 
-  <footer class="border-t border-slush">
+  <!-- Slip as a bottom sheet (phones, and on the Picks and My bets tabs) -->
+  <div id="slip-sheet" class="hidden fixed inset-x-0 bottom-0 z-20">
+    <div class="max-w-6xl mx-auto sm:px-6">
+      <div class="bg-white border border-slush sm:rounded-t-xl shadow-[0_-4px_24px_rgba(14,42,71,.12)]">
+        <button id="sheet-toggle" type="button" aria-expanded="false" aria-controls="sheet-body"
+                class="w-full flex items-center justify-between gap-3 px-4 py-3 text-left">
+          <span id="sheet-summary" class="font-semibold"></span>
+          <span id="sheet-chevron" aria-hidden="true" class="text-frost transition-transform">▲</span>
+        </button>
+        <div id="sheet-body" class="hidden max-h-[70vh] overflow-y-auto border-t border-slush"></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" role="status" aria-live="polite"
+       class="hidden fixed left-1/2 -translate-x-1/2 bottom-20 z-30 rounded-md bg-boards text-white text-sm px-4 py-2"></div>
+
+  <footer id="footer" class="border-t border-slush">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4 text-xs text-frost leading-relaxed space-y-1">
       <p id="credits"></p>
       <p>Picks come from an odds model and are not guarantees. 19+ in Ontario. Need support with gambling?
@@ -62,8 +104,10 @@
 <script>
 // ---------- Settings ----------
 const CONFIDENCE_LABEL = "Claude's Confidence";
-const RECENT_RESULTS = 10;              // graded picks listed under the record
-const RECHECK_MINUTES = 10;             // re-read the data while the tab is open
+const DEFAULT_STAKE = 10;
+const RECENT_RESULTS = 10;
+const RECHECK_MINUTES = 10;
+const EDGE_MARK = 0.02;          // show the blue edge % on builder prices at or above this
 
 const SPORT_NAMES = {
   icehockey_nhl: 'NHL', basketball_nba: 'NBA', americanfootball_nfl: 'NFL',
@@ -71,6 +115,7 @@ const SPORT_NAMES = {
   basketball_wnba: 'WNBA', soccer_epl: 'Premier League', soccer_usa_mls: 'MLS',
   mma_mixed_martial_arts: 'UFC / MMA',
 };
+const MARKET_NAMES = { h2h: 'Moneyline', spreads: 'Spread', totals: 'Total' };
 
 // ---------- Helpers ----------
 const $ = id => document.getElementById(id);
@@ -81,11 +126,26 @@ const pct = (x, d = 1) => `${(x * 100).toFixed(d)}%`;
 const signedPct = x => `${x >= 0 ? '+' : '−'}${pct(Math.abs(x))}`;
 const odds = n => (n > 0 ? `+${n}` : `${n}`).replace('-', '−');
 const money = n => Math.abs(n) < 0.005 ? '$0.00' : `${n > 0 ? '+' : '−'}$${Math.abs(n).toFixed(2)}`;
+const dollars = n => `$${n.toFixed(2)}`;
 const barColor = r => r === 'High' ? 'bg-blueline' : r === 'Medium' ? 'bg-frost' : 'bg-slush';
-
+const toDecimal = a => a > 0 ? 1 + a / 100 : 1 + 100 / -a;
+const toAmerican = d => d >= 2 ? Math.round((d - 1) * 100) : Math.round(-100 / (d - 1));
+const fmtPoint = p => p === 0 ? 'PK' : (p > 0 ? `+${p}` : `${p}`).replace('-', '−');
 const gameTime = iso => new Date(iso).toLocaleString([], {
   weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+const clock = iso => new Date(iso).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
 const shortDate = iso => new Date(iso).toLocaleDateString([], { month: 'short', day: 'numeric' });
+const shortTeam = n => n.split(' ').slice(-1)[0];
+const slipTime = iso => new Date(iso).toLocaleString([], { weekday: 'short', hour: 'numeric', minute: '2-digit' });
+
+function dayLabel(iso) {
+  const d = new Date(iso), t = new Date();
+  const key = x => x.toDateString();
+  if (key(d) === key(t)) return 'Today';
+  const tm = new Date(t); tm.setDate(t.getDate() + 1);
+  if (key(d) === key(tm)) return 'Tomorrow';
+  return d.toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric' });
+}
 
 function ago(iso) {
   const mins = Math.round((Date.now() - new Date(iso)) / 60000);
@@ -97,10 +157,267 @@ function ago(iso) {
   return `${d} day${d > 1 ? 's' : ''} ago`;
 }
 
-// ---------- State ----------
-let data = null, history = null, activeSport = 'all';
+const store = {
+  get(key, fallback) { try { return JSON.parse(localStorage.getItem(key)) ?? fallback; } catch { return fallback; } },
+  set(key, val) { try { localStorage.setItem(key, JSON.stringify(val)); } catch { /* private mode */ } },
+};
 
-// ---------- Pick rendering ----------
+function toast(msg) {
+  const t = $('toast'); t.textContent = msg; t.classList.remove('hidden');
+  clearTimeout(toast.timer); toast.timer = setTimeout(() => t.classList.add('hidden'), 2200);
+}
+
+// ---------- State ----------
+let data = null, history = null, board = null, finals = {};
+let view = 'picks', pickSport = 'all', buildSport = 'all', sheetOpen = false;
+let slip = store.get('betrr.slip', { legs: [], stake: DEFAULT_STAKE, mode: 'parlay' });
+let bets = store.get('betrr.bets', []);
+
+// ---------- Settling bets (mirrors pipeline/grade.py) ----------
+function settle(leg, f) {
+  const home = f.home_score, away = f.away_score, market = leg.market || 'h2h';
+  if (market === 'totals') {
+    const total = home + away;
+    if (total === leg.point) return 'push';
+    return (total > leg.point) === (leg.side === 'over') ? 'win' : 'loss';
+  }
+  if (market === 'spreads') {
+    const r = (leg.side === 'home' ? home - away : away - home) + leg.point;
+    return r === 0 ? 'push' : r > 0 ? 'win' : 'loss';
+  }
+  if (home === away) return leg.side === 'draw' ? 'win' : 'push';
+  return leg.side === (home > away ? 'home' : 'away') ? 'win' : 'loss';
+}
+
+function gradeBet(bet) {
+  if (bet.result) return bet;   // already settled and stored
+  const legs = bet.legs.map(l => ({ ...l, result: l.result || (finals[l.event_id] ? settle(l, finals[l.event_id]) : null) }));
+  let result = null, profit = null;
+  if (legs.some(l => l.result === 'loss')) { result = 'loss'; profit = -bet.stake; }
+  else if (legs.every(l => l.result)) {
+    const winners = legs.filter(l => l.result === 'win');
+    if (!winners.length) { result = 'push'; profit = 0; }
+    else {
+      const dec = winners.reduce((d, l) => d * toDecimal(l.odds), 1);
+      result = 'win'; profit = +(bet.stake * (dec - 1)).toFixed(2);
+    }
+  }
+  return { ...bet, legs, result, profit };
+}
+
+function gradeSavedBets() {
+  const before = JSON.stringify(bets);
+  bets = bets.map(gradeBet);
+  if (JSON.stringify(bets) !== before) store.set('betrr.bets', bets);
+}
+
+// ---------- Slip ----------
+function legFromSelection(game, market, sel) {
+  return {
+    id: `${game.event_id}|${market}|${sel.key}`, event_id: game.event_id, sport: game.sport,
+    market, side: sel.key, point: sel.point, label: sel.label, odds: sel.odds, book: sel.book,
+    fair_prob: sel.fair_prob, home_team: game.home_team, away_team: game.away_team,
+    start_time_utc: game.start_time_utc,
+  };
+}
+
+function legFromPick(p) {
+  const market = p.market || 'h2h';
+  return {
+    id: `${p.event_id}|${market}|${p.side}`, event_id: p.event_id, sport: p.sport, market,
+    side: p.side, point: p.point ?? null, label: p.pick, odds: p.odds, book: p.sportsbook,
+    fair_prob: p.fair_win_prob, home_team: p.home_team, away_team: p.away_team,
+    start_time_utc: p.start_time_utc,
+  };
+}
+
+function saveSlip() { store.set('betrr.slip', slip); }
+const inSlip = id => slip.legs.some(l => l.id === id);
+
+function toggleLeg(leg) {
+  if (inSlip(leg.id)) {
+    slip.legs = slip.legs.filter(l => l.id !== leg.id);
+  } else {
+    // only one side of the same bet on the same game
+    slip.legs = slip.legs.filter(l => !(l.event_id === leg.event_id && l.market === leg.market));
+    slip.legs.push(leg);
+    if (slip.legs.length === 1) sheetOpen = false;
+  }
+  saveSlip(); renderSlip(); renderBoard(); renderPickButtons();
+}
+
+function slipMath() {
+  const legs = slip.legs, stake = Math.max(0, +slip.stake || 0);
+  const parlay = slip.mode === 'parlay' && legs.length > 1;
+  const allFair = legs.every(l => l.fair_prob != null);
+  if (parlay) {
+    const dec = legs.reduce((d, l) => d * toDecimal(l.odds), 1);
+    const fair = allFair ? legs.reduce((p, l) => p * l.fair_prob, 1) : null;
+    return { parlay, stake, totalStake: stake, dec, american: toAmerican(dec), payout: stake * dec,
+             profit: stake * (dec - 1), fair, edge: fair != null ? fair * dec - 1 : null };
+  }
+  const totalStake = stake * legs.length;
+  const profit = legs.reduce((s, l) => s + stake * (toDecimal(l.odds) - 1), 0);
+  const expected = allFair ? legs.reduce((s, l) => s + stake * (l.fair_prob * toDecimal(l.odds) - 1), 0) : null;
+  return { parlay, stake, totalStake, profit, payout: totalStake + profit,
+           edge: expected != null && totalStake ? expected / totalStake : null };
+}
+
+function slipHTML(sheet = false) {
+  const legs = slip.legs;
+  if (!legs.length) {
+    return `<div class="rounded-lg bg-white border border-slush p-5">
+      <h2 class="font-cond font-semibold text-xl">Bet slip</h2>
+      <p class="mt-2 text-sm text-frost">Tap a price on any game to start a bet. Add more to build a parlay.</p></div>`;
+  }
+  const m = slipMath();
+  const games = {}; legs.forEach(l => { games[l.event_id] = (games[l.event_id] || 0) + 1; });
+  const sameGame = Object.values(games).some(n => n > 1);
+  const noFair = legs.filter(l => l.fair_prob == null).length;
+  const legRows = legs.map(l => `
+    <li class="flex items-start gap-3 py-3 border-t border-slush first:border-t-0">
+      <div class="min-w-0 flex-1">
+        <p class="font-semibold leading-snug">${esc(l.label)}</p>
+        <p class="text-xs text-frost truncate">${esc(MARKET_NAMES[l.market])}, ${esc(shortTeam(l.away_team))} at ${esc(shortTeam(l.home_team))}</p>
+        <p class="text-xs text-frost">${esc(slipTime(l.start_time_utc))}, ${esc(l.book)}${games[l.event_id] > 1 ? ' <span class="text-goal">Same game</span>' : ''}</p>
+      </div>
+      <span class="font-cond font-bold text-xl text-blueline">${odds(l.odds)}</span>
+      <button type="button" data-remove="${esc(l.id)}" class="-mr-1 px-1 text-frost hover:text-goal" aria-label="Remove ${esc(l.label)}">✕</button>
+    </li>`).join('');
+
+  const modeToggle = legs.length > 1 ? `
+    <div class="grid grid-cols-2 rounded-md bg-ice p-1 text-sm font-medium" role="group" aria-label="Bet type">
+      ${['parlay', 'singles'].map(md => `<button type="button" data-mode="${md}" aria-pressed="${slip.mode === md}"
+        class="rounded py-1.5 ${slip.mode === md ? 'bg-white shadow-sm' : 'text-frost'}">${md === 'parlay' ? `Parlay (${legs.length} legs)` : `${legs.length} singles`}</button>`).join('')}
+    </div>` : '';
+
+  const edgeTone = m.edge == null ? '' : m.edge >= 0 ? 'text-blueline' : 'text-goal';
+  const rows = [
+    m.parlay ? ['Odds', `<span class="font-cond font-bold text-xl">${odds(m.american)}</span>`] : null,
+    [m.parlay ? 'Stake' : `Stake (${dollars(m.stake)} each)`, dollars(m.totalStake)],
+    [m.parlay ? 'To win' : 'If all win', `<span class="font-semibold">${dollars(m.profit)}</span>`],
+    ['Total payout', dollars(m.payout)],
+    m.parlay && m.fair != null ? ['Fair chance it hits', pct(m.fair)] : null,
+    m.edge != null ? ['Edge vs. fair odds', `<span class="font-semibold ${edgeTone}">${signedPct(m.edge)}</span>`] : null,
+  ].filter(Boolean);
+
+  const warnings = [];
+  if (sameGame && m.parlay) warnings.push('Legs from the same game are related, and sportsbooks price same-game parlays differently. Expect lower odds than shown here.');
+  if (m.edge != null && m.edge < 0) warnings.push(m.parlay
+    ? "Negative edge: each leg's built-in margin compounds in a parlay."
+    : 'Negative edge: these prices are worse than the fair odds.');
+  if (noFair) warnings.push(`Fair odds aren't available for ${noFair} leg${noFair > 1 ? 's' : ''}, so the edge isn't shown.`);
+
+  return `<div class="${sheet ? '' : 'rounded-lg bg-white border border-slush'}">
+    <div class="flex items-center ${sheet ? 'justify-end' : 'justify-between'} px-5 pt-4">
+      ${sheet ? '' : '<h2 class="font-cond font-semibold text-xl">Bet slip</h2>'}
+      <button type="button" data-clear class="text-sm text-frost underline underline-offset-2 hover:text-boards">Clear</button>
+    </div>
+    <ul class="px-5">${legRows}</ul>
+    <div class="px-5 pb-5 space-y-4 border-t border-slush pt-4">
+      ${modeToggle}
+      <label class="flex items-center justify-between gap-3 text-sm">
+        <span class="text-frost">${m.parlay ? 'Stake' : 'Stake per bet'}</span>
+        <span class="flex items-center rounded-md border border-slush focus-within:border-blueline">
+          <span class="pl-2 text-frost">$</span>
+          <input type="number" inputmode="decimal" min="0" step="1" value="${esc(slip.stake)}" data-stake
+                 class="w-20 bg-transparent px-1 py-1.5 text-right font-semibold outline-none" aria-label="Stake in dollars">
+        </span>
+      </label>
+      <dl class="space-y-1.5 text-sm">${rows.map(([k, v]) =>
+        `<div class="flex items-baseline justify-between"><dt class="text-frost">${k}</dt><dd>${v}</dd></div>`).join('')}</dl>
+      ${warnings.map(w => `<p class="text-xs text-frost leading-relaxed">${esc(w)}</p>`).join('')}
+      <div class="grid grid-cols-[1fr_auto] gap-2">
+        <button type="button" data-save class="rounded-md bg-blueline text-white font-semibold py-2.5 hover:bg-boards">Save bet</button>
+        <button type="button" data-copy class="rounded-md border border-slush px-4 font-medium hover:bg-ice">Copy</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderSlip() {
+  const html = slipHTML();
+  const desktopBuild = view === 'build' && matchMedia('(min-width: 1024px)').matches;
+  $('slip-side').innerHTML = view === 'build' ? html : '';
+  const showSheet = slip.legs.length > 0 && !desktopBuild;
+  $('slip-sheet').classList.toggle('hidden', !showSheet);
+  document.body.style.paddingBottom = showSheet ? '4rem' : '';
+  if (showSheet) {
+    const m = slipMath(), n = slip.legs.length;
+    $('sheet-summary').innerHTML = `Bet slip <span class="font-normal text-frost">${n} pick${n > 1 ? 's' : ''}</span>
+      <span class="ml-2 font-cond font-bold text-lg text-blueline">${m.parlay ? odds(m.american) : `${dollars(m.profit)} to win`}</span>`;
+    $('sheet-body').innerHTML = sheetOpen ? slipHTML(true) : '';
+    $('sheet-body').classList.toggle('hidden', !sheetOpen);
+    $('sheet-toggle').setAttribute('aria-expanded', sheetOpen);
+    $('sheet-chevron').style.transform = sheetOpen ? 'rotate(180deg)' : '';
+  }
+  $('bets-count').textContent = openBets() ? `(${openBets()})` : '';
+}
+
+function slipText() {
+  const m = slipMath();
+  const head = m.parlay
+    ? `${slip.legs.length}-leg parlay ${odds(m.american)}: ${dollars(m.stake)} to win ${dollars(m.profit)}`
+    : `${slip.legs.length} single${slip.legs.length > 1 ? 's' : ''}, ${dollars(m.stake)} each`;
+  return [head, ...slip.legs.map(l =>
+    `- ${l.label} (${MARKET_NAMES[l.market]}) ${odds(l.odds)} at ${l.book}: ${l.away_team} at ${l.home_team}, ${gameTime(l.start_time_utc)}`)].join('\n');
+}
+
+function saveBet() {
+  const stake = Math.max(0, +slip.stake || 0);
+  if (!stake) { toast('Enter a stake first'); return; }
+  const now = new Date().toISOString();
+  const m = slipMath();
+  if (m.parlay) {
+    bets.unshift({ id: crypto.randomUUID?.() || String(Date.now()), created: now, type: 'parlay', stake, legs: slip.legs.map(l => ({ ...l })) });
+  } else {
+    slip.legs.forEach(l => bets.unshift({ id: (crypto.randomUUID?.() || String(Date.now()) + l.id), created: now, type: 'single', stake, legs: [{ ...l }] }));
+  }
+  store.set('betrr.bets', bets);
+  const n = m.parlay ? 1 : slip.legs.length;
+  slip.legs = []; saveSlip(); sheetOpen = false;
+  renderSlip(); renderBoard(); renderPickButtons();
+  toast(`Saved ${n} bet${n > 1 ? 's' : ''} to My bets`);
+}
+
+// slip events (shared by sidebar and sheet)
+document.addEventListener('click', e => {
+  const t = e.target.closest('[data-remove],[data-clear],[data-mode],[data-save],[data-copy],[data-sel],[data-addpick],[data-delete]');
+  if (!t) return;
+  if (t.dataset.remove) { const leg = slip.legs.find(l => l.id === t.dataset.remove); if (leg) toggleLeg(leg); }
+  else if ('clear' in t.dataset) { slip.legs = []; saveSlip(); sheetOpen = false; renderSlip(); renderBoard(); renderPickButtons(); }
+  else if (t.dataset.mode) { slip.mode = t.dataset.mode; saveSlip(); renderSlip(); }
+  else if ('save' in t.dataset) saveBet();
+  else if ('copy' in t.dataset) {
+    navigator.clipboard?.writeText(slipText()).then(() => toast('Slip copied'), () => toast("Couldn't copy"));
+  }
+  else if (t.dataset.sel) {
+    const [eid, market, key] = t.dataset.sel.split('|');
+    const game = board.games.find(g => g.event_id === eid);
+    const sel = game?.markets[market]?.selections.find(s => s.key === key);
+    if (sel) toggleLeg(legFromSelection(game, market, sel));
+  }
+  else if (t.dataset.addpick) {
+    const p = (data?.picks || []).find(x => x.id === t.dataset.addpick);
+    if (p) { const leg = legFromPick(p); toggleLeg(leg); if (inSlip(leg.id)) toast('Added to slip'); }
+  }
+  else if (t.dataset.delete) {
+    if (confirm('Delete this saved bet?')) { bets = bets.filter(b => b.id !== t.dataset.delete); store.set('betrr.bets', bets); renderBets(); renderSlip(); }
+  }
+});
+document.addEventListener('input', e => {
+  if (e.target.matches('[data-stake]')) {
+    slip.stake = e.target.value; saveSlip();
+    // update numbers without re-rendering the input (keeps the cursor)
+    const tmp = document.createElement('div'); tmp.innerHTML = slipHTML();
+    document.querySelectorAll('#slip-side dl, #sheet-body dl').forEach(dl => { dl.innerHTML = tmp.querySelector('dl').innerHTML; });
+    const m = slipMath();
+    $('sheet-summary').querySelector('.font-cond') && ($('sheet-summary').querySelector('.font-cond').textContent = m.parlay ? odds(m.american) : `${dollars(m.profit)} to win`);
+  }
+});
+$('sheet-toggle').addEventListener('click', () => { sheetOpen = !sheetOpen; renderSlip(); });
+
+// ---------- Picks view ----------
 function teamRow(name, isPick, size) {
   return `<div class="flex items-baseline gap-2 ${isPick ? '' : 'text-frost'}">
     <span class="font-cond ${size} leading-tight ${isPick ? 'font-bold' : 'font-medium'}">${esc(name)}</span>
@@ -108,19 +425,20 @@ function teamRow(name, isPick, size) {
   </div>`;
 }
 
-function teams(p, size) {
-  return `${teamRow(p.away_team, p.side === 'away', size)}
-    ${size.includes('5xl') ? '<p class="text-frost text-sm">at</p>' : ''}
-    ${teamRow(p.home_team, p.side === 'home', size)}
-    ${p.side === 'draw' ? '<p class="mt-1 text-sm font-semibold">Pick: draw</p>' : ''}`;
+function teams(p, big) {
+  const market = p.market || 'h2h';
+  const teamPick = market !== 'totals';
+  return `${teamRow(p.away_team, teamPick && p.side === 'away', big ? 'text-4xl sm:text-5xl' : 'text-2xl')}
+    ${big ? '<p class="text-frost text-sm">at</p>' : ''}
+    ${teamRow(p.home_team, teamPick && p.side === 'home', big ? 'text-4xl sm:text-5xl' : 'text-2xl')}
+    ${market !== 'h2h' || p.side === 'draw' ? `<p class="mt-2 inline-block rounded bg-blueline/10 text-blueline font-semibold px-2 py-0.5">${esc(p.pick)}</p>` : ''}`;
 }
 
 function confidenceBar(p, thick) {
   return `<div>
     <div class="flex items-baseline justify-between text-sm mb-1.5">
       <span class="text-frost">${esc(CONFIDENCE_LABEL)}</span>
-      <span><span class="font-cond font-bold text-lg">${p.confidence}%</span>
-        <span class="text-frost">${esc(p.rating)}</span></span>
+      <span><span class="font-cond font-bold text-lg">${p.confidence}%</span> <span class="text-frost">${esc(p.rating)}</span></span>
     </div>
     <div class="${thick ? 'h-3' : 'h-2'} rounded-full bg-slush/60 overflow-hidden" role="progressbar"
          aria-valuemin="0" aria-valuemax="100" aria-valuenow="${p.confidence}" aria-label="${esc(CONFIDENCE_LABEL)}">
@@ -132,15 +450,29 @@ function confidenceBar(p, thick) {
 const REASON_LABEL = { value: 'Value', move: 'Line move', caution: 'Caution' };
 function reasons(p, only) {
   return p.reasons.filter(r => !only || only.includes(r.type)).map(r =>
-    `<li class="${r.type === 'caution' ? 'text-goal' : ''}"><span class="font-semibold">${REASON_LABEL[r.type]}:</span> ${esc(r.text)}</li>`
-  ).join('');
+    `<li class="${r.type === 'caution' ? 'text-goal' : ''}"><span class="font-semibold">${REASON_LABEL[r.type]}:</span> ${esc(r.text)}</li>`).join('');
+}
+
+function addButton(p, wide) {
+  const on = inSlip(legFromPick(p).id);
+  return `<button type="button" data-addpick="${esc(p.id)}" aria-pressed="${on}"
+    class="pick-add ${wide ? 'w-full' : ''} rounded-md px-3 py-2 text-sm font-semibold border ${on ? 'bg-blueline border-blueline text-white' : 'border-blueline text-blueline hover:bg-blueline/5'}">
+    ${on ? 'In your slip' : 'Add to slip'}</button>`;
+}
+
+function renderPickButtons() {
+  document.querySelectorAll('.pick-add').forEach(b => {
+    const p = (data?.picks || []).find(x => x.id === b.dataset.addpick);
+    if (p) b.outerHTML = addButton(p, b.classList.contains('w-full'));
+  });
 }
 
 function renderFeatured(p) {
   if (!p) {
     $('featured').innerHTML = `<div class="rounded-xl border border-dashed border-slush bg-white px-6 py-12 text-center">
       <p class="font-cond font-semibold text-2xl">No picks right now</p>
-      <p class="text-frost mt-1">None of the upcoming prices beat the market. The next update will check again.</p></div>`;
+      <p class="text-frost mt-1">None of the upcoming prices beat the market. You can still build your own bet.</p>
+      <a href="#build" class="mt-4 inline-block rounded-md bg-blueline text-white font-semibold px-4 py-2">Build a bet</a></div>`;
     return;
   }
   $('featured').innerHTML = `
@@ -149,8 +481,8 @@ function renderFeatured(p) {
       <div class="absolute inset-y-0 left-0 w-1.5 bg-blueline" aria-hidden="true"></div>
       <div class="grid gap-6 md:grid-cols-[1.4fr_1fr] p-5 sm:p-8 pl-6 sm:pl-10">
         <div>
-          <p class="text-sm text-frost mb-3">${esc(sportName(p.sport))}, ${esc(gameTime(p.start_time_utc))}</p>
-          <div class="space-y-1">${teams(p, 'text-4xl sm:text-5xl')}</div>
+          <p class="text-sm text-frost mb-3">${esc(sportName(p.sport))} ${esc(MARKET_NAMES[p.market || 'h2h'])}, ${esc(gameTime(p.start_time_utc))}</p>
+          <div class="space-y-1">${teams(p, true)}</div>
           <ul class="mt-5 space-y-1 text-sm">${reasons(p)}</ul>
         </div>
         <div class="flex flex-col justify-between gap-6 md:border-l md:border-slush md:pl-8">
@@ -158,12 +490,13 @@ function renderFeatured(p) {
             <p class="font-cond font-bold leading-none text-7xl sm:text-8xl text-blueline">${odds(p.odds)}</p>
             <p class="mt-2 text-sm text-frost">Best price, at ${esc(p.sportsbook)}</p>
             <dl class="mt-4 grid grid-cols-3 gap-3 text-sm">
-              <div><dt class="text-frost">Win chance</dt><dd class="font-semibold">${pct(p.fair_win_prob)}</dd></div>
+              <div><dt class="text-frost">Fair chance</dt><dd class="font-semibold">${pct(p.fair_win_prob)}</dd></div>
               <div><dt class="text-frost">Edge</dt><dd class="font-semibold">${signedPct(p.expected_value)}</dd></div>
               <div><dt class="text-frost">Books</dt><dd class="font-semibold">${p.books}</dd></div>
             </dl>
           </div>
           ${confidenceBar(p, true)}
+          ${addButton(p, true)}
         </div>
       </div>
     </article>`;
@@ -173,50 +506,85 @@ function renderCard(p) {
   const caution = p.reasons.some(r => r.type === 'caution');
   return `<article class="rounded-lg bg-white border border-slush p-5 flex flex-col gap-4">
     <div class="flex items-center justify-between gap-2 text-sm">
-      <span class="rounded bg-boards text-white px-2 py-0.5 text-xs font-semibold">${esc(sportName(p.sport))}</span>
+      <span class="flex items-center gap-2"><span class="rounded bg-boards text-white px-2 py-0.5 text-xs font-semibold">${esc(sportName(p.sport))}</span>
+        <span class="text-frost">${esc(MARKET_NAMES[p.market || 'h2h'])}</span></span>
       <span class="text-frost text-right">${esc(gameTime(p.start_time_utc))}</span>
     </div>
-    <div class="space-y-0.5">${teams(p, 'text-2xl')}</div>
+    <div class="space-y-0.5">${teams(p, false)}</div>
     <div class="flex items-baseline justify-between">
       <span class="font-cond font-bold text-4xl text-blueline">${odds(p.odds)}</span>
       <span class="text-sm text-frost text-right">${esc(p.sportsbook)}<br>Edge ${signedPct(p.expected_value)}</span>
     </div>
     <div class="mt-auto">${confidenceBar(p, false)}</div>
     ${caution ? `<ul class="text-sm -mt-1">${reasons(p, ['caution'])}</ul>` : ''}
+    ${addButton(p, true)}
   </article>`;
 }
 
-// ---------- Results rendering ----------
-function summarize(rows) {
+function chips(el, sports, active, attr) {
+  const order = Object.keys(SPORT_NAMES);
+  sports = sports.slice().sort((x, y) => (order.indexOf(x) + 1 || 99) - (order.indexOf(y) + 1 || 99));
+  if (sports.length < 2) { el.innerHTML = ''; return 'all'; }
+  if (active !== 'all' && !sports.includes(active)) active = 'all';
+  el.innerHTML = [['all', 'All sports'], ...sports.map(s => [s, sportName(s)])].map(([key, label]) => {
+    const on = key === active;
+    return `<button type="button" ${attr}="${esc(key)}" aria-pressed="${on}"
+      class="shrink-0 rounded-full px-3 py-1 text-sm font-medium border ${on ? 'bg-boards border-boards text-white' : 'border-slush bg-white hover:border-frost'}">${esc(label)}</button>`;
+  }).join('');
+  return active;
+}
+
+function upcomingPicks() {
+  const picks = data?.picks || [];
+  return data?.sample ? picks : picks.filter(p => new Date(p.start_time_utc) > new Date());
+}
+
+function renderPicks() {
+  const upcoming = upcomingPicks();
+  pickSport = chips($('picks-filters'), [...new Set(upcoming.map(p => p.sport))], pickSport, 'data-picksport');
+  const shown = upcoming.filter(p => pickSport === 'all' || p.sport === pickSport);
+  const [featured, ...rest] = shown;
+  renderFeatured(featured);
+  $('more').classList.toggle('hidden', !rest.length);
+  $('grid').innerHTML = rest.map(renderCard).join('');
+  $('count').textContent = rest.length ? `${rest.length} pick${rest.length > 1 ? 's' : ''}` : '';
+  renderResults();
+  requestAnimationFrame(() => document.querySelectorAll('.bar-fill').forEach(b => { b.style.width = b.dataset.w; }));
+}
+
+// ---------- Results (model picks) ----------
+function summarize(rows, stakeOf) {
   const w = rows.filter(r => r.result === 'win').length;
   const l = rows.filter(r => r.result === 'loss').length;
   const pu = rows.filter(r => r.result === 'push').length;
   const profit = rows.reduce((s, r) => s + (r.profit || 0), 0);
-  const staked = (w + l) * (history.stake || 10);
+  const staked = rows.filter(r => r.result === 'win' || r.result === 'loss').reduce((s, r) => s + stakeOf(r), 0);
   return { w, l, pu, n: w + l, profit, roi: staked ? profit / staked : 0 };
 }
-
-function record(s) { return `${s.w}–${s.l}${s.pu ? `–${s.pu}` : ''}`; }
+const record = s => `${s.w}–${s.l}${s.pu ? `–${s.pu}` : ''}`;
+const tone = n => n > 0 ? 'text-blueline' : n < 0 ? 'text-goal' : '';
+const statusBadge = r => {
+  const map = { win: ['Won', 'bg-blueline text-white'], loss: ['Lost', 'bg-goal/10 text-goal'],
+                push: ['Push', 'bg-slush text-boards'], null: ['Open', 'bg-ice text-frost border border-slush'] };
+  const [label, cls] = map[r] || map.null;
+  return `<span class="shrink-0 w-12 text-center rounded text-xs font-semibold py-0.5 ${cls}">${label}</span>`;
+};
 
 function renderResults() {
-  const all = (history?.picks || []);
+  const all = history?.picks || [];
   const graded = all.filter(p => ['win', 'loss', 'push'].includes(p.result));
   const pending = all.filter(p => p.result === null).length;
   const stake = history?.stake || 10;
   $('results-sub').textContent = `Each pick counted as a $${stake} bet at the odds shown when it first appeared.`
     + (pending ? ` ${pending} pick${pending > 1 ? 's' : ''} waiting for a final score.` : '');
-
   if (!graded.length) {
     $('results').innerHTML = `<div class="rounded-lg border border-dashed border-slush bg-white px-5 py-8 text-center text-frost">
       No finished picks yet. Results appear at the first update after a game ends.</div>`;
     return;
   }
-
-  const t = summarize(graded);
-  const tiers = ['High', 'Medium', 'Low'].map(r => [r, summarize(graded.filter(p => p.rating === r))]);
+  const t = summarize(graded, () => stake);
+  const tiers = ['High', 'Medium', 'Low'].map(r => [r, summarize(graded.filter(p => p.rating === r), () => stake)]);
   const recent = graded.slice().sort((a, b) => b.start_time_utc.localeCompare(a.start_time_utc)).slice(0, RECENT_RESULTS);
-  const tone = n => n > 0 ? 'text-blueline' : n < 0 ? 'text-goal' : '';
-
   $('results').innerHTML = `
     <div class="grid grid-cols-1 items-start gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)]">
       <div class="rounded-lg bg-white border border-slush p-5">
@@ -227,54 +595,136 @@ function renderResults() {
         </dl>
         <table class="mt-6 w-full text-sm">
           <caption class="sr-only">Results by confidence rating</caption>
-          <thead class="text-frost text-left"><tr>
-            <th class="font-normal pb-2">Confidence</th><th class="font-normal pb-2">Record</th>
+          <thead class="text-frost text-left"><tr><th class="font-normal pb-2">Confidence</th><th class="font-normal pb-2">Record</th>
             <th class="font-normal pb-2">Win rate</th><th class="font-normal pb-2 text-right">Profit</th></tr></thead>
           <tbody>${tiers.map(([r, s]) => `<tr class="border-t border-slush">
             <td class="py-2 flex items-center gap-2"><span class="inline-block w-2.5 h-2.5 rounded-full ${barColor(r)}"></span>${r}</td>
-            <td class="py-2">${s.n || s.pu ? record(s) : '–'}</td>
-            <td class="py-2">${s.n ? pct(s.w / s.n, 0) : '–'}</td>
-            <td class="py-2 text-right ${tone(s.profit)}">${s.n ? money(s.profit) : '–'}</td></tr>`).join('')}
-          </tbody>
+            <td class="py-2">${s.n || s.pu ? record(s) : '–'}</td><td class="py-2">${s.n ? pct(s.w / s.n, 0) : '–'}</td>
+            <td class="py-2 text-right ${tone(s.profit)}">${s.n ? money(s.profit) : '–'}</td></tr>`).join('')}</tbody>
         </table>
         <p class="mt-4 text-xs text-frost">Small samples swing a lot. Give it a few hundred picks before trusting the High tier over the others.</p>
       </div>
       <div class="rounded-lg bg-white border border-slush">
         <h3 class="px-5 pt-4 pb-2 text-sm text-frost">Latest results</h3>
-        <ul>${recent.map(p => {
-          const badge = p.result === 'win' ? 'bg-blueline text-white' : p.result === 'loss' ? 'bg-goal/10 text-goal' : 'bg-slush text-boards';
-          const label = p.result === 'win' ? 'Won' : p.result === 'loss' ? 'Lost' : 'Push';
-          return `<li class="px-5 py-3 border-t border-slush flex items-center gap-3">
-            <span class="shrink-0 w-12 text-center rounded text-xs font-semibold py-0.5 ${badge}">${label}</span>
+        <ul>${recent.map(p => `<li class="px-5 py-3 border-t border-slush flex items-center gap-3">
+            ${statusBadge(p.result)}
             <div class="min-w-0 flex-1">
-              <p class="flex gap-1.5 min-w-0"><span class="font-semibold truncate">${esc(p.pick)}</span>
-                <span class="shrink-0">${odds(p.odds)}</span></p>
-              <p class="truncate text-xs text-frost">${esc(sportName(p.sport))}, ${shortDate(p.start_time_utc)}: ${esc(p.final_score || '')}</p>
+              <p class="flex gap-1.5 min-w-0"><span class="font-semibold truncate">${esc(p.pick)}</span><span class="shrink-0">${odds(p.odds)}</span></p>
+              <p class="truncate text-xs text-frost">${esc(sportName(p.sport))} ${esc(MARKET_NAMES[p.market || 'h2h'])}, ${shortDate(p.start_time_utc)}: ${esc(p.final_score || '')}</p>
             </div>
-            <span class="shrink-0 text-sm font-semibold ${tone(p.profit)}">${money(p.profit)}</span>
-          </li>`;
-        }).join('')}</ul>
+            <span class="shrink-0 text-sm font-semibold ${tone(p.profit)}">${money(p.profit)}</span></li>`).join('')}</ul>
       </div>
     </div>`;
 }
 
+// ---------- Bet builder ----------
+function priceButton(game, market, sel) {
+  if (!sel) return '<span class="h-14 rounded-md bg-ice/60" aria-hidden="true"></span>';
+  const id = `${game.event_id}|${market}|${sel.key}`, on = inSlip(id);
+  const line = market === 'spreads' ? fmtPoint(sel.point) : market === 'totals' ? `${sel.key === 'over' ? 'O' : 'U'} ${sel.point}` : '';
+  const edge = sel.ev != null && sel.ev >= EDGE_MARK ? `<span class="block text-[11px] font-semibold ${on ? 'text-white/80' : 'text-blueline'}">${signedPct(sel.ev)}</span>` : '';
+  return `<button type="button" data-sel="${esc(id)}" aria-pressed="${on}"
+    aria-label="${esc(sel.label)} ${MARKET_NAMES[market]} ${odds(sel.odds)} at ${esc(sel.book)}"
+    class="h-14 rounded-md border text-center leading-tight ${on ? 'bg-blueline border-blueline text-white' : 'bg-white border-slush hover:border-blueline'}">
+    ${line ? `<span class="block text-xs ${on ? 'text-white/80' : 'text-frost'}">${line}</span>` : ''}
+    <span class="block font-semibold">${odds(sel.odds)}</span>${edge}</button>`;
+}
+
+function gameCard(g) {
+  const sel = (m, k) => g.markets[m]?.selections.find(s => s.key === k);
+  const books = Math.max(...Object.values(g.markets).map(m => m.books));
+  const row = (name, side, totalKey) => `
+    <div class="col-span-3 sm:col-span-1 min-w-0 self-center font-cond font-semibold text-xl leading-tight truncate pt-1 sm:pt-0">${esc(name)}</div>
+    ${priceButton(g, 'spreads', sel('spreads', side))}
+    ${priceButton(g, 'totals', sel('totals', totalKey))}
+    ${priceButton(g, 'h2h', sel('h2h', side))}`;
+  const draw = sel('h2h', 'draw');
+  return `<article class="rounded-lg bg-white border border-slush p-4 sm:p-5">
+    <div class="flex items-center justify-between gap-2 text-sm mb-3">
+      <span class="flex items-center gap-2"><span class="rounded bg-boards text-white px-2 py-0.5 text-xs font-semibold">${esc(sportName(g.sport))}</span>
+        <span class="text-frost">${esc(clock(g.start_time_utc))}</span></span>
+      <span class="text-frost">${books} book${books > 1 ? 's' : ''}</span>
+    </div>
+    <div class="grid grid-cols-3 sm:grid-cols-[minmax(0,1fr)_6.5rem_6.5rem_6.5rem] gap-x-2 gap-y-1.5">
+      <span class="hidden sm:block"></span>
+      ${['Spread', 'Total', 'Moneyline'].map(h => `<span class="text-center text-xs text-frost">${h}</span>`).join('')}
+      ${row(g.away_team, 'away', 'over')}
+      ${row(g.home_team, 'home', 'under')}
+      ${draw ? `<div class="col-span-3 sm:col-span-1 self-center font-cond font-semibold text-xl">Draw</div><span></span><span></span>${priceButton(g, 'h2h', draw)}` : ''}
+    </div>
+  </article>`;
+}
+
+function renderBoard() {
+  if (view !== 'build') return;
+  const games = (board?.games || []).filter(g => data?.sample || new Date(g.start_time_utc) > new Date());
+  buildSport = chips($('build-filters'), [...new Set(games.map(g => g.sport))], buildSport, 'data-buildsport');
+  const shown = games.filter(g => buildSport === 'all' || g.sport === buildSport);
+  if (!shown.length) {
+    $('board').innerHTML = `<div class="rounded-lg border border-dashed border-slush bg-white px-6 py-12 text-center text-frost">
+      ${board ? 'No upcoming games with odds right now. New games appear at the next update.'
+              : "Game odds will appear here after the next scheduled update."}</div>`;
+    return;
+  }
+  const days = {};
+  shown.forEach(g => { (days[dayLabel(g.start_time_utc)] ||= []).push(g); });
+  $('board').innerHTML = Object.entries(days).map(([day, gs]) => `
+    <section><h2 class="font-cond font-semibold text-2xl mb-3">${esc(day)}</h2>
+      <div class="space-y-3">${gs.map(gameCard).join('')}</div></section>`).join('');
+}
+
+// ---------- My bets ----------
+const openBets = () => bets.filter(b => !b.result).length;
+
+function renderBets() {
+  if (view !== 'bets') return;
+  if (!bets.length) {
+    $('bets').innerHTML = `<div class="rounded-lg border border-dashed border-slush bg-white px-6 py-12 text-center">
+      <p class="font-cond font-semibold text-2xl">No saved bets</p>
+      <p class="text-frost mt-1">Build a bet, then tap Save bet to track how it does.</p>
+      <a href="#build" class="mt-4 inline-block rounded-md bg-blueline text-white font-semibold px-4 py-2">Build a bet</a></div>`;
+    return;
+  }
+  const settled = bets.filter(b => b.result);
+  const s = summarize(settled, b => b.stake);
+  const openStake = bets.filter(b => !b.result).reduce((t, b) => t + b.stake, 0);
+  const legMark = r => r === 'win' ? '<span class="text-blueline" aria-label="won">✓</span>'
+    : r === 'loss' ? '<span class="text-goal" aria-label="lost">✕</span>'
+    : r === 'push' ? '<span class="text-frost" aria-label="push">–</span>' : '<span class="text-slush" aria-label="open">○</span>';
+  $('bets').innerHTML = `
+    <div class="rounded-lg bg-white border border-slush p-5 mb-5">
+      <dl class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+        <div><dt class="text-sm text-frost">Record</dt><dd class="font-cond font-bold text-3xl">${settled.length ? record(s) : '–'}</dd></div>
+        <div><dt class="text-sm text-frost">Profit</dt><dd class="font-cond font-bold text-3xl ${tone(s.profit)}">${settled.length ? money(s.profit) : '–'}</dd></div>
+        <div><dt class="text-sm text-frost">Return</dt><dd class="font-cond font-bold text-3xl ${tone(s.roi)}">${s.n ? signedPct(s.roi) : '–'}</dd></div>
+        <div><dt class="text-sm text-frost">Open</dt><dd class="font-cond font-bold text-3xl">${openBets()}<span class="text-base font-sans font-normal text-frost"> (${dollars(openStake)})</span></dd></div>
+      </dl>
+    </div>
+    <ul class="space-y-3">${bets.map(b => {
+      const dec = b.legs.reduce((d, l) => d * toDecimal(l.odds), 1);
+      const title = b.type === 'parlay' ? `${b.legs.length}-leg parlay ${odds(toAmerican(dec))}` : `Single ${odds(b.legs[0].odds)}`;
+      const outcome = b.result ? `<span class="font-semibold ${tone(b.profit)}">${money(b.profit)}</span>`
+        : `<span class="text-frost">To win</span> <span class="font-semibold">${dollars(b.stake * (dec - 1))}</span>`;
+      return `<li class="rounded-lg bg-white border border-slush p-4 sm:p-5">
+        <div class="flex flex-wrap items-center gap-x-3 gap-y-1">
+          ${statusBadge(b.result)}
+          <p class="font-semibold">${title}</p>
+          <p class="text-sm w-full sm:w-auto sm:ml-auto"><span class="text-frost">Stake</span> ${dollars(b.stake)}, ${outcome}</p>
+        </div>
+        <ul class="mt-3 space-y-1.5 text-sm">${b.legs.map(l => `<li class="flex items-start gap-2">
+          <span class="w-4 shrink-0 text-center">${legMark(l.result)}</span>
+          <span class="min-w-0 flex-1"><span class="font-medium">${esc(l.label)}</span> <span class="text-frost">${odds(l.odds)}, ${esc(MARKET_NAMES[l.market])}, ${esc(shortTeam(l.away_team))} at ${esc(shortTeam(l.home_team))}, ${shortDate(l.start_time_utc)}</span></span>
+        </li>`).join('')}</ul>
+        <div class="mt-3 flex items-center justify-between text-xs text-frost">
+          <span>Saved ${shortDate(b.created)}${b.legs[0].book && b.type === 'single' ? `, ${esc(b.legs[0].book)}` : ''}</span>
+          <button type="button" data-delete="${esc(b.id)}" class="underline underline-offset-2 hover:text-goal">Delete</button>
+        </div>
+      </li>`;
+    }).join('')}</ul>
+    <p class="mt-4 text-xs text-frost">Results use final scores, including overtime. Saved bets live in this browser, so they won't show up on another device.</p>`;
+}
+
 // ---------- Page ----------
-function upcomingPicks() {
-  const picks = data?.picks || [];
-  return data?.sample ? picks : picks.filter(p => new Date(p.start_time_utc) > new Date());
-}
-
-function renderFilters(picks) {
-  const sports = [...new Set(picks.map(p => p.sport))];
-  if (sports.length < 2) { $('filters').innerHTML = ''; activeSport = 'all'; return; }
-  if (activeSport !== 'all' && !sports.includes(activeSport)) activeSport = 'all';
-  $('filters').innerHTML = [['all', 'All sports'], ...sports.map(s => [s, sportName(s)])].map(([key, label]) => {
-    const on = key === activeSport;
-    return `<button type="button" data-sport="${esc(key)}" aria-pressed="${on}"
-      class="shrink-0 rounded-full px-3 py-1 text-sm font-medium ${on ? 'bg-white text-boards' : 'bg-white/10 text-white hover:bg-white/20'}">${esc(label)}</button>`;
-  }).join('');
-}
-
 function renderNotices() {
   const msgs = [];
   if (data?.sample) msgs.push('Showing sample picks. Real ones appear after the first scheduled update runs (see the README).');
@@ -283,50 +733,60 @@ function renderNotices() {
   if (!data?.sample && hoursOld > 30) msgs.push('These odds are more than a day old. Check that the update workflow is still running on GitHub.');
   if (data?.off_season?.length) msgs.push(`Off season, not checked: ${data.off_season.map(sportName).join(', ')}.`);
   $('notice').innerHTML = msgs.map(m => `<p>${esc(m)}</p>`).join('');
-  $('notice').classList.toggle('hidden', !msgs.length);
+  $('notice').classList.toggle('hidden', !msgs.length || view === 'bets');
+}
+
+function setView(v) {
+  view = ['picks', 'build', 'bets'].includes(v) ? v : 'picks';
+  document.body.dataset.view = view;
+  document.querySelectorAll('.view').forEach(el => el.classList.toggle('hidden', el.id !== `view-${view}`));
+  document.querySelectorAll('[data-tab]').forEach(a => {
+    const on = a.dataset.tab === view;
+    a.classList.toggle('tab-on', on);
+    on ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current');
+  });
+  render();
 }
 
 function render() {
-  const upcoming = upcomingPicks();
-  renderFilters(upcoming);
-  const shown = upcoming.filter(p => activeSport === 'all' || p.sport === activeSport);
-  const [featured, ...rest] = shown;
-  renderFeatured(featured);
-  $('more').classList.toggle('hidden', !rest.length);
-  $('grid').innerHTML = rest.map(renderCard).join('');
-  $('count').textContent = rest.length ? `${rest.length} pick${rest.length > 1 ? 's' : ''}` : '';
   renderNotices();
-  renderResults();
-
+  if (view === 'picks') renderPicks();
+  renderBoard();
+  renderBets();
+  renderSlip();
   if (data) {
     $('updated').textContent = data.sample ? 'Sample data' : `Odds updated ${ago(data.generated_at)}`;
     $('updated').title = new Date(data.generated_at).toLocaleString();
-    $('credits').textContent = data.credits_remaining != null
-      ? `API credits left this month: ${data.credits_remaining}` : '';
+    $('credits').textContent = data.credits_remaining != null ? `API credits left this month: ${data.credits_remaining}` : '';
   }
-  requestAnimationFrame(() => document.querySelectorAll('.bar-fill').forEach(b => { b.style.width = b.dataset.w; }));
+}
+
+async function getJSON(name) {
+  const r = await fetch(`data/${name}?t=${Date.now()}`, { cache: 'no-store' });   // Pages caches ~10 min
+  if (!r.ok) throw new Error(`${name}: ${r.status}`);
+  return r.json();
 }
 
 async function load() {
-  const bust = `?t=${Date.now()}`;   // GitHub Pages caches files for ~10 minutes
-  try {
-    const [p, h] = await Promise.all([
-      fetch(`data/picks.json${bust}`, { cache: 'no-store' }),
-      fetch(`data/history.json${bust}`, { cache: 'no-store' }),
-    ]);
-    if (!p.ok) throw new Error(`picks.json: ${p.status}`);
-    data = await p.json();
-    history = h.ok ? await h.json() : { picks: [] };
-    render();
-  } catch (e) {
-    console.error(e);
-    $('notice').innerHTML = `<p>Couldn't load the picks data (${esc(e.message)}). If you opened this file directly, run
+  const [p, h, b, s] = await Promise.allSettled(['picks.json', 'history.json', 'board.json', 'scores.json'].map(getJSON));
+  if (p.status === 'rejected') {
+    $('notice').innerHTML = `<p>Couldn't load the picks data (${esc(p.reason.message)}). If you opened this file directly, run
       <code>python -m http.server -d docs</code> and go to http://localhost:8000 instead.</p>`;
     $('notice').classList.remove('hidden');
+    return;
   }
+  data = p.value;
+  history = h.status === 'fulfilled' ? h.value : { picks: [] };
+  board = b.status === 'fulfilled' ? b.value : null;
+  finals = s.status === 'fulfilled' ? (s.value.finals || {}) : {};
+  // drop slip legs for games that have started
+  const before = slip.legs.length;
+  slip.legs = slip.legs.filter(l => new Date(l.start_time_utc) > new Date() || data.sample);
+  if (slip.legs.length !== before) saveSlip();
+  gradeSavedBets();
+  render();
 }
 
-// Link straight to the workflow page when hosted on GitHub Pages
 (function setRunLink() {
   const [owner] = location.hostname.split('.');
   const repo = location.pathname.split('/')[1];
@@ -337,12 +797,19 @@ async function load() {
 })();
 
 $('today').textContent = new Date().toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric' });
-$('filters').addEventListener('click', e => {
-  const b = e.target.closest('button[data-sport]');
-  if (b) { activeSport = b.dataset.sport; render(); }
+document.addEventListener('click', e => {
+  const ps = e.target.closest('[data-picksport]'), bs = e.target.closest('[data-buildsport]');
+  if (ps) { pickSport = ps.dataset.picksport; renderPicks(); }
+  if (bs) { buildSport = bs.dataset.buildsport; renderBoard(); }
+});
+window.addEventListener('hashchange', () => setView(location.hash.slice(1)));
+matchMedia('(min-width: 1024px)').addEventListener('change', renderSlip);
+window.addEventListener('storage', () => {   // keep tabs in sync
+  slip = store.get('betrr.slip', slip); bets = store.get('betrr.bets', bets); render();
 });
 document.addEventListener('visibilitychange', () => { if (!document.hidden) load(); });
 setInterval(() => { if (!document.hidden) load(); }, RECHECK_MINUTES * 60000);
+setView(location.hash.slice(1));
 load();
 </script>
 </body>
