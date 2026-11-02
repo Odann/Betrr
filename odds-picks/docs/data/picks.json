@@ -1,0 +1,149 @@
+{
+ "sample": true,
+ "generated_at": "2026-11-03T15:07:00+00:00",
+ "sports_checked": [
+  "icehockey_nhl",
+  "basketball_nba",
+  "americanfootball_nfl"
+ ],
+ "off_season": [],
+ "credits_remaining": null,
+ "credits_used_this_run": 0,
+ "notes": [],
+ "stake": 10,
+ "picks": [
+  {
+   "id": "s1|away",
+   "event_id": "s1",
+   "sport": "icehockey_nhl",
+   "side": "away",
+   "pick": "Montreal Canadiens",
+   "home_team": "Toronto Maple Leafs",
+   "away_team": "Montreal Canadiens",
+   "start_time_utc": "2026-11-04T00:00:00+00:00",
+   "odds": 150,
+   "sportsbook": "Bet365",
+   "fair_win_prob": 0.418,
+   "expected_value": 0.045,
+   "books": 7,
+   "line_movement": 0.034,
+   "confidence": 74,
+   "rating": "High",
+   "reasons": [
+    {
+     "type": "value",
+     "text": "4.5% better than the market's fair price"
+    },
+    {
+     "type": "move",
+     "text": "Win chance up 3.4% since the last update"
+    }
+   ],
+   "three_way": false
+  },
+  {
+   "id": "s2|away",
+   "event_id": "s2",
+   "sport": "basketball_nba",
+   "side": "away",
+   "pick": "Toronto Raptors",
+   "home_team": "Boston Celtics",
+   "away_team": "Toronto Raptors",
+   "start_time_utc": "2026-11-04T00:30:00+00:00",
+   "odds": 320,
+   "sportsbook": "FanDuel",
+   "fair_win_prob": 0.251,
+   "expected_value": 0.054,
+   "books": 6,
+   "line_movement": null,
+   "confidence": 61,
+   "rating": "Medium",
+   "reasons": [
+    {
+     "type": "value",
+     "text": "5.4% better than the market's fair price"
+    }
+   ],
+   "three_way": false
+  },
+  {
+   "id": "s3|away",
+   "event_id": "s3",
+   "sport": "americanfootball_nfl",
+   "side": "away",
+   "pick": "Buffalo Bills",
+   "home_team": "Kansas City Chiefs",
+   "away_team": "Buffalo Bills",
+   "start_time_utc": "2026-11-08T21:25:00+00:00",
+   "odds": 135,
+   "sportsbook": "DraftKings",
+   "fair_win_prob": 0.442,
+   "expected_value": 0.039,
+   "books": 8,
+   "line_movement": null,
+   "confidence": 58,
+   "rating": "Medium",
+   "reasons": [
+    {
+     "type": "value",
+     "text": "3.9% better than the market's fair price"
+    }
+   ],
+   "three_way": false
+  },
+  {
+   "id": "s4|home",
+   "event_id": "s4",
+   "sport": "icehockey_nhl",
+   "side": "home",
+   "pick": "Winnipeg Jets",
+   "home_team": "Winnipeg Jets",
+   "away_team": "Edmonton Oilers",
+   "start_time_utc": "2026-11-04T01:00:00+00:00",
+   "odds": 115,
+   "sportsbook": "BetMGM",
+   "fair_win_prob": 0.482,
+   "expected_value": 0.036,
+   "books": 5,
+   "line_movement": null,
+   "confidence": 52,
+   "rating": "Medium",
+   "reasons": [
+    {
+     "type": "value",
+     "text": "3.6% better than the market's fair price"
+    }
+   ],
+   "three_way": false
+  },
+  {
+   "id": "s5|away",
+   "event_id": "s5",
+   "sport": "basketball_nba",
+   "side": "away",
+   "pick": "Denver Nuggets",
+   "home_team": "Phoenix Suns",
+   "away_team": "Denver Nuggets",
+   "start_time_utc": "2026-11-04T03:00:00+00:00",
+   "odds": -105,
+   "sportsbook": "Caesars",
+   "fair_win_prob": 0.522,
+   "expected_value": 0.019,
+   "books": 4,
+   "line_movement": -0.031,
+   "confidence": 24,
+   "rating": "Low",
+   "reasons": [
+    {
+     "type": "value",
+     "text": "2.1% better than the market's fair price"
+    },
+    {
+     "type": "caution",
+     "text": "Win chance down 3.1% since the last update"
+    }
+   ],
+   "three_way": false
+  }
+ ]
+}

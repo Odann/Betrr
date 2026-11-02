@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#0E2A47">
+  <title>Picks Board</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%230E2A47'/><rect x='6' y='19' width='4' height='7' fill='%236B8CAE'/><rect x='14' y='13' width='4' height='13' fill='%236B8CAE'/><rect x='22' y='6' width='4' height='20' fill='%231F5FA8'/></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-ice text-boards font-sans antialiased min-h-screen flex flex-col">
+
+  <header class="bg-boards text-white">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 pt-4 pb-3 flex items-start justify-between gap-4">
+      <div>
+        <h1 class="font-cond font-bold text-3xl leading-none tracking-tight">Picks Board</h1>
+        <p id="today" class="text-sm text-slush mt-1"></p>
+      </div>
+      <div class="text-right">
+        <p id="updated" class="text-sm text-slush"></p>
+        <a id="run-link" href="#" target="_blank" rel="noopener"
+           class="hidden mt-1 inline-block text-sm font-medium text-white underline underline-offset-2 decoration-white/40 hover:decoration-white">
+          Run an update</a>
+      </div>
+    </div>
+    <nav id="filters" aria-label="Filter by sport"
+         class="max-w-6xl mx-auto px-4 sm:px-6 pb-3 flex gap-2 overflow-x-auto"></nav>
+  </header>
+
+  <main class="flex-1 w-full max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+    <div id="notice" class="hidden mb-6 rounded-md border border-slush bg-white px-4 py-3 text-sm text-frost space-y-1"></div>
+
+    <section id="featured" aria-label="Featured pick" class="mb-10"></section>
+
+    <section id="more" aria-labelledby="grid-heading" class="mb-12">
+      <div class="flex items-baseline justify-between mb-4">
+        <h2 id="grid-heading" class="font-cond font-semibold text-2xl">More picks</h2>
+        <p id="count" class="text-sm text-frost"></p>
+      </div>
+      <div id="grid" class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"></div>
+    </section>
+
+    <section aria-labelledby="results-heading">
+      <h2 id="results-heading" class="font-cond font-semibold text-2xl mb-1">How the picks have done</h2>
+      <p id="results-sub" class="text-sm text-frost mb-4"></p>
+      <div id="results"></div>
+    </section>
+  </main>
+
+  <footer class="border-t border-slush">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4 text-xs text-frost leading-relaxed space-y-1">
+      <p id="credits"></p>
+      <p>Picks come from an odds model and are not guarantees. 19+ in Ontario. Need support with gambling?
+        ConnexOntario: <a class="underline whitespace-nowrap" href="tel:18665312600">1-866-531-2600</a>.</p>
+    </div>
+  </footer>
+
+<script>
+// ---------- Settings ----------
+const CONFIDENCE_LABEL = "Claude's Confidence";
+const RECENT_RESULTS = 10;              // graded picks listed under the record
+const RECHECK_MINUTES = 10;             // re-read the data while the tab is open
+
+const SPORT_NAMES = {
+  icehockey_nhl: 'NHL', basketball_nba: 'NBA', americanfootball_nfl: 'NFL',
+  baseball_mlb: 'MLB', americanfootball_ncaaf: 'NCAAF', basketball_ncaab: 'NCAAB',
+  basketball_wnba: 'WNBA', soccer_epl: 'Premier League', soccer_usa_mls: 'MLS',
+  mma_mixed_martial_arts: 'UFC / MMA',
+};
+
+// ---------- Helpers ----------
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c =>
+  ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const sportName = k => SPORT_NAMES[k] || k.split('_').slice(1).join(' ').toUpperCase();
+const pct = (x, d = 1) => `${(x * 100).toFixed(d)}%`;
+const signedPct = x => `${x >= 0 ? '+' : '−'}${pct(Math.abs(x))}`;
+const odds = n => (n > 0 ? `+${n}` : `${n}`).replace('-', '−');
+const money = n => Math.abs(n) < 0.005 ? '$0.00' : `${n > 0 ? '+' : '−'}$${Math.abs(n).toFixed(2)}`;
+const barColor = r => r === 'High' ? 'bg-blueline' : r === 'Medium' ? 'bg-frost' : 'bg-slush';
+
+const gameTime = iso => new Date(iso).toLocaleString([], {
+  weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+const shortDate = iso => new Date(iso).toLocaleDateString([], { month: 'short', day: 'numeric' });
+
+function ago(iso) {
+  const mins = Math.round((Date.now() - new Date(iso)) / 60000);
+  if (mins < 1) return 'just now';
+  if (mins < 60) return `${mins} min ago`;
+  const h = Math.round(mins / 60);
+  if (h < 24) return `${h} hr ago`;
+  const d = Math.round(h / 24);
+  return `${d} day${d > 1 ? 's' : ''} ago`;
+}
+
+// ---------- State ----------
+let data = null, history = null, activeSport = 'all';
+
+// ---------- Pick rendering ----------
+function teamRow(name, isPick, size) {
+  return `<div class="flex items-baseline gap-2 ${isPick ? '' : 'text-frost'}">
+    <span class="font-cond ${size} leading-tight ${isPick ? 'font-bold' : 'font-medium'}">${esc(name)}</span>
+    ${isPick ? '<span class="shrink-0 rounded bg-blueline/10 text-blueline text-xs font-semibold px-1.5 py-0.5">Pick</span>' : ''}
+  </div>`;
+}
+
+function teams(p, size) {
+  return `${teamRow(p.away_team, p.side === 'away', size)}
+    ${size.includes('5xl') ? '<p class="text-frost text-sm">at</p>' : ''}
+    ${teamRow(p.home_team, p.side === 'home', size)}
+    ${p.side === 'draw' ? '<p class="mt-1 text-sm font-semibold">Pick: draw</p>' : ''}`;
+}
+
+function confidenceBar(p, thick) {
+  return `<div>
+    <div class="flex items-baseline justify-between text-sm mb-1.5">
+      <span class="text-frost">${esc(CONFIDENCE_LABEL)}</span>
+      <span><span class="font-cond font-bold text-lg">${p.confidence}%</span>
+        <span class="text-frost">${esc(p.rating)}</span></span>
+    </div>
+    <div class="${thick ? 'h-3' : 'h-2'} rounded-full bg-slush/60 overflow-hidden" role="progressbar"
+         aria-valuemin="0" aria-valuemax="100" aria-valuenow="${p.confidence}" aria-label="${esc(CONFIDENCE_LABEL)}">
+      <div class="bar-fill h-full rounded-full ${barColor(p.rating)}" style="width:0" data-w="${p.confidence}%"></div>
+    </div>
+  </div>`;
+}
+
+const REASON_LABEL = { value: 'Value', move: 'Line move', caution: 'Caution' };
+function reasons(p, only) {
+  return p.reasons.filter(r => !only || only.includes(r.type)).map(r =>
+    `<li class="${r.type === 'caution' ? 'text-goal' : ''}"><span class="font-semibold">${REASON_LABEL[r.type]}:</span> ${esc(r.text)}</li>`
+  ).join('');
+}
+
+function renderFeatured(p) {
+  if (!p) {
+    $('featured').innerHTML = `<div class="rounded-xl border border-dashed border-slush bg-white px-6 py-12 text-center">
+      <p class="font-cond font-semibold text-2xl">No picks right now</p>
+      <p class="text-frost mt-1">None of the upcoming prices beat the market. The next update will check again.</p></div>`;
+    return;
+  }
+  $('featured').innerHTML = `
+    <h2 class="font-cond font-semibold text-2xl mb-3">Featured pick</h2>
+    <article class="relative overflow-hidden rounded-xl bg-white border border-slush">
+      <div class="absolute inset-y-0 left-0 w-1.5 bg-blueline" aria-hidden="true"></div>
+      <div class="grid gap-6 md:grid-cols-[1.4fr_1fr] p-5 sm:p-8 pl-6 sm:pl-10">
+        <div>
+          <p class="text-sm text-frost mb-3">${esc(sportName(p.sport))}, ${esc(gameTime(p.start_time_utc))}</p>
+          <div class="space-y-1">${teams(p, 'text-4xl sm:text-5xl')}</div>
+          <ul class="mt-5 space-y-1 text-sm">${reasons(p)}</ul>
+        </div>
+        <div class="flex flex-col justify-between gap-6 md:border-l md:border-slush md:pl-8">
+          <div>
+            <p class="font-cond font-bold leading-none text-7xl sm:text-8xl text-blueline">${odds(p.odds)}</p>
+            <p class="mt-2 text-sm text-frost">Best price, at ${esc(p.sportsbook)}</p>
+            <dl class="mt-4 grid grid-cols-3 gap-3 text-sm">
+              <div><dt class="text-frost">Win chance</dt><dd class="font-semibold">${pct(p.fair_win_prob)}</dd></div>
+              <div><dt class="text-frost">Edge</dt><dd class="font-semibold">${signedPct(p.expected_value)}</dd></div>
+              <div><dt class="text-frost">Books</dt><dd class="font-semibold">${p.books}</dd></div>
+            </dl>
+          </div>
+          ${confidenceBar(p, true)}
+        </div>
+      </div>
+    </article>`;
+}
+
+function renderCard(p) {
+  const caution = p.reasons.some(r => r.type === 'caution');
+  return `<article class="rounded-lg bg-white border border-slush p-5 flex flex-col gap-4">
+    <div class="flex items-center justify-between gap-2 text-sm">
+      <span class="rounded bg-boards text-white px-2 py-0.5 text-xs font-semibold">${esc(sportName(p.sport))}</span>
+      <span class="text-frost text-right">${esc(gameTime(p.start_time_utc))}</span>
+    </div>
+    <div class="space-y-0.5">${teams(p, 'text-2xl')}</div>
+    <div class="flex items-baseline justify-between">
+      <span class="font-cond font-bold text-4xl text-blueline">${odds(p.odds)}</span>
+      <span class="text-sm text-frost text-right">${esc(p.sportsbook)}<br>Edge ${signedPct(p.expected_value)}</span>
+    </div>
+    <div class="mt-auto">${confidenceBar(p, false)}</div>
+    ${caution ? `<ul class="text-sm -mt-1">${reasons(p, ['caution'])}</ul>` : ''}
+  </article>`;
+}
+
+// ---------- Results rendering ----------
+function summarize(rows) {
+  const w = rows.filter(r => r.result === 'win').length;
+  const l = rows.filter(r => r.result === 'loss').length;
+  const pu = rows.filter(r => r.result === 'push').length;
+  const profit = rows.reduce((s, r) => s + (r.profit || 0), 0);
+  const staked = (w + l) * (history.stake || 10);
+  return { w, l, pu, n: w + l, profit, roi: staked ? profit / staked : 0 };
+}
+
+function record(s) { return `${s.w}–${s.l}${s.pu ? `–${s.pu}` : ''}`; }
+
+function renderResults() {
+  const all = (history?.picks || []);
+  const graded = all.filter(p => ['win', 'loss', 'push'].includes(p.result));
+  const pending = all.filter(p => p.result === null).length;
+  const stake = history?.stake || 10;
+  $('results-sub').textContent = `Each pick counted as a $${stake} bet at the odds shown when it first appeared.`
+    + (pending ? ` ${pending} pick${pending > 1 ? 's' : ''} waiting for a final score.` : '');
+
+  if (!graded.length) {
+    $('results').innerHTML = `<div class="rounded-lg border border-dashed border-slush bg-white px-5 py-8 text-center text-frost">
+      No finished picks yet. Results appear at the first update after a game ends.</div>`;
+    return;
+  }
+
+  const t = summarize(graded);
+  const tiers = ['High', 'Medium', 'Low'].map(r => [r, summarize(graded.filter(p => p.rating === r))]);
+  const recent = graded.slice().sort((a, b) => b.start_time_utc.localeCompare(a.start_time_utc)).slice(0, RECENT_RESULTS);
+  const tone = n => n > 0 ? 'text-blueline' : n < 0 ? 'text-goal' : '';
+
+  $('results').innerHTML = `
+    <div class="grid grid-cols-1 items-start gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)]">
+      <div class="rounded-lg bg-white border border-slush p-5">
+        <dl class="grid grid-cols-3 gap-4">
+          <div><dt class="text-sm text-frost">Record</dt><dd class="font-cond font-bold text-3xl">${record(t)}</dd></div>
+          <div><dt class="text-sm text-frost">Profit</dt><dd class="font-cond font-bold text-3xl ${tone(t.profit)}">${money(t.profit)}</dd></div>
+          <div><dt class="text-sm text-frost">Return</dt><dd class="font-cond font-bold text-3xl ${tone(t.roi)}">${signedPct(t.roi)}</dd></div>
+        </dl>
+        <table class="mt-6 w-full text-sm">
+          <caption class="sr-only">Results by confidence rating</caption>
+          <thead class="text-frost text-left"><tr>
+            <th class="font-normal pb-2">Confidence</th><th class="font-normal pb-2">Record</th>
+            <th class="font-normal pb-2">Win rate</th><th class="font-normal pb-2 text-right">Profit</th></tr></thead>
+          <tbody>${tiers.map(([r, s]) => `<tr class="border-t border-slush">
+            <td class="py-2 flex items-center gap-2"><span class="inline-block w-2.5 h-2.5 rounded-full ${barColor(r)}"></span>${r}</td>
+            <td class="py-2">${s.n || s.pu ? record(s) : '–'}</td>
+            <td class="py-2">${s.n ? pct(s.w / s.n, 0) : '–'}</td>
+            <td class="py-2 text-right ${tone(s.profit)}">${s.n ? money(s.profit) : '–'}</td></tr>`).join('')}
+          </tbody>
+        </table>
+        <p class="mt-4 text-xs text-frost">Small samples swing a lot. Give it a few hundred picks before trusting the High tier over the others.</p>
+      </div>
+      <div class="rounded-lg bg-white border border-slush">
+        <h3 class="px-5 pt-4 pb-2 text-sm text-frost">Latest results</h3>
+        <ul>${recent.map(p => {
+          const badge = p.result === 'win' ? 'bg-blueline text-white' : p.result === 'loss' ? 'bg-goal/10 text-goal' : 'bg-slush text-boards';
+          const label = p.result === 'win' ? 'Won' : p.result === 'loss' ? 'Lost' : 'Push';
+          return `<li class="px-5 py-3 border-t border-slush flex items-center gap-3">
+            <span class="shrink-0 w-12 text-center rounded text-xs font-semibold py-0.5 ${badge}">${label}</span>
+            <div class="min-w-0 flex-1">
+              <p class="flex gap-1.5 min-w-0"><span class="font-semibold truncate">${esc(p.pick)}</span>
+                <span class="shrink-0">${odds(p.odds)}</span></p>
+              <p class="truncate text-xs text-frost">${esc(sportName(p.sport))}, ${shortDate(p.start_time_utc)}: ${esc(p.final_score || '')}</p>
+            </div>
+            <span class="shrink-0 text-sm font-semibold ${tone(p.profit)}">${money(p.profit)}</span>
+          </li>`;
+        }).join('')}</ul>
+      </div>
+    </div>`;
+}
+
+// ---------- Page ----------
+function upcomingPicks() {
+  const picks = data?.picks || [];
+  return data?.sample ? picks : picks.filter(p => new Date(p.start_time_utc) > new Date());
+}
+
+function renderFilters(picks) {
+  const sports = [...new Set(picks.map(p => p.sport))];
+  if (sports.length < 2) { $('filters').innerHTML = ''; activeSport = 'all'; return; }
+  if (activeSport !== 'all' && !sports.includes(activeSport)) activeSport = 'all';
+  $('filters').innerHTML = [['all', 'All sports'], ...sports.map(s => [s, sportName(s)])].map(([key, label]) => {
+    const on = key === activeSport;
+    return `<button type="button" data-sport="${esc(key)}" aria-pressed="${on}"
+      class="shrink-0 rounded-full px-3 py-1 text-sm font-medium ${on ? 'bg-white text-boards' : 'bg-white/10 text-white hover:bg-white/20'}">${esc(label)}</button>`;
+  }).join('');
+}
+
+function renderNotices() {
+  const msgs = [];
+  if (data?.sample) msgs.push('Showing sample picks. Real ones appear after the first scheduled update runs (see the README).');
+  (data?.notes || []).forEach(n => msgs.push(n));
+  const hoursOld = data ? (Date.now() - new Date(data.generated_at)) / 3.6e6 : 0;
+  if (!data?.sample && hoursOld > 30) msgs.push('These odds are more than a day old. Check that the update workflow is still running on GitHub.');
+  if (data?.off_season?.length) msgs.push(`Off season, not checked: ${data.off_season.map(sportName).join(', ')}.`);
+  $('notice').innerHTML = msgs.map(m => `<p>${esc(m)}</p>`).join('');
+  $('notice').classList.toggle('hidden', !msgs.length);
+}
+
+function render() {
+  const upcoming = upcomingPicks();
+  renderFilters(upcoming);
+  const shown = upcoming.filter(p => activeSport === 'all' || p.sport === activeSport);
+  const [featured, ...rest] = shown;
+  renderFeatured(featured);
+  $('more').classList.toggle('hidden', !rest.length);
+  $('grid').innerHTML = rest.map(renderCard).join('');
+  $('count').textContent = rest.length ? `${rest.length} pick${rest.length > 1 ? 's' : ''}` : '';
+  renderNotices();
+  renderResults();
+
+  if (data) {
+    $('updated').textContent = data.sample ? 'Sample data' : `Odds updated ${ago(data.generated_at)}`;
+    $('updated').title = new Date(data.generated_at).toLocaleString();
+    $('credits').textContent = data.credits_remaining != null
+      ? `API credits left this month: ${data.credits_remaining}` : '';
+  }
+  requestAnimationFrame(() => document.querySelectorAll('.bar-fill').forEach(b => { b.style.width = b.dataset.w; }));
+}
+
+async function load() {
+  const bust = `?t=${Date.now()}`;   // GitHub Pages caches files for ~10 minutes
+  try {
+    const [p, h] = await Promise.all([
+      fetch(`data/picks.json${bust}`, { cache: 'no-store' }),
+      fetch(`data/history.json${bust}`, { cache: 'no-store' }),
+    ]);
+    if (!p.ok) throw new Error(`picks.json: ${p.status}`);
+    data = await p.json();
+    history = h.ok ? await h.json() : { picks: [] };
+    render();
+  } catch (e) {
+    console.error(e);
+    $('notice').innerHTML = `<p>Couldn't load the picks data (${esc(e.message)}). If you opened this file directly, run
+      <code>python -m http.server -d docs</code> and go to http://localhost:8000 instead.</p>`;
+    $('notice').classList.remove('hidden');
+  }
+}
+
+// Link straight to the workflow page when hosted on GitHub Pages
+(function setRunLink() {
+  const [owner] = location.hostname.split('.');
+  const repo = location.pathname.split('/')[1];
+  if (location.hostname.endsWith('github.io') && repo) {
+    $('run-link').href = `https://github.com/${owner}/${repo}/actions/workflows/update-picks.yml`;
+    $('run-link').classList.remove('hidden');
+  }
+})();
+
+$('today').textContent = new Date().toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric' });
+$('filters').addEventListener('click', e => {
+  const b = e.target.closest('button[data-sport]');
+  if (b) { activeSport = b.dataset.sport; render(); }
+});
+document.addEventListener('visibilitychange', () => { if (!document.hidden) load(); });
+setInterval(() => { if (!document.hidden) load(); }, RECHECK_MINUTES * 60000);
+load();
+</script>
+</body>
+</html>
