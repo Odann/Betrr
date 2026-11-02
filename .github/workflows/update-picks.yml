@@ -1,0 +1,76 @@
+name: Update picks
+
+on:
+  # Times are UTC. These are 10:07 AM, 3:07 PM and 6:37 PM Toronto time in winter
+  # (an hour later in summer), so there's a fresh check before evening games.
+  # Budget: 3 runs x 3 sports = 9 credits/day for odds, plus up to 2 credits
+  # per sport when checking results. That fits the 500/month free plan.
+  # Remove a line to spend less; adding more will run out partway through the month.
+  schedule:
+    - cron: "7 15 * * *"
+    - cron: "7 20 * * *"
+    - cron: "37 23 * * *"
+  # Adds a "Run workflow" button on the Actions tab for an on-demand update
+  workflow_dispatch:
+  # Redeploy the page (without spending credits) when you edit the site
+  push:
+    branches: [main]
+    paths: ["docs/index.html", "styles/**", "tailwind.config.js"]
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: update-picks
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        if: github.event_name != 'push'
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Fetch odds, find picks, grade results
+        if: github.event_name != 'push'
+        env:
+          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+        run: |
+          pip install -r requirements.txt
+          python -m pipeline.update
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Build the stylesheet
+        run: npx --yes tailwindcss@3 -i styles/input.css -o docs/styles.css --minify
+
+      - name: Save data to the repo
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs
+          if git diff --staged --quiet; then
+            echo "Nothing changed."
+          else
+            git commit -m "Update picks"
+            git push
+          fi
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+      - id: deploy
+        uses: actions/deploy-pages@v4
