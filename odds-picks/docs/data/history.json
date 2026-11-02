@@ -56,6 +56,192 @@
    "logged_at": "2026-11-02T06:15:21.487028+00:00",
    "result": null,
    "profit": null
+  },
+  {
+   "id": "e354e6a04b1cb9c96e549b863debb92e|h2h|away",
+   "event_id": "e354e6a04b1cb9c96e549b863debb92e",
+   "sport": "americanfootball_nfl",
+   "market": "h2h",
+   "market_label": "Moneyline",
+   "side": "away",
+   "point": null,
+   "pick": "New York Jets",
+   "home_team": "Kansas City Chiefs",
+   "away_team": "New York Jets",
+   "start_time_utc": "2026-11-08T18:00:00+00:00",
+   "odds": 400,
+   "sportsbook": "FanDuel",
+   "fair_win_prob": 0.2127,
+   "expected_value": 0.0633,
+   "books": 9,
+   "line_movement": null,
+   "confidence": 71,
+   "rating": "High",
+   "reasons": [
+    {
+     "type": "value",
+     "text": "6.3% better than the market's fair price"
+    }
+   ],
+   "three_way": false,
+   "logged_at": "2026-11-02T22:07:44.732967+00:00",
+   "result": null,
+   "profit": null
+  },
+  {
+   "id": "44d8c37868b700e90f816db7c5df5cdd|h2h|home",
+   "event_id": "44d8c37868b700e90f816db7c5df5cdd",
+   "sport": "americanfootball_nfl",
+   "market": "h2h",
+   "market_label": "Moneyline",
+   "side": "home",
+   "point": null,
+   "pick": "Miami Dolphins",
+   "home_team": "Miami Dolphins",
+   "away_team": "Detroit Lions",
+   "start_time_utc": "2026-11-08T18:00:00+00:00",
+   "odds": 295,
+   "sportsbook": "DraftKings",
+   "fair_win_prob": 0.2622,
+   "expected_value": 0.0357,
+   "books": 9,
+   "line_movement": null,
+   "confidence": 54,
+   "rating": "Medium",
+   "reasons": [
+    {
+     "type": "value",
+     "text": "3.6% better than the market's fair price"
+    }
+   ],
+   "three_way": false,
+   "logged_at": "2026-11-02T22:07:44.732967+00:00",
+   "result": null,
+   "profit": null
+  },
+  {
+   "id": "ac9d38a18d5c92814233a31aa9a48d78|h2h|away",
+   "event_id": "ac9d38a18d5c92814233a31aa9a48d78",
+   "sport": "americanfootball_nfl",
+   "market": "h2h",
+   "market_label": "Moneyline",
+   "side": "away",
+   "point": null,
+   "pick": "Las Vegas Raiders",
+   "home_team": "San Francisco 49ers",
+   "away_team": "Las Vegas Raiders",
+   "start_time_utc": "2026-11-08T21:05:00+00:00",
+   "odds": 415,
+   "sportsbook": "BetUS",
+   "fair_win_prob": 0.1998,
+   "expected_value": 0.0288,
+   "books": 9,
+   "line_movement": null,
+   "confidence": 50,
+   "rating": "Medium",
+   "reasons": [
+    {
+     "type": "value",
+     "text": "2.9% better than the market's fair price"
+    }
+   ],
+   "three_way": false,
+   "logged_at": "2026-11-02T22:07:44.732967+00:00",
+   "result": null,
+   "profit": null
+  },
+  {
+   "id": "c75744790b7acf6260c78ba5e739c0e5|h2h|home",
+   "event_id": "c75744790b7acf6260c78ba5e739c0e5",
+   "sport": "americanfootball_nfl",
+   "market": "h2h",
+   "market_label": "Moneyline",
+   "side": "home",
+   "point": null,
+   "pick": "Baltimore Ravens",
+   "home_team": "Baltimore Ravens",
+   "away_team": "Jacksonville Jaguars",
+   "start_time_utc": "2026-11-06T01:15:00+00:00",
+   "odds": 370,
+   "sportsbook": "FanDuel",
+   "fair_win_prob": 0.2184,
+   "expected_value": 0.0264,
+   "books": 9,
+   "line_movement": null,
+   "confidence": 49,
+   "rating": "Medium",
+   "reasons": [
+    {
+     "type": "value",
+     "text": "2.6% better than the market's fair price"
+    }
+   ],
+   "three_way": false,
+   "logged_at": "2026-11-02T22:07:44.732967+00:00",
+   "result": null,
+   "profit": null
+  },
+  {
+   "id": "9760d8f19f84bfee300a74ceb656c95d|h2h|away",
+   "event_id": "9760d8f19f84bfee300a74ceb656c95d",
+   "sport": "americanfootball_nfl",
+   "market": "h2h",
+   "market_label": "Moneyline",
+   "side": "away",
+   "point": null,
+   "pick": "Tampa Bay Buccaneers",
+   "home_team": "Chicago Bears",
+   "away_team": "Tampa Bay Buccaneers",
+   "start_time_utc": "2026-11-09T01:20:00+00:00",
+   "odds": 235,
+   "sportsbook": "BetUS",
+   "fair_win_prob": 0.3085,
+   "expected_value": 0.0333,
+   "books": 6,
+   "line_movement": null,
+   "confidence": 46,
+   "rating": "Medium",
+   "reasons": [
+    {
+     "type": "value",
+     "text": "3.3% better than the market's fair price"
+    }
+   ],
+   "three_way": false,
+   "logged_at": "2026-11-02T22:07:44.732967+00:00",
+   "result": null,
+   "profit": null
+  },
+  {
+   "id": "13ced29ffb36afa9ac1436ef60bda139|spreads|away",
+   "event_id": "13ced29ffb36afa9ac1436ef60bda139",
+   "sport": "icehockey_nhl",
+   "market": "spreads",
+   "market_label": "Spread",
+   "side": "away",
+   "point": -1.5,
+   "pick": "Colorado Avalanche -1.5",
+   "home_team": "Columbus Blue Jackets",
+   "away_team": "Colorado Avalanche",
+   "start_time_utc": "2026-11-04T00:10:00+00:00",
+   "odds": 205,
+   "sportsbook": "BetRivers",
+   "fair_win_prob": 0.3393,
+   "expected_value": 0.0349,
+   "books": 4,
+   "line_movement": null,
+   "confidence": 41,
+   "rating": "Low",
+   "reasons": [
+    {
+     "type": "value",
+     "text": "3.5% better than the market's fair price"
+    }
+   ],
+   "three_way": false,
+   "logged_at": "2026-11-02T22:07:44.732967+00:00",
+   "result": null,
+   "profit": null
   }
  ]
 }
