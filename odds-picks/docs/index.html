@@ -60,7 +60,7 @@
         </div>
         <div id="grid" class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"></div>
       </section>
-      <section aria-labelledby="yours-heading" class="mb-12">
+      <section aria-labelledby="yours-heading">
         <div class="sec-head mb-2">
           <h2 id="yours-heading" class="sec-title">Your bets</h2>
           <span class="sec-rule"></span>
@@ -68,14 +68,6 @@
         </div>
         <p class="text-sm text-rose mb-4">Results from the bets you've saved, graded from final scores.</p>
         <div id="yours"></div>
-      </section>
-      <section aria-labelledby="results-heading">
-        <div class="sec-head mb-2">
-          <h2 id="results-heading" class="sec-title">Model track record</h2>
-          <span class="sec-rule"></span>
-        </div>
-        <p id="results-sub" class="text-sm text-rose mb-4"></p>
-        <div id="results"></div>
       </section>
     </div>
 
@@ -131,7 +123,6 @@
 // ---------- Settings ----------
 const CONFIDENCE_LABEL = "Claude's Confidence";
 const DEFAULT_STAKE = 10;
-const RECENT_RESULTS = 10;
 const RECHECK_MINUTES = 10;
 const EDGE_MARK = 0.02;          // show the cyan edge % on builder prices at or above this
 const TABS = ['picks', 'build', 'bets'];
@@ -419,7 +410,7 @@ function saveBet() {
   const n = m.parlay ? 1 : slip.legs.length;
   slip.legs = []; saveSlip(); sheetOpen = false;
   renderSlip(); renderBoard(); renderPickButtons();
-  if (view === 'picks') { renderYourBets(); renderResults(); }
+  if (view === 'picks') renderYourBets();
   toast(`Saved ${n} bet${n > 1 ? 's' : ''} to My bets`);
 }
 
@@ -599,7 +590,6 @@ function renderPicks() {
   $('grid').innerHTML = rest.map(renderCard).join('');
   $('count').textContent = rest.length ? `${rest.length} pick${rest.length > 1 ? 's' : ''}` : '';
   renderYourBets();
-  renderResults();
 }
 
 // ---------- Your bets (summary on the Picks tab) ----------
@@ -645,7 +635,7 @@ function renderYourBets() {
     </div>`;
 }
 
-// ---------- Results (model picks) ----------
+// ---------- Shared result helpers ----------
 function summarize(rows, stakeOf) {
   const w = rows.filter(r => r.result === 'win').length;
   const l = rows.filter(r => r.result === 'loss').length;
@@ -664,52 +654,6 @@ const statusBadge = r => {
 };
 const stat = (label, value, cls = 'text-ink') =>
   `<div><dt class="label">${label}</dt><dd class="font-hud font-bold text-3xl leading-tight ${cls}">${value}</dd></div>`;
-
-function renderResults() {
-  const all = history?.picks || [];
-  const graded = all.filter(p => ['win', 'loss', 'push'].includes(p.result));
-  const pending = all.filter(p => p.result === null).length;
-  const stake = history?.stake || 10;
-  $('results-sub').textContent = `Paper results, not bets you placed: every pick the model makes is counted as a $${stake} bet at the odds shown when it first appeared.`
-    + (pending ? ` ${pending} pick${pending > 1 ? 's' : ''} waiting for a final score.` : '');
-  if (!graded.length) {
-    $('results').innerHTML = emptyPanel('', 'No finished picks yet. Results appear at the first update after a game ends.');
-    return;
-  }
-  const t = summarize(graded, () => stake);
-  const tiers = ['High', 'Medium', 'Low'].map(r => [r, summarize(graded.filter(p => p.rating === r), () => stake)]);
-  const recent = graded.slice().sort((a, b) => b.start_time_utc.localeCompare(a.start_time_utc)).slice(0, RECENT_RESULTS);
-  const betKeys = new Set(bets.flatMap(b => b.legs.map(l => `${l.event_id}|${l.market || 'h2h'}|${l.side}`)));
-  $('results').innerHTML = `
-    <div class="grid grid-cols-1 items-start gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)]">
-      <div class="hud p-5">
-        <dl class="grid grid-cols-3 gap-4">
-          ${stat('Record', record(t))}${stat('Profit', money(t.profit), tone(t.profit))}${stat('Return', signedPct(t.roi), tone(t.roi))}
-        </dl>
-        <table class="mt-6 w-full text-sm">
-          <caption class="sr-only">Results by confidence rating</caption>
-          <thead class="text-left"><tr><th class="label font-semibold pb-2">Confidence</th><th class="label font-semibold pb-2">Record</th>
-            <th class="label font-semibold pb-2">Win rate</th><th class="label font-semibold pb-2 text-right">Profit</th></tr></thead>
-          <tbody>${tiers.map(([r, s]) => `<tr class="border-t border-line">
-            <td class="py-2"><span class="flex items-center gap-2"><span class="inline-block w-2.5 h-3 -skew-x-[24deg] ${rateBg(r)}"></span>${r}</span></td>
-            <td class="py-2">${s.n || s.pu ? record(s) : '–'}</td><td class="py-2">${s.n ? pct(s.w / s.n, 0) : '–'}</td>
-            <td class="py-2 text-right ${s.n ? tone(s.profit) : ''}">${s.n ? money(s.profit) : '–'}</td></tr>`).join('')}</tbody>
-        </table>
-        <p class="mt-4 text-xs text-rose">Small samples swing a lot. Give it a few hundred picks before trusting the High tier over the others.</p>
-      </div>
-      <div class="hud">
-        <h3 class="label px-5 pt-4 pb-3">Latest results</h3>
-        <ul>${recent.map(p => `<li class="px-5 py-3 border-t border-line flex items-center gap-3">
-            ${statusBadge(p.result)}
-            <div class="min-w-0 flex-1">
-              <p class="flex items-center gap-1.5 min-w-0"><span class="font-semibold truncate">${esc(p.pick)}</span><span class="shrink-0 text-rose">${odds(p.odds)}</span>
-                ${betKeys.has(pickKey(p)) ? '<span class="tag shrink-0 border border-cyan text-cyan">You bet this</span>' : ''}</p>
-              <p class="truncate text-xs text-rose">${esc(sportName(p.sport))} ${esc(MARKET_NAMES[p.market || 'h2h'])}, ${shortDate(p.start_time_utc)}: ${esc(p.final_score || '')}</p>
-            </div>
-            <span class="shrink-0 font-hud font-bold text-lg ${tone(p.profit)}">${money(p.profit)}</span></li>`).join('')}</ul>
-      </div>
-    </div>`;
-}
 
 // ---------- Bet builder ----------
 function priceButton(game, market, sel) {

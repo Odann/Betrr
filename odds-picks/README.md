@@ -52,12 +52,11 @@ On a computer, the Q and E keys switch between Picks, Build a bet and My bets.
   keeps its own list.
 - **Run an update** in the header opens the GitHub page with the "Run workflow"
   button, for when you want fresher odds than the schedule gives you.
-- **Model track record** grades every pick as a flat $10 bet at the odds shown
-  when it first appeared. The breakdown by High/Medium/Low is the honest test of
-  whether the confidence rating means anything. Expect a few hundred picks before
-  it does.
 
 ## How picks are chosen
+
+Every pick is still logged and graded in `docs/data/history.json` as a $10 paper bet,
+so the model's track record can be checked there even though the page doesn't show it.
 
 All the logic is in `pipeline/analyze.py`.
 
