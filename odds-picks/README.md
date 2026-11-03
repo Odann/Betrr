@@ -47,12 +47,12 @@ On a computer, the Q and E keys switch between Picks, Build a bet and My bets.
   shows the payout, the parlay's fair chance of hitting, and its edge. Same-game
   legs are flagged, because sportsbooks price those parlays lower than straight
   multiplication. "Copy" puts the slip on your clipboard to enter at your sportsbook.
-- **My bets**: bets you save from the slip, graded automatically from final scores,
+- **Your bets** (on the Picks tab) and **My bets**: bets you save from the slip, graded automatically from final scores,
   with your record and profit. They're stored in your browser, so each device
   keeps its own list.
 - **Run an update** in the header opens the GitHub page with the "Run workflow"
   button, for when you want fresher odds than the schedule gives you.
-- **How the picks have done** grades every pick as a flat $10 bet at the odds shown
+- **Model track record** grades every pick as a flat $10 bet at the odds shown
   when it first appeared. The breakdown by High/Medium/Low is the honest test of
   whether the confidence rating means anything. Expect a few hundred picks before
   it does.

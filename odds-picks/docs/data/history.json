@@ -2,7 +2,7 @@
  "stake": 10,
  "picks": [
   {
-   "id": "fe9664deb3e21a28b10a3de39adfb82a|away",
+   "id": "fe9664deb3e21a28b10a3de39adfb82a|h2h|away",
    "event_id": "fe9664deb3e21a28b10a3de39adfb82a",
    "sport": "basketball_nba",
    "side": "away",
@@ -28,10 +28,11 @@
    "logged_at": "2026-11-02T06:15:21.487028+00:00",
    "result": "loss",
    "profit": -10,
-   "final_score": "Utah Jazz 97, San Antonio Spurs 119"
+   "final_score": "Utah Jazz 97, San Antonio Spurs 119",
+   "market": "h2h"
   },
   {
-   "id": "9760d8f19f84bfee300a74ceb656c95d|away",
+   "id": "9760d8f19f84bfee300a74ceb656c95d|h2h|away",
    "event_id": "9760d8f19f84bfee300a74ceb656c95d",
    "sport": "americanfootball_nfl",
    "side": "away",
@@ -56,7 +57,8 @@
    "three_way": false,
    "logged_at": "2026-11-02T06:15:21.487028+00:00",
    "result": null,
-   "profit": null
+   "profit": null,
+   "market": "h2h"
   },
   {
    "id": "e354e6a04b1cb9c96e549b863debb92e|h2h|away",
@@ -175,37 +177,6 @@
     {
      "type": "value",
      "text": "2.6% better than the market's fair price"
-    }
-   ],
-   "three_way": false,
-   "logged_at": "2026-11-02T22:07:44.732967+00:00",
-   "result": null,
-   "profit": null
-  },
-  {
-   "id": "9760d8f19f84bfee300a74ceb656c95d|h2h|away",
-   "event_id": "9760d8f19f84bfee300a74ceb656c95d",
-   "sport": "americanfootball_nfl",
-   "market": "h2h",
-   "market_label": "Moneyline",
-   "side": "away",
-   "point": null,
-   "pick": "Tampa Bay Buccaneers",
-   "home_team": "Chicago Bears",
-   "away_team": "Tampa Bay Buccaneers",
-   "start_time_utc": "2026-11-09T01:20:00+00:00",
-   "odds": 235,
-   "sportsbook": "BetUS",
-   "fair_win_prob": 0.3085,
-   "expected_value": 0.0333,
-   "books": 6,
-   "line_movement": null,
-   "confidence": 46,
-   "rating": "Medium",
-   "reasons": [
-    {
-     "type": "value",
-     "text": "3.3% better than the market's fair price"
     }
    ],
    "three_way": false,

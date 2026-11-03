@@ -38,6 +38,23 @@ def save(path, data, indent=1):
     tmp.replace(path)
 
 
+def dedupe_history(picks: list[dict]) -> list[dict]:
+    """
+    Picks logged before spreads and totals were added used ids like
+    "event|away"; newer ones use "event|h2h|away". Bring old ids up to date and
+    keep one entry per pick, preferring a graded one.
+    """
+    kept: dict[str, dict] = {}
+    for p in picks:
+        if p["id"].count("|") == 1:
+            p["market"] = p.get("market") or "h2h"
+            p["id"] = f"{p['event_id']}|{p['market']}|{p['side']}"
+        prev = kept.get(p["id"])
+        if prev is None or (prev.get("result") is None and p.get("result") is not None):
+            kept[p["id"]] = p
+    return list(kept.values())
+
+
 def credits_ok(api: OddsAPI, cost: int) -> bool:
     return api.remaining is None or api.remaining - cost >= config.CREDIT_FLOOR
 
@@ -51,6 +68,7 @@ def run(api: OddsAPI, now: datetime | None = None) -> dict:
         old_picks, old_board = {}, {}
     if history.get("sample"):
         history = {"picks": []}
+    history["picks"] = dedupe_history(history["picks"])
     scores = load(SCORES_FILE, {"finals": {}, "awaiting": {}})
     snapshots = load(SNAPSHOT_FILE, {})
 

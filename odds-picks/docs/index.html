@@ -60,9 +60,18 @@
         </div>
         <div id="grid" class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"></div>
       </section>
+      <section aria-labelledby="yours-heading" class="mb-12">
+        <div class="sec-head mb-2">
+          <h2 id="yours-heading" class="sec-title">Your bets</h2>
+          <span class="sec-rule"></span>
+          <a href="#bets" class="label hover:text-red">See all</a>
+        </div>
+        <p class="text-sm text-rose mb-4">Results from the bets you've saved, graded from final scores.</p>
+        <div id="yours"></div>
+      </section>
       <section aria-labelledby="results-heading">
         <div class="sec-head mb-2">
-          <h2 id="results-heading" class="sec-title">How the picks have done</h2>
+          <h2 id="results-heading" class="sec-title">Model track record</h2>
           <span class="sec-rule"></span>
         </div>
         <p id="results-sub" class="text-sm text-rose mb-4"></p>
@@ -410,6 +419,7 @@ function saveBet() {
   const n = m.parlay ? 1 : slip.legs.length;
   slip.legs = []; saveSlip(); sheetOpen = false;
   renderSlip(); renderBoard(); renderPickButtons();
+  if (view === 'picks') { renderYourBets(); renderResults(); }
   toast(`Saved ${n} bet${n > 1 ? 's' : ''} to My bets`);
 }
 
@@ -588,7 +598,51 @@ function renderPicks() {
   $('more').classList.toggle('hidden', !rest.length);
   $('grid').innerHTML = rest.map(renderCard).join('');
   $('count').textContent = rest.length ? `${rest.length} pick${rest.length > 1 ? 's' : ''}` : '';
+  renderYourBets();
   renderResults();
+}
+
+// ---------- Your bets (summary on the Picks tab) ----------
+const pickKey = p => `${p.event_id}|${p.market || 'h2h'}|${p.side}`;
+
+function renderYourBets() {
+  if (!bets.length) {
+    $('yours').innerHTML = emptyPanel('', "You haven't saved any bets yet. Add picks or prices to your slip and tap Save bet to track how your real bets do.", 'Build a bet');
+    return;
+  }
+  const settled = bets.filter(b => b.result);
+  const s = summarize(settled, b => b.stake);
+  const open = bets.filter(b => !b.result);
+  const openStake = open.reduce((t, b) => t + b.stake, 0);
+  const latest = bets.slice(0, 3);
+  $('yours').innerHTML = `
+    <div class="grid grid-cols-1 items-start gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)]">
+      <div class="hud hud-cyan p-5">
+        <dl class="grid grid-cols-2 gap-4">
+          ${stat('Record', settled.length ? record(s) : '–')}
+          ${stat('Profit', settled.length ? money(s.profit) : '–', settled.length ? tone(s.profit) : 'text-ink')}
+          ${stat('Return', s.n ? signedPct(s.roi) : '–', s.n ? tone(s.roi) : 'text-ink')}
+          ${stat('Open', `${open.length}<span class="font-sans text-base font-normal text-rose"> (${dollars(openStake)})</span>`)}
+        </dl>
+        ${!settled.length ? '<p class="mt-4 text-xs text-rose">Your record fills in once a saved bet\'s games are final.</p>' : ''}
+      </div>
+      <div class="hud">
+        <h3 class="label px-5 pt-4 pb-3">Latest saved bets</h3>
+        <ul>${latest.map(b => {
+          const dec = b.legs.reduce((d, l) => d * toDecimal(l.odds), 1);
+          const title = b.type === 'parlay' ? `${b.legs.length}-leg parlay ${odds(toAmerican(dec))}` : `${b.legs[0].label} ${odds(b.legs[0].odds)}`;
+          const right = b.result ? `<span class="font-hud font-bold text-lg ${tone(b.profit)}">${money(b.profit)}</span>`
+            : `<span class="text-sm"><span class="text-rose">To win</span> ${dollars(b.stake * (dec - 1))}</span>`;
+          return `<li class="px-5 py-3 border-t border-line flex items-center gap-3">
+            ${statusBadge(b.result)}
+            <div class="min-w-0 flex-1">
+              <p class="font-semibold truncate">${esc(title)}</p>
+              <p class="truncate text-xs text-rose">${dollars(b.stake)} stake, saved ${shortDate(b.created)}</p>
+            </div>
+            <span class="shrink-0">${right}</span></li>`;
+        }).join('')}</ul>
+      </div>
+    </div>`;
 }
 
 // ---------- Results (model picks) ----------
@@ -616,7 +670,7 @@ function renderResults() {
   const graded = all.filter(p => ['win', 'loss', 'push'].includes(p.result));
   const pending = all.filter(p => p.result === null).length;
   const stake = history?.stake || 10;
-  $('results-sub').textContent = `Each pick counted as a $${stake} bet at the odds shown when it first appeared.`
+  $('results-sub').textContent = `Paper results, not bets you placed: every pick the model makes is counted as a $${stake} bet at the odds shown when it first appeared.`
     + (pending ? ` ${pending} pick${pending > 1 ? 's' : ''} waiting for a final score.` : '');
   if (!graded.length) {
     $('results').innerHTML = emptyPanel('', 'No finished picks yet. Results appear at the first update after a game ends.');
@@ -625,6 +679,7 @@ function renderResults() {
   const t = summarize(graded, () => stake);
   const tiers = ['High', 'Medium', 'Low'].map(r => [r, summarize(graded.filter(p => p.rating === r), () => stake)]);
   const recent = graded.slice().sort((a, b) => b.start_time_utc.localeCompare(a.start_time_utc)).slice(0, RECENT_RESULTS);
+  const betKeys = new Set(bets.flatMap(b => b.legs.map(l => `${l.event_id}|${l.market || 'h2h'}|${l.side}`)));
   $('results').innerHTML = `
     <div class="grid grid-cols-1 items-start gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)]">
       <div class="hud p-5">
@@ -647,7 +702,8 @@ function renderResults() {
         <ul>${recent.map(p => `<li class="px-5 py-3 border-t border-line flex items-center gap-3">
             ${statusBadge(p.result)}
             <div class="min-w-0 flex-1">
-              <p class="flex gap-1.5 min-w-0"><span class="font-semibold truncate">${esc(p.pick)}</span><span class="shrink-0 text-rose">${odds(p.odds)}</span></p>
+              <p class="flex items-center gap-1.5 min-w-0"><span class="font-semibold truncate">${esc(p.pick)}</span><span class="shrink-0 text-rose">${odds(p.odds)}</span>
+                ${betKeys.has(pickKey(p)) ? '<span class="tag shrink-0 border border-cyan text-cyan">You bet this</span>' : ''}</p>
               <p class="truncate text-xs text-rose">${esc(sportName(p.sport))} ${esc(MARKET_NAMES[p.market || 'h2h'])}, ${shortDate(p.start_time_utc)}: ${esc(p.final_score || '')}</p>
             </div>
             <span class="shrink-0 font-hud font-bold text-lg ${tone(p.profit)}">${money(p.profit)}</span></li>`).join('')}</ul>
