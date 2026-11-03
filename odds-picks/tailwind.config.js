@@ -6,16 +6,20 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        boards: '#0E2A47',   // deep navy: header, headline type
-        ice: '#F3F7FA',      // page background
-        blueline: '#1F5FA8', // primary accent, high confidence, wins
-        frost: '#6B8CAE',    // medium confidence, secondary text
-        slush: '#C9D5E1',    // borders, empty bar track
-        goal: '#C8102E',     // warnings and losses only
+        void: '#0B0709',   // page background
+        panel: '#140A0D',  // panels
+        raise: '#1E0F13',  // raised surfaces, price slots
+        line: '#4E2026',   // borders, empty bar segments
+        red: '#FF5D56',    // interface chrome: headings, tabs, labels
+        rose: '#C97A72',   // secondary text
+        ink: '#EFE2CF',    // main content text
+        cyan: '#4FF0F5',   // selected, wins, positive edge, high confidence
+        gold: '#F3E62F',   // featured pick, primary button, medium confidence
+        alert: '#FF3D5A',  // losses and warnings
       },
       fontFamily: {
-        sans: ['Barlow', 'system-ui', 'sans-serif'],
-        cond: ['"Barlow Condensed"', 'Barlow', 'sans-serif'],
+        sans: ['"Chakra Petch"', 'system-ui', 'sans-serif'],
+        hud: ['Rajdhani', '"Chakra Petch"', 'sans-serif'],
       },
     },
   },

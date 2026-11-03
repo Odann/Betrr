@@ -36,11 +36,13 @@ the first run finishes.
 
 ## Using it
 
+On a computer, the Q and E keys switch between Picks, Build a bet and My bets.
+
 - **Picks**: the featured pick is the highest-confidence one that hasn't started.
   Games drop off when they start. "Add to slip" puts a pick in your bet slip.
 - **Build a bet**: every upcoming game with its spread, total and moneyline, at the
   best price across the sportsbooks checked. Tap prices to add them to the slip.
-  Blue percentages mark prices that beat the market's fair odds. With two or more
+  Cyan percentages mark prices that beat the market's fair odds. With two or more
   picks you can switch between one parlay and separate singles, and the slip
   shows the payout, the parlay's fair chance of hitting, and its edge. Same-game
   legs are flagged, because sportsbooks price those parlays lower than straight
