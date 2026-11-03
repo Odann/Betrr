@@ -1,13 +1,13 @@
 {
- "generated_at": "2026-11-03T02:13:45.187074+00:00",
+ "generated_at": "2026-11-03T14:46:42.373261+00:00",
  "sports_checked": [
   "icehockey_nhl",
   "basketball_nba",
   "americanfootball_nfl"
  ],
  "off_season": [],
- "credits_remaining": 479,
- "credits_used_this_run": 9,
+ "credits_remaining": 464,
+ "credits_used_this_run": 15,
  "notes": [],
  "stake": 10,
  "picks": [
@@ -23,18 +23,18 @@
    "home_team": "San Francisco 49ers",
    "away_team": "Las Vegas Raiders",
    "start_time_utc": "2026-11-08T21:05:00+00:00",
-   "odds": 440,
+   "odds": 450,
    "sportsbook": "FanDuel",
-   "fair_win_prob": 0.1965,
-   "expected_value": 0.0613,
+   "fair_win_prob": 0.1955,
+   "expected_value": 0.075,
    "books": 9,
-   "line_movement": -0.0033,
-   "confidence": 69,
-   "rating": "Medium",
+   "line_movement": -0.001,
+   "confidence": 78,
+   "rating": "High",
    "reasons": [
     {
      "type": "value",
-     "text": "6.1% better than the market's fair price"
+     "text": "7.5% better than the market's fair price"
     }
    ],
    "three_way": false
@@ -51,46 +51,46 @@
    "home_team": "Kansas City Chiefs",
    "away_team": "New York Jets",
    "start_time_utc": "2026-11-08T18:00:00+00:00",
-   "odds": 400,
+   "odds": 410,
    "sportsbook": "FanDuel",
-   "fair_win_prob": 0.211,
-   "expected_value": 0.055,
+   "fair_win_prob": 0.21,
+   "expected_value": 0.071,
    "books": 9,
-   "line_movement": -0.0017,
-   "confidence": 66,
-   "rating": "Medium",
+   "line_movement": -0.001,
+   "confidence": 75,
+   "rating": "High",
    "reasons": [
     {
      "type": "value",
-     "text": "5.5% better than the market's fair price"
+     "text": "7.1% better than the market's fair price"
     }
    ],
    "three_way": false
   },
   {
-   "id": "c75744790b7acf6260c78ba5e739c0e5|h2h|home",
-   "event_id": "c75744790b7acf6260c78ba5e739c0e5",
+   "id": "240e23b02b1e3fef655d04a286b5a623|h2h|away",
+   "event_id": "240e23b02b1e3fef655d04a286b5a623",
    "sport": "americanfootball_nfl",
    "market": "h2h",
    "market_label": "Moneyline",
-   "side": "home",
+   "side": "away",
    "point": null,
-   "pick": "Baltimore Ravens",
-   "home_team": "Baltimore Ravens",
-   "away_team": "Jacksonville Jaguars",
-   "start_time_utc": "2026-11-06T01:15:00+00:00",
-   "odds": 400,
-   "sportsbook": "BetMGM",
-   "fair_win_prob": 0.2058,
-   "expected_value": 0.029,
+   "pick": "Arizona Cardinals",
+   "home_team": "Seattle Seahawks",
+   "away_team": "Arizona Cardinals",
+   "start_time_utc": "2026-11-08T21:25:00+00:00",
+   "odds": 500,
+   "sportsbook": "FanDuel",
+   "fair_win_prob": 0.1712,
+   "expected_value": 0.0271,
    "books": 9,
-   "line_movement": -0.0126,
+   "line_movement": null,
    "confidence": 50,
    "rating": "Medium",
    "reasons": [
     {
      "type": "value",
-     "text": "2.9% better than the market's fair price"
+     "text": "2.7% better than the market's fair price"
     }
    ],
    "three_way": false

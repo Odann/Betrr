@@ -26,8 +26,9 @@
    ],
    "three_way": false,
    "logged_at": "2026-11-02T06:15:21.487028+00:00",
-   "result": null,
-   "profit": null
+   "result": "loss",
+   "profit": -10,
+   "final_score": "Utah Jazz 97, San Antonio Spurs 119"
   },
   {
    "id": "9760d8f19f84bfee300a74ceb656c95d|away",
@@ -240,6 +241,37 @@
    ],
    "three_way": false,
    "logged_at": "2026-11-02T22:07:44.732967+00:00",
+   "result": null,
+   "profit": null
+  },
+  {
+   "id": "240e23b02b1e3fef655d04a286b5a623|h2h|away",
+   "event_id": "240e23b02b1e3fef655d04a286b5a623",
+   "sport": "americanfootball_nfl",
+   "market": "h2h",
+   "market_label": "Moneyline",
+   "side": "away",
+   "point": null,
+   "pick": "Arizona Cardinals",
+   "home_team": "Seattle Seahawks",
+   "away_team": "Arizona Cardinals",
+   "start_time_utc": "2026-11-08T21:25:00+00:00",
+   "odds": 500,
+   "sportsbook": "FanDuel",
+   "fair_win_prob": 0.1712,
+   "expected_value": 0.0271,
+   "books": 9,
+   "line_movement": null,
+   "confidence": 50,
+   "rating": "Medium",
+   "reasons": [
+    {
+     "type": "value",
+     "text": "2.7% better than the market's fair price"
+    }
+   ],
+   "three_way": false,
+   "logged_at": "2026-11-03T14:46:42.373261+00:00",
    "result": null,
    "profit": null
   }
