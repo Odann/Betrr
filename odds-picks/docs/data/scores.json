@@ -609,6 +609,114 @@
   "6b25f3932db93d4c5ad7658def2645bf": {
    "sport": "basketball_nba",
    "start_time_utc": "2026-11-05T02:40:00+00:00"
+  },
+  "05200821a78e4f6db8131cff1652550f": {
+   "sport": "basketball_nba",
+   "start_time_utc": "2026-11-05T00:10:00+00:00"
+  },
+  "1a1782b9fde64acd952ea9fd3aff7d83": {
+   "sport": "icehockey_nhl",
+   "start_time_utc": "2026-11-05T00:40:00+00:00"
+  },
+  "bc22bdc8d7cca6b3695672a8ebf84456": {
+   "sport": "icehockey_nhl",
+   "start_time_utc": "2026-11-05T00:40:00+00:00"
+  },
+  "1cb12166c3eda270d40cc65b9b34459a": {
+   "sport": "basketball_nba",
+   "start_time_utc": "2026-11-05T00:40:00+00:00"
+  },
+  "87d2b814c3f0d3691e9cebbf2de76295": {
+   "sport": "basketball_nba",
+   "start_time_utc": "2026-11-05T00:40:00+00:00"
+  },
+  "3469f522ffcacb13f88e6cd297adc110": {
+   "sport": "basketball_nba",
+   "start_time_utc": "2026-11-05T01:10:00+00:00"
+  },
+  "0b5966b7b96eb844618eea8f215a0c71": {
+   "sport": "basketball_nba",
+   "start_time_utc": "2026-11-05T01:10:00+00:00"
+  },
+  "50bdc20ea9ea3c88d4bfa261b9b2307e": {
+   "sport": "basketball_nba",
+   "start_time_utc": "2026-11-05T02:00:00+00:00"
+  },
+  "d3d91c40111aca301d41c9cdb9d64608": {
+   "sport": "basketball_nba",
+   "start_time_utc": "2026-11-05T02:00:00+00:00"
+  },
+  "7cc07a9c5a886203f238a3fe0b83dfd1": {
+   "sport": "icehockey_nhl",
+   "start_time_utc": "2026-11-05T03:10:00+00:00"
+  },
+  "a3c2f39dce2dbf9e8cb78acce24cd379": {
+   "sport": "icehockey_nhl",
+   "start_time_utc": "2026-11-05T03:10:00+00:00"
+  },
+  "29988f1011d7738962e13e0a0beb693f": {
+   "sport": "basketball_nba",
+   "start_time_utc": "2026-11-05T03:10:00+00:00"
+  },
+  "72c786e70ad9360fdc41e4c2a50fa788": {
+   "sport": "basketball_nba",
+   "start_time_utc": "2026-11-05T03:40:00+00:00"
+  },
+  "74d39e19225caf211ad2c8eb4110179f": {
+   "sport": "americanfootball_nfl",
+   "start_time_utc": "2026-11-13T01:15:00+00:00"
+  },
+  "b8c10fdf1e0ac4e13deee7f7c0af0b0b": {
+   "sport": "americanfootball_nfl",
+   "start_time_utc": "2026-11-15T14:30:00+00:00"
+  },
+  "3c71d515b726f1096aabb435badb83fd": {
+   "sport": "americanfootball_nfl",
+   "start_time_utc": "2026-11-15T18:00:00+00:00"
+  },
+  "1057d50949844ddf483da9c8c20354be": {
+   "sport": "americanfootball_nfl",
+   "start_time_utc": "2026-11-15T18:00:00+00:00"
+  },
+  "e5aa20e1364dd639f042af1c2281bbe2": {
+   "sport": "americanfootball_nfl",
+   "start_time_utc": "2026-11-15T18:00:00+00:00"
+  },
+  "be0e03cc42fbc9b6962467b22c7bf9dd": {
+   "sport": "americanfootball_nfl",
+   "start_time_utc": "2026-11-15T18:00:00+00:00"
+  },
+  "5d8d85473b87f772a979ecf294acab94": {
+   "sport": "americanfootball_nfl",
+   "start_time_utc": "2026-11-15T18:00:00+00:00"
+  },
+  "b5700b4d938fd94429f60d4622cc9c0a": {
+   "sport": "americanfootball_nfl",
+   "start_time_utc": "2026-11-15T18:00:00+00:00"
+  },
+  "28800df7e768ecec14f116454d560f9b": {
+   "sport": "americanfootball_nfl",
+   "start_time_utc": "2026-11-15T18:00:00+00:00"
+  },
+  "6c932a965110f3f89ec4a5f1a6ac256e": {
+   "sport": "americanfootball_nfl",
+   "start_time_utc": "2026-11-15T21:05:00+00:00"
+  },
+  "6079a5cbabf99b265a17edfc92a1da60": {
+   "sport": "americanfootball_nfl",
+   "start_time_utc": "2026-11-15T21:05:00+00:00"
+  },
+  "7627192fd89b05120ab6c712aa23fd81": {
+   "sport": "americanfootball_nfl",
+   "start_time_utc": "2026-11-15T21:25:00+00:00"
+  },
+  "48e497c230e6c9afcb3b600091d28e17": {
+   "sport": "americanfootball_nfl",
+   "start_time_utc": "2026-11-16T01:20:00+00:00"
+  },
+  "35e3bdff558b5d1506251e814986f164": {
+   "sport": "americanfootball_nfl",
+   "start_time_utc": "2026-11-17T01:15:00+00:00"
   }
  }
 }

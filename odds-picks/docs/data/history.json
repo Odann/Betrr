@@ -245,6 +245,99 @@
    "logged_at": "2026-11-03T14:46:42.373261+00:00",
    "result": null,
    "profit": null
+  },
+  {
+   "id": "6b25f3932db93d4c5ad7658def2645bf|h2h|away",
+   "event_id": "6b25f3932db93d4c5ad7658def2645bf",
+   "sport": "basketball_nba",
+   "market": "h2h",
+   "market_label": "Moneyline",
+   "side": "away",
+   "point": null,
+   "pick": "Dallas Mavericks",
+   "home_team": "San Antonio Spurs",
+   "away_team": "Dallas Mavericks",
+   "start_time_utc": "2026-11-05T02:30:00+00:00",
+   "odds": 450,
+   "sportsbook": "Bovada",
+   "fair_win_prob": 0.1904,
+   "expected_value": 0.0473,
+   "books": 6,
+   "line_movement": 0.0216,
+   "confidence": 56,
+   "rating": "Medium",
+   "reasons": [
+    {
+     "type": "value",
+     "text": "4.7% better than the market's fair price"
+    }
+   ],
+   "three_way": false,
+   "logged_at": "2026-11-04T00:34:46.302211+00:00",
+   "result": null,
+   "profit": null
+  },
+  {
+   "id": "29988f1011d7738962e13e0a0beb693f|h2h|home",
+   "event_id": "29988f1011d7738962e13e0a0beb693f",
+   "sport": "basketball_nba",
+   "market": "h2h",
+   "market_label": "Moneyline",
+   "side": "home",
+   "point": null,
+   "pick": "Sacramento Kings",
+   "home_team": "Sacramento Kings",
+   "away_team": "Los Angeles Lakers",
+   "start_time_utc": "2026-11-05T03:10:00+00:00",
+   "odds": 460,
+   "sportsbook": "Bovada",
+   "fair_win_prob": 0.1874,
+   "expected_value": 0.0495,
+   "books": 5,
+   "line_movement": null,
+   "confidence": 54,
+   "rating": "Medium",
+   "reasons": [
+    {
+     "type": "value",
+     "text": "5.0% better than the market's fair price"
+    }
+   ],
+   "three_way": false,
+   "logged_at": "2026-11-04T00:34:46.302211+00:00",
+   "result": null,
+   "profit": null
+  },
+  {
+   "id": "1cb12166c3eda270d40cc65b9b34459a|h2h|away",
+   "event_id": "1cb12166c3eda270d40cc65b9b34459a",
+   "sport": "basketball_nba",
+   "market": "h2h",
+   "market_label": "Moneyline",
+   "side": "away",
+   "point": null,
+   "pick": "Milwaukee Bucks",
+   "home_team": "Boston Celtics",
+   "away_team": "Milwaukee Bucks",
+   "start_time_utc": "2026-11-05T00:40:00+00:00",
+   "odds": 430,
+   "sportsbook": "Bovada",
+   "fair_win_prob": 0.1932,
+   "expected_value": 0.024,
+   "books": 5,
+   "line_movement": null,
+   "confidence": 40,
+   "rating": "Low",
+   "reasons": [
+    {
+     "type": "value",
+     "text": "2.4% better than the market's fair price"
+    }
+   ],
+   "three_way": false,
+   "logged_at": "2026-11-04T00:34:46.302211+00:00",
+   "result": null,
+   "profit": null
   }
  ]
 }
