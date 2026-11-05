@@ -1,16 +1,48 @@
 {
- "generated_at": "2026-11-04T00:34:46.302211+00:00",
+ "generated_at": "2026-11-05T00:51:59.451526+00:00",
  "sports_checked": [
   "icehockey_nhl",
   "basketball_nba",
   "americanfootball_nfl"
  ],
  "off_season": [],
- "credits_remaining": 455,
- "credits_used_this_run": 9,
+ "credits_remaining": 444,
+ "credits_used_this_run": 11,
  "notes": [],
  "stake": 10,
  "picks": [
+  {
+   "id": "240e23b02b1e3fef655d04a286b5a623|h2h|away",
+   "event_id": "240e23b02b1e3fef655d04a286b5a623",
+   "sport": "americanfootball_nfl",
+   "market": "h2h",
+   "market_label": "Moneyline",
+   "side": "away",
+   "point": null,
+   "pick": "Arizona Cardinals",
+   "home_team": "Seattle Seahawks",
+   "away_team": "Arizona Cardinals",
+   "start_time_utc": "2026-11-08T21:25:00+00:00",
+   "odds": 350,
+   "sportsbook": "DraftKings",
+   "fair_win_prob": 0.2289,
+   "expected_value": 0.0301,
+   "books": 9,
+   "line_movement": 0.0649,
+   "confidence": 66,
+   "rating": "Medium",
+   "reasons": [
+    {
+     "type": "value",
+     "text": "3.0% better than the market's fair price"
+    },
+    {
+     "type": "move",
+     "text": "Fair chance up 6.5% since the last update"
+    }
+   ],
+   "three_way": false
+  },
   {
    "id": "e354e6a04b1cb9c96e549b863debb92e|h2h|away",
    "event_id": "e354e6a04b1cb9c96e549b863debb92e",
@@ -23,41 +55,69 @@
    "home_team": "Kansas City Chiefs",
    "away_team": "New York Jets",
    "start_time_utc": "2026-11-08T18:00:00+00:00",
-   "odds": 430,
-   "sportsbook": "FanDuel",
-   "fair_win_prob": 0.2011,
-   "expected_value": 0.0656,
+   "odds": 440,
+   "sportsbook": "DraftKings",
+   "fair_win_prob": 0.195,
+   "expected_value": 0.0532,
    "books": 9,
-   "line_movement": -0.0089,
-   "confidence": 73,
-   "rating": "High",
+   "line_movement": -0.0061,
+   "confidence": 65,
+   "rating": "Medium",
    "reasons": [
     {
      "type": "value",
-     "text": "6.6% better than the market's fair price"
+     "text": "5.3% better than the market's fair price"
     }
    ],
    "three_way": false
   },
   {
-   "id": "6b25f3932db93d4c5ad7658def2645bf|h2h|away",
-   "event_id": "6b25f3932db93d4c5ad7658def2645bf",
-   "sport": "basketball_nba",
+   "id": "fc2cccfb47dffb4677b85d247c768ae9|h2h|away",
+   "event_id": "fc2cccfb47dffb4677b85d247c768ae9",
+   "sport": "icehockey_nhl",
    "market": "h2h",
    "market_label": "Moneyline",
    "side": "away",
    "point": null,
-   "pick": "Dallas Mavericks",
-   "home_team": "San Antonio Spurs",
-   "away_team": "Dallas Mavericks",
-   "start_time_utc": "2026-11-05T02:30:00+00:00",
-   "odds": 450,
-   "sportsbook": "Bovada",
-   "fair_win_prob": 0.1904,
-   "expected_value": 0.0473,
-   "books": 6,
-   "line_movement": 0.0216,
-   "confidence": 56,
+   "pick": "Chicago Blackhawks",
+   "home_team": "Tampa Bay Lightning",
+   "away_team": "Chicago Blackhawks",
+   "start_time_utc": "2026-11-06T00:10:00+00:00",
+   "odds": 350,
+   "sportsbook": "BetRivers",
+   "fair_win_prob": 0.2283,
+   "expected_value": 0.0271,
+   "books": 9,
+   "line_movement": null,
+   "confidence": 49,
+   "rating": "Medium",
+   "reasons": [
+    {
+     "type": "value",
+     "text": "2.7% better than the market's fair price"
+    }
+   ],
+   "three_way": false
+  },
+  {
+   "id": "28800df7e768ecec14f116454d560f9b|h2h|home",
+   "event_id": "28800df7e768ecec14f116454d560f9b",
+   "sport": "americanfootball_nfl",
+   "market": "h2h",
+   "market_label": "Moneyline",
+   "side": "home",
+   "point": null,
+   "pick": "Tennessee Titans",
+   "home_team": "Tennessee Titans",
+   "away_team": "Jacksonville Jaguars",
+   "start_time_utc": "2026-11-15T18:00:00+00:00",
+   "odds": 430,
+   "sportsbook": "FanDuel",
+   "fair_win_prob": 0.1975,
+   "expected_value": 0.0468,
+   "books": 3,
+   "line_movement": 0.0005,
+   "confidence": 47,
    "rating": "Medium",
    "reasons": [
     {
@@ -68,85 +128,57 @@
    "three_way": false
   },
   {
-   "id": "44d8c37868b700e90f816db7c5df5cdd|h2h|home",
-   "event_id": "44d8c37868b700e90f816db7c5df5cdd",
+   "id": "fc2cccfb47dffb4677b85d247c768ae9|spreads|away",
+   "event_id": "fc2cccfb47dffb4677b85d247c768ae9",
+   "sport": "icehockey_nhl",
+   "market": "spreads",
+   "market_label": "Spread",
+   "side": "away",
+   "point": 1.5,
+   "pick": "Chicago Blackhawks +1.5",
+   "home_team": "Tampa Bay Lightning",
+   "away_team": "Chicago Blackhawks",
+   "start_time_utc": "2026-11-06T00:10:00+00:00",
+   "odds": 158,
+   "sportsbook": "Bovada",
+   "fair_win_prob": 0.3976,
+   "expected_value": 0.0257,
+   "books": 7,
+   "line_movement": null,
+   "confidence": 44,
+   "rating": "Low",
+   "reasons": [
+    {
+     "type": "value",
+     "text": "2.6% better than the market's fair price"
+    }
+   ],
+   "three_way": false
+  },
+  {
+   "id": "1057d50949844ddf483da9c8c20354be|h2h|home",
+   "event_id": "1057d50949844ddf483da9c8c20354be",
    "sport": "americanfootball_nfl",
    "market": "h2h",
    "market_label": "Moneyline",
    "side": "home",
    "point": null,
-   "pick": "Miami Dolphins",
-   "home_team": "Miami Dolphins",
-   "away_team": "Detroit Lions",
-   "start_time_utc": "2026-11-08T18:00:00+00:00",
-   "odds": 295,
-   "sportsbook": "DraftKings",
-   "fair_win_prob": 0.2633,
-   "expected_value": 0.0399,
-   "books": 9,
-   "line_movement": -0.0002,
-   "confidence": 56,
-   "rating": "Medium",
-   "reasons": [
-    {
-     "type": "value",
-     "text": "4.0% better than the market's fair price"
-    }
-   ],
-   "three_way": false
-  },
-  {
-   "id": "29988f1011d7738962e13e0a0beb693f|h2h|home",
-   "event_id": "29988f1011d7738962e13e0a0beb693f",
-   "sport": "basketball_nba",
-   "market": "h2h",
-   "market_label": "Moneyline",
-   "side": "home",
-   "point": null,
-   "pick": "Sacramento Kings",
-   "home_team": "Sacramento Kings",
-   "away_team": "Los Angeles Lakers",
-   "start_time_utc": "2026-11-05T03:10:00+00:00",
-   "odds": 460,
-   "sportsbook": "Bovada",
-   "fair_win_prob": 0.1874,
-   "expected_value": 0.0495,
-   "books": 5,
-   "line_movement": null,
-   "confidence": 54,
-   "rating": "Medium",
-   "reasons": [
-    {
-     "type": "value",
-     "text": "5.0% better than the market's fair price"
-    }
-   ],
-   "three_way": false
-  },
-  {
-   "id": "1cb12166c3eda270d40cc65b9b34459a|h2h|away",
-   "event_id": "1cb12166c3eda270d40cc65b9b34459a",
-   "sport": "basketball_nba",
-   "market": "h2h",
-   "market_label": "Moneyline",
-   "side": "away",
-   "point": null,
-   "pick": "Milwaukee Bucks",
-   "home_team": "Boston Celtics",
-   "away_team": "Milwaukee Bucks",
-   "start_time_utc": "2026-11-05T00:40:00+00:00",
-   "odds": 430,
-   "sportsbook": "Bovada",
-   "fair_win_prob": 0.1932,
-   "expected_value": 0.024,
-   "books": 5,
-   "line_movement": null,
-   "confidence": 40,
+   "pick": "New York Jets",
+   "home_team": "New York Jets",
+   "away_team": "Buffalo Bills",
+   "start_time_utc": "2026-11-15T18:00:00+00:00",
+   "odds": 380,
+   "sportsbook": "FanDuel",
+   "fair_win_prob": 0.2136,
+   "expected_value": 0.0251,
+   "books": 3,
+   "line_movement": -0.0009,
+   "confidence": 34,
    "rating": "Low",
    "reasons": [
     {
      "type": "value",
-     "text": "2.4% better than the market's fair price"
+     "text": "2.5% better than the market's fair price"
     }
    ],
    "three_way": false
