@@ -275,8 +275,9 @@
    ],
    "three_way": false,
    "logged_at": "2026-11-04T00:34:46.302211+00:00",
-   "result": null,
-   "profit": null
+   "result": "loss",
+   "profit": -10,
+   "final_score": "Dallas Mavericks 111, San Antonio Spurs 112"
   },
   {
    "id": "29988f1011d7738962e13e0a0beb693f|h2h|home",
@@ -306,8 +307,9 @@
    ],
    "three_way": false,
    "logged_at": "2026-11-04T00:34:46.302211+00:00",
-   "result": null,
-   "profit": null
+   "result": "loss",
+   "profit": -10,
+   "final_score": "Los Angeles Lakers 116, Sacramento Kings 103"
   },
   {
    "id": "1cb12166c3eda270d40cc65b9b34459a|h2h|away",
@@ -337,8 +339,9 @@
    ],
    "three_way": false,
    "logged_at": "2026-11-04T00:34:46.302211+00:00",
-   "result": null,
-   "profit": null
+   "result": "loss",
+   "profit": -10,
+   "final_score": "Milwaukee Bucks 102, Boston Celtics 109"
   },
   {
    "id": "fc2cccfb47dffb4677b85d247c768ae9|h2h|away",
@@ -461,6 +464,130 @@
    ],
    "three_way": false,
    "logged_at": "2026-11-05T00:51:59.451526+00:00",
+   "result": null,
+   "profit": null
+  },
+  {
+   "id": "d24eb5492983d6e28be3b96df396fa12|h2h|home",
+   "event_id": "d24eb5492983d6e28be3b96df396fa12",
+   "sport": "basketball_nba",
+   "market": "h2h",
+   "market_label": "Moneyline",
+   "side": "home",
+   "point": null,
+   "pick": "Sacramento Kings",
+   "home_team": "Sacramento Kings",
+   "away_team": "San Antonio Spurs",
+   "start_time_utc": "2026-11-07T03:10:00+00:00",
+   "odds": 730,
+   "sportsbook": "FanDuel",
+   "fair_win_prob": 0.129,
+   "expected_value": 0.0705,
+   "books": 3,
+   "line_movement": null,
+   "confidence": 63,
+   "rating": "Medium",
+   "reasons": [
+    {
+     "type": "value",
+     "text": "7.0% better than the market's fair price"
+    }
+   ],
+   "three_way": false,
+   "logged_at": "2026-11-06T00:56:56.788078+00:00",
+   "result": null,
+   "profit": null
+  },
+  {
+   "id": "5e4708fadda49a3c06fd7ac50414020e|h2h|home",
+   "event_id": "5e4708fadda49a3c06fd7ac50414020e",
+   "sport": "basketball_nba",
+   "market": "h2h",
+   "market_label": "Moneyline",
+   "side": "home",
+   "point": null,
+   "pick": "New Orleans Pelicans",
+   "home_team": "New Orleans Pelicans",
+   "away_team": "Minnesota Timberwolves",
+   "start_time_utc": "2026-11-07T01:10:00+00:00",
+   "odds": 160,
+   "sportsbook": "Bovada",
+   "fair_win_prob": 0.396,
+   "expected_value": 0.0297,
+   "books": 4,
+   "line_movement": null,
+   "confidence": 38,
+   "rating": "Low",
+   "reasons": [
+    {
+     "type": "value",
+     "text": "3.0% better than the market's fair price"
+    }
+   ],
+   "three_way": false,
+   "logged_at": "2026-11-06T00:56:56.788078+00:00",
+   "result": null,
+   "profit": null
+  },
+  {
+   "id": "62a92e31b546d31ba57caf792815bf65|h2h|away",
+   "event_id": "62a92e31b546d31ba57caf792815bf65",
+   "sport": "basketball_nba",
+   "market": "h2h",
+   "market_label": "Moneyline",
+   "side": "away",
+   "point": null,
+   "pick": "Utah Jazz",
+   "home_team": "Dallas Mavericks",
+   "away_team": "Utah Jazz",
+   "start_time_utc": "2026-11-07T01:10:00+00:00",
+   "odds": 230,
+   "sportsbook": "Bovada",
+   "fair_win_prob": 0.3094,
+   "expected_value": 0.0211,
+   "books": 4,
+   "line_movement": null,
+   "confidence": 34,
+   "rating": "Low",
+   "reasons": [
+    {
+     "type": "value",
+     "text": "2.1% better than the market's fair price"
+    }
+   ],
+   "three_way": false,
+   "logged_at": "2026-11-06T00:56:56.788078+00:00",
+   "result": null,
+   "profit": null
+  },
+  {
+   "id": "1c60a090180de530cfe273a5d6a381e6|h2h|home",
+   "event_id": "1c60a090180de530cfe273a5d6a381e6",
+   "sport": "basketball_nba",
+   "market": "h2h",
+   "market_label": "Moneyline",
+   "side": "home",
+   "point": null,
+   "pick": "Milwaukee Bucks",
+   "home_team": "Milwaukee Bucks",
+   "away_team": "Toronto Raptors",
+   "start_time_utc": "2026-11-07T01:10:00+00:00",
+   "odds": 270,
+   "sportsbook": "FanDuel",
+   "fair_win_prob": 0.2758,
+   "expected_value": 0.0204,
+   "books": 4,
+   "line_movement": null,
+   "confidence": 32,
+   "rating": "Low",
+   "reasons": [
+    {
+     "type": "value",
+     "text": "2.0% better than the market's fair price"
+    }
+   ],
+   "three_way": false,
+   "logged_at": "2026-11-06T00:56:56.788078+00:00",
    "result": null,
    "profit": null
   }
