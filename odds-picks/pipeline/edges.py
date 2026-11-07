@@ -17,7 +17,7 @@ import math
 from .analyze import american_to_decimal, fmt_point
 
 STAKE = 100                  # stakes and payouts are shown for $100 on each side
-MAX_MIDDLE_COST = 12         # skip middles that lose more than this on $200 if they miss
+MAX_MIDDLE_COST = 20         # never show a middle that loses more than this on $200 if it misses
 
 # Rough chance that a game lands on one exact number, by sport and market.
 # These are typical-season figures: NBA and NFL totals spread thinly across
