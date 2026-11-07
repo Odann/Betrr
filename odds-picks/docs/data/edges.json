@@ -1,0 +1,710 @@
+{
+ "generated_at": "2026-11-07T04:13:17.502801+00:00",
+ "arbs": [],
+ "middles": [
+  {
+   "event_id": "e76682ca6c25a37b0a53cec226b91aab",
+   "sport": "basketball_nba",
+   "home_team": "Indiana Pacers",
+   "away_team": "Denver Nuggets",
+   "start_time_utc": "2026-11-07T22:10:00+00:00",
+   "kind": "middle",
+   "market": "totals",
+   "window": [
+    228.5,
+    229.5
+   ],
+   "if_hits": 180.19,
+   "if_misses": -10.71,
+   "total_stake": 200,
+   "legs": [
+    {
+     "book": "BetRivers",
+     "label": "Over 228.5",
+     "price": -112,
+     "point": 228.5,
+     "stake": 100
+    },
+    {
+     "book": "DraftKings",
+     "label": "Under 229.5",
+     "price": -110,
+     "point": 229.5,
+     "stake": 100
+    }
+   ]
+  },
+  {
+   "event_id": "ee45341df802cfb42dd48f1ad60c8b81",
+   "sport": "basketball_nba",
+   "home_team": "Atlanta Hawks",
+   "away_team": "Brooklyn Nets",
+   "start_time_utc": "2026-11-08T00:40:00+00:00",
+   "kind": "middle",
+   "market": "totals",
+   "window": [
+    223.5,
+    224.5
+   ],
+   "if_hits": 186.15,
+   "if_misses": -9.09,
+   "total_stake": 200,
+   "legs": [
+    {
+     "book": "BetRivers",
+     "label": "Over 223.5",
+     "price": -110,
+     "point": 223.5,
+     "stake": 100
+    },
+    {
+     "book": "FanDuel",
+     "label": "Under 224.5",
+     "price": -105,
+     "point": 224.5,
+     "stake": 100
+    }
+   ]
+  },
+  {
+   "event_id": "39099dc03208d0771daaab5f7993478a",
+   "sport": "basketball_nba",
+   "home_team": "Golden State Warriors",
+   "away_team": "Orlando Magic",
+   "start_time_utc": "2026-11-08T01:40:00+00:00",
+   "kind": "middle",
+   "market": "totals",
+   "window": [
+    220.5,
+    221.5
+   ],
+   "if_hits": 181.82,
+   "if_misses": -9.09,
+   "total_stake": 200,
+   "legs": [
+    {
+     "book": "MyBookie.ag",
+     "label": "Over 220.5",
+     "price": -110,
+     "point": 220.5,
+     "stake": 100
+    },
+    {
+     "book": "BetOnline.ag",
+     "label": "Under 221.5",
+     "price": -110,
+     "point": 221.5,
+     "stake": 100
+    }
+   ]
+  },
+  {
+   "event_id": "af8d920f175d73f12933c64ae296573f",
+   "sport": "basketball_nba",
+   "home_team": "Phoenix Suns",
+   "away_team": "Houston Rockets",
+   "start_time_utc": "2026-11-08T02:10:00+00:00",
+   "kind": "middle",
+   "market": "totals",
+   "window": [
+    221.5,
+    222.5
+   ],
+   "if_hits": 181.82,
+   "if_misses": -9.09,
+   "total_stake": 200,
+   "legs": [
+    {
+     "book": "FanDuel",
+     "label": "Over 221.5",
+     "price": -110,
+     "point": 221.5,
+     "stake": 100
+    },
+    {
+     "book": "DraftKings",
+     "label": "Under 222.5",
+     "price": -110,
+     "point": 222.5,
+     "stake": 100
+    }
+   ]
+  },
+  {
+   "event_id": "af8d920f175d73f12933c64ae296573f",
+   "sport": "basketball_nba",
+   "home_team": "Phoenix Suns",
+   "away_team": "Houston Rockets",
+   "start_time_utc": "2026-11-08T02:10:00+00:00",
+   "kind": "middle",
+   "market": "spreads",
+   "window": [
+    -7.5,
+    -6.5
+   ],
+   "if_hits": 183.63,
+   "if_misses": -10.71,
+   "total_stake": 200,
+   "legs": [
+    {
+     "book": "LowVig.ag",
+     "label": "Phoenix Suns +7.5",
+     "price": -106,
+     "point": 7.5,
+     "stake": 100
+    },
+    {
+     "book": "BetRivers",
+     "label": "Houston Rockets -6.5",
+     "price": -112,
+     "point": -6.5,
+     "stake": 100
+    }
+   ]
+  },
+  {
+   "event_id": "e354e6a04b1cb9c96e549b863debb92e",
+   "sport": "americanfootball_nfl",
+   "home_team": "Kansas City Chiefs",
+   "away_team": "New York Jets",
+   "start_time_utc": "2026-11-08T18:00:00+00:00",
+   "kind": "middle",
+   "market": "spreads",
+   "window": [
+    8.5,
+    9.5
+   ],
+   "if_hits": 181.88,
+   "if_misses": -10.71,
+   "total_stake": 200,
+   "legs": [
+    {
+     "book": "Bovada",
+     "label": "Kansas City Chiefs -8.5",
+     "price": -108,
+     "point": -8.5,
+     "stake": 100
+    },
+    {
+     "book": "DraftKings",
+     "label": "New York Jets +9.5",
+     "price": -112,
+     "point": 9.5,
+     "stake": 100
+    }
+   ]
+  },
+  {
+   "event_id": "2922c573ec3df8466c4a34975e446898",
+   "sport": "americanfootball_nfl",
+   "home_team": "New England Patriots",
+   "away_team": "Green Bay Packers",
+   "start_time_utc": "2026-11-08T21:25:00+00:00",
+   "kind": "middle",
+   "market": "totals",
+   "window": [
+    44.5,
+    45.5
+   ],
+   "if_hits": 179.4,
+   "if_misses": -11.5,
+   "total_stake": 200,
+   "legs": [
+    {
+     "book": "BetUS",
+     "label": "Over 44.5",
+     "price": -110,
+     "point": 44.5,
+     "stake": 100
+    },
+    {
+     "book": "BetRivers",
+     "label": "Under 45.5",
+     "price": -113,
+     "point": 45.5,
+     "stake": 100
+    }
+   ]
+  },
+  {
+   "event_id": "74d39e19225caf211ad2c8eb4110179f",
+   "sport": "americanfootball_nfl",
+   "home_team": "New York Giants",
+   "away_team": "Washington Commanders",
+   "start_time_utc": "2026-11-13T01:15:00+00:00",
+   "kind": "middle",
+   "market": "totals",
+   "window": [
+    44.5,
+    45.5
+   ],
+   "if_hits": 181.82,
+   "if_misses": -9.09,
+   "total_stake": 200,
+   "legs": [
+    {
+     "book": "DraftKings",
+     "label": "Over 44.5",
+     "price": -110,
+     "point": 44.5,
+     "stake": 100
+    },
+    {
+     "book": "BetUS",
+     "label": "Under 45.5",
+     "price": -110,
+     "point": 45.5,
+     "stake": 100
+    }
+   ]
+  },
+  {
+   "event_id": "b8c10fdf1e0ac4e13deee7f7c0af0b0b",
+   "sport": "americanfootball_nfl",
+   "home_team": "Detroit Lions",
+   "away_team": "New England Patriots",
+   "start_time_utc": "2026-11-15T14:30:00+00:00",
+   "kind": "middle",
+   "market": "spreads",
+   "window": [
+    -1.0,
+    1.0
+   ],
+   "if_hits": 181.82,
+   "if_misses": -9.09,
+   "total_stake": 200,
+   "legs": [
+    {
+     "book": "MyBookie.ag",
+     "label": "Detroit Lions +1",
+     "price": -110,
+     "point": 1.0,
+     "stake": 100
+    },
+    {
+     "book": "BetOnline.ag",
+     "label": "New England Patriots +1",
+     "price": -110,
+     "point": 1.0,
+     "stake": 100
+    }
+   ]
+  },
+  {
+   "event_id": "b8c10fdf1e0ac4e13deee7f7c0af0b0b",
+   "sport": "americanfootball_nfl",
+   "home_team": "Detroit Lions",
+   "away_team": "New England Patriots",
+   "start_time_utc": "2026-11-15T14:30:00+00:00",
+   "kind": "middle",
+   "market": "totals",
+   "window": [
+    49.5,
+    50.5
+   ],
+   "if_hits": 190.91,
+   "if_misses": -9.09,
+   "total_stake": 200,
+   "legs": [
+    {
+     "book": "DraftKings",
+     "label": "Over 49.5",
+     "price": -110,
+     "point": 49.5,
+     "stake": 100
+    },
+    {
+     "book": "FanDuel",
+     "label": "Under 50.5",
+     "price": 100,
+     "point": 50.5,
+     "stake": 100
+    }
+   ]
+  },
+  {
+   "event_id": "1057d50949844ddf483da9c8c20354be",
+   "sport": "americanfootball_nfl",
+   "home_team": "New York Jets",
+   "away_team": "Buffalo Bills",
+   "start_time_utc": "2026-11-15T18:00:00+00:00",
+   "kind": "middle",
+   "market": "totals",
+   "window": [
+    50.5,
+    51.5
+   ],
+   "if_hits": 181.82,
+   "if_misses": -9.09,
+   "total_stake": 200,
+   "legs": [
+    {
+     "book": "DraftKings",
+     "label": "Over 50.5",
+     "price": -110,
+     "point": 50.5,
+     "stake": 100
+    },
+    {
+     "book": "FanDuel",
+     "label": "Under 51.5",
+     "price": -110,
+     "point": 51.5,
+     "stake": 100
+    }
+   ]
+  },
+  {
+   "event_id": "e5aa20e1364dd639f042af1c2281bbe2",
+   "sport": "americanfootball_nfl",
+   "home_team": "New Orleans Saints",
+   "away_team": "Carolina Panthers",
+   "start_time_utc": "2026-11-15T18:00:00+00:00",
+   "kind": "middle",
+   "market": "spreads",
+   "window": [
+    -1.5,
+    0.0
+   ],
+   "if_hits": 181.82,
+   "if_misses": -9.09,
+   "total_stake": 200,
+   "legs": [
+    {
+     "book": "DraftKings",
+     "label": "New Orleans Saints +1.5",
+     "price": -110,
+     "point": 1.5,
+     "stake": 100
+    },
+    {
+     "book": "BetUS",
+     "label": "Carolina Panthers PK",
+     "price": -110,
+     "point": 0.0,
+     "stake": 100
+    }
+   ]
+  },
+  {
+   "event_id": "e5aa20e1364dd639f042af1c2281bbe2",
+   "sport": "americanfootball_nfl",
+   "home_team": "New Orleans Saints",
+   "away_team": "Carolina Panthers",
+   "start_time_utc": "2026-11-15T18:00:00+00:00",
+   "kind": "middle",
+   "market": "totals",
+   "window": [
+    46.5,
+    47.5
+   ],
+   "if_hits": 179.4,
+   "if_misses": -11.5,
+   "total_stake": 200,
+   "legs": [
+    {
+     "book": "BetRivers",
+     "label": "Over 46.5",
+     "price": -113,
+     "point": 46.5,
+     "stake": 100
+    },
+    {
+     "book": "DraftKings",
+     "label": "Under 47.5",
+     "price": -110,
+     "point": 47.5,
+     "stake": 100
+    }
+   ]
+  },
+  {
+   "event_id": "be0e03cc42fbc9b6962467b22c7bf9dd",
+   "sport": "americanfootball_nfl",
+   "home_team": "Cleveland Browns",
+   "away_team": "Houston Texans",
+   "start_time_utc": "2026-11-15T18:00:00+00:00",
+   "kind": "middle",
+   "market": "spreads",
+   "window": [
+    -4.5,
+    -3.5
+   ],
+   "if_hits": 179.4,
+   "if_misses": -11.5,
+   "total_stake": 200,
+   "legs": [
+    {
+     "book": "BetRivers",
+     "label": "Cleveland Browns +4.5",
+     "price": -113,
+     "point": 4.5,
+     "stake": 100
+    },
+    {
+     "book": "FanDuel",
+     "label": "Houston Texans -3.5",
+     "price": -110,
+     "point": -3.5,
+     "stake": 100
+    }
+   ]
+  },
+  {
+   "event_id": "b5700b4d938fd94429f60d4622cc9c0a",
+   "sport": "americanfootball_nfl",
+   "home_team": "Indianapolis Colts",
+   "away_team": "Miami Dolphins",
+   "start_time_utc": "2026-11-15T18:00:00+00:00",
+   "kind": "middle",
+   "market": "spreads",
+   "window": [
+    1.5,
+    2.5
+   ],
+   "if_hits": 181.82,
+   "if_misses": -9.09,
+   "total_stake": 200,
+   "legs": [
+    {
+     "book": "FanDuel",
+     "label": "Indianapolis Colts -1.5",
+     "price": -110,
+     "point": -1.5,
+     "stake": 100
+    },
+    {
+     "book": "DraftKings",
+     "label": "Miami Dolphins +2.5",
+     "price": -110,
+     "point": 2.5,
+     "stake": 100
+    }
+   ]
+  },
+  {
+   "event_id": "b5700b4d938fd94429f60d4622cc9c0a",
+   "sport": "americanfootball_nfl",
+   "home_team": "Indianapolis Colts",
+   "away_team": "Miami Dolphins",
+   "start_time_utc": "2026-11-15T18:00:00+00:00",
+   "kind": "middle",
+   "market": "totals",
+   "window": [
+    42.5,
+    43.5
+   ],
+   "if_hits": 179.4,
+   "if_misses": -11.5,
+   "total_stake": 200,
+   "legs": [
+    {
+     "book": "BetRivers",
+     "label": "Over 42.5",
+     "price": -113,
+     "point": 42.5,
+     "stake": 100
+    },
+    {
+     "book": "DraftKings",
+     "label": "Under 43.5",
+     "price": -110,
+     "point": 43.5,
+     "stake": 100
+    }
+   ]
+  },
+  {
+   "event_id": "28800df7e768ecec14f116454d560f9b",
+   "sport": "americanfootball_nfl",
+   "home_team": "Tennessee Titans",
+   "away_team": "Jacksonville Jaguars",
+   "start_time_utc": "2026-11-15T18:00:00+00:00",
+   "kind": "middle",
+   "market": "totals",
+   "window": [
+    44.5,
+    45.5
+   ],
+   "if_hits": 181.82,
+   "if_misses": -9.09,
+   "total_stake": 200,
+   "legs": [
+    {
+     "book": "BetUS",
+     "label": "Over 44.5",
+     "price": -110,
+     "point": 44.5,
+     "stake": 100
+    },
+    {
+     "book": "DraftKings",
+     "label": "Under 45.5",
+     "price": -110,
+     "point": 45.5,
+     "stake": 100
+    }
+   ]
+  },
+  {
+   "event_id": "6c932a965110f3f89ec4a5f1a6ac256e",
+   "sport": "americanfootball_nfl",
+   "home_team": "Arizona Cardinals",
+   "away_team": "Los Angeles Rams",
+   "start_time_utc": "2026-11-15T21:05:00+00:00",
+   "kind": "middle",
+   "market": "spreads",
+   "window": [
+    -8.5,
+    -7.5
+   ],
+   "if_hits": 190.48,
+   "if_misses": -4.76,
+   "total_stake": 200,
+   "legs": [
+    {
+     "book": "LowVig.ag",
+     "label": "Arizona Cardinals +8.5",
+     "price": -105,
+     "point": 8.5,
+     "stake": 100
+    },
+    {
+     "book": "FanDuel",
+     "label": "Los Angeles Rams -7.5",
+     "price": -105,
+     "point": -7.5,
+     "stake": 100
+    }
+   ]
+  },
+  {
+   "event_id": "7627192fd89b05120ab6c712aa23fd81",
+   "sport": "americanfootball_nfl",
+   "home_team": "Dallas Cowboys",
+   "away_team": "San Francisco 49ers",
+   "start_time_utc": "2026-11-15T21:25:00+00:00",
+   "kind": "middle",
+   "market": "totals",
+   "window": [
+    53.5,
+    55.0
+   ],
+   "if_hits": 181.82,
+   "if_misses": -9.09,
+   "total_stake": 200,
+   "legs": [
+    {
+     "book": "DraftKings",
+     "label": "Over 53.5",
+     "price": -110,
+     "point": 53.5,
+     "stake": 100
+    },
+    {
+     "book": "BetUS",
+     "label": "Under 55",
+     "price": -110,
+     "point": 55.0,
+     "stake": 100
+    }
+   ]
+  },
+  {
+   "event_id": "7627192fd89b05120ab6c712aa23fd81",
+   "sport": "americanfootball_nfl",
+   "home_team": "Dallas Cowboys",
+   "away_team": "San Francisco 49ers",
+   "start_time_utc": "2026-11-15T21:25:00+00:00",
+   "kind": "middle",
+   "market": "spreads",
+   "window": [
+    -4.5,
+    -3.5
+   ],
+   "if_hits": 181.82,
+   "if_misses": -9.09,
+   "total_stake": 200,
+   "legs": [
+    {
+     "book": "BetUS",
+     "label": "Dallas Cowboys +4.5",
+     "price": -110,
+     "point": 4.5,
+     "stake": 100
+    },
+    {
+     "book": "DraftKings",
+     "label": "San Francisco 49ers -3.5",
+     "price": -110,
+     "point": -3.5,
+     "stake": 100
+    }
+   ]
+  },
+  {
+   "event_id": "7627192fd89b05120ab6c712aa23fd81",
+   "sport": "americanfootball_nfl",
+   "home_team": "Dallas Cowboys",
+   "away_team": "San Francisco 49ers",
+   "start_time_utc": "2026-11-15T21:25:00+00:00",
+   "kind": "middle",
+   "market": "totals",
+   "window": [
+    53.5,
+    54.5
+   ],
+   "if_hits": 186.15,
+   "if_misses": -9.09,
+   "total_stake": 200,
+   "legs": [
+    {
+     "book": "DraftKings",
+     "label": "Over 53.5",
+     "price": -110,
+     "point": 53.5,
+     "stake": 100
+    },
+    {
+     "book": "FanDuel",
+     "label": "Under 54.5",
+     "price": -105,
+     "point": 54.5,
+     "stake": 100
+    }
+   ]
+  },
+  {
+   "event_id": "35e3bdff558b5d1506251e814986f164",
+   "sport": "americanfootball_nfl",
+   "home_team": "Baltimore Ravens",
+   "away_team": "Los Angeles Chargers",
+   "start_time_utc": "2026-11-17T01:15:00+00:00",
+   "kind": "middle",
+   "market": "totals",
+   "window": [
+    37.5,
+    38.5
+   ],
+   "if_hits": 181.82,
+   "if_misses": -9.09,
+   "total_stake": 200,
+   "legs": [
+    {
+     "book": "DraftKings",
+     "label": "Over 37.5",
+     "price": -110,
+     "point": 37.5,
+     "stake": 100
+    },
+    {
+     "book": "FanDuel",
+     "label": "Under 38.5",
+     "price": -110,
+     "point": 38.5,
+     "stake": 100
+    }
+   ]
+  }
+ ]
+}

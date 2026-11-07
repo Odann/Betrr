@@ -622,8 +622,9 @@
    ],
    "three_way": false,
    "logged_at": "2026-11-07T00:04:24.833869+00:00",
-   "result": null,
-   "profit": null
+   "result": "loss",
+   "profit": -10,
+   "final_score": "Boston Celtics 119, Charlotte Hornets 80"
   },
   {
    "id": "08d54b8e2b0d49e172fd8d2087576066|h2h|away",
