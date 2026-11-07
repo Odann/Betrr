@@ -498,8 +498,9 @@
    ],
    "three_way": false,
    "logged_at": "2026-11-06T00:56:56.788078+00:00",
-   "result": null,
-   "profit": null
+   "result": "loss",
+   "profit": -10,
+   "final_score": "San Antonio Spurs 124, Sacramento Kings 109"
   },
   {
    "id": "5e4708fadda49a3c06fd7ac50414020e|h2h|home",
@@ -529,8 +530,9 @@
    ],
    "three_way": false,
    "logged_at": "2026-11-06T00:56:56.788078+00:00",
-   "result": null,
-   "profit": null
+   "result": "loss",
+   "profit": -10,
+   "final_score": "Minnesota Timberwolves 115, New Orleans Pelicans 109"
   },
   {
    "id": "62a92e31b546d31ba57caf792815bf65|h2h|away",
@@ -560,8 +562,9 @@
    ],
    "three_way": false,
    "logged_at": "2026-11-06T00:56:56.788078+00:00",
-   "result": null,
-   "profit": null
+   "result": "loss",
+   "profit": -10,
+   "final_score": "Utah Jazz 100, Dallas Mavericks 112"
   },
   {
    "id": "1c60a090180de530cfe273a5d6a381e6|h2h|home",
@@ -591,8 +594,9 @@
    ],
    "three_way": false,
    "logged_at": "2026-11-06T00:56:56.788078+00:00",
-   "result": null,
-   "profit": null
+   "result": "loss",
+   "profit": -10,
+   "final_score": "Toronto Raptors 121, Milwaukee Bucks 107"
   },
   {
    "id": "49daf3d42e20ce4bc70f8a68cf70ce4c|h2h|home",
@@ -654,6 +658,38 @@
    ],
    "three_way": false,
    "logged_at": "2026-11-07T00:04:24.833869+00:00",
+   "result": null,
+   "profit": null
+  },
+  {
+   "id": "b5934d2ce05af5dac632f1e8b7ce5fb6|totals|over",
+   "event_id": "b5934d2ce05af5dac632f1e8b7ce5fb6",
+   "sport": "icehockey_nhl",
+   "market": "totals",
+   "market_label": "Total",
+   "side": "over",
+   "point": 6.5,
+   "pick": "Over 6.5",
+   "home_team": "Minnesota Wild",
+   "away_team": "Tampa Bay Lightning",
+   "start_time_utc": "2026-11-08T01:10:00+00:00",
+   "odds": 100,
+   "sportsbook": "BetRivers",
+   "fair_win_prob": 0.5095,
+   "expected_value": 0.019,
+   "kelly": 0.0047,
+   "books": 9,
+   "line_movement": 0.0347,
+   "confidence": 57,
+   "rating": "Medium",
+   "reasons": [
+    {
+     "type": "move",
+     "text": "Fair chance up 3.5% since the last update"
+    }
+   ],
+   "three_way": false,
+   "logged_at": "2026-11-07T23:37:02.650912+00:00",
    "result": null,
    "profit": null
   }
