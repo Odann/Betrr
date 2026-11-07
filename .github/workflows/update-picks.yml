@@ -9,9 +9,14 @@ on:
   schedule:
     - cron: "7 20 * * *"
   workflow_dispatch:
+    inputs:
+      refresh_odds:
+        description: "Fetch new odds (uses about 9 API credits). Untick to only republish the site."
+        type: boolean
+        default: true
   push:
     branches: [main]
-    paths: ["odds-picks/docs/index.html", "odds-picks/styles/**", "odds-picks/tailwind.config.js"]
+    paths: ["odds-picks/docs/**", "odds-picks/styles/**", "odds-picks/tailwind.config.js"]
 
 permissions:
   contents: write
@@ -37,14 +42,14 @@ jobs:
       - uses: actions/checkout@v5
 
       - uses: actions/setup-python@v6
-        if: github.event_name != 'push'
+        if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.refresh_odds)
         with:
           python-version: "3.12"
           cache: pip
           cache-dependency-path: odds-picks/requirements.txt
 
       - name: Fetch odds, find picks, grade results
-        if: github.event_name != 'push'
+        if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.refresh_odds)
         env:
           ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
         run: |
