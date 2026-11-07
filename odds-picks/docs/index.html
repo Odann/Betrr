@@ -77,7 +77,8 @@
         <div>
           <div id="build-filters" class="mb-5 flex gap-2 overflow-x-auto"></div>
           <p class="text-sm text-rose mb-6 max-w-2xl">Tap any price to add it to your slip. Each price is the best one across the sportsbooks checked.
-            <span class="text-cyan font-semibold">Cyan percentages</span> mark prices that beat the market's fair odds.</p>
+            Prices that beat the market's fair odds <span class="text-cyan font-semibold">glow cyan</span>, brighter for a bigger edge. Tap a game's book count to compare every sportsbook.</p>
+          <div id="edges-panel"></div>
           <div id="board" class="space-y-8"></div>
         </div>
         <aside id="slip-side" aria-label="Bet slip" class="hidden lg:block sticky top-4 max-h-[calc(100vh-2rem)] overflow-y-auto"></aside>
@@ -107,6 +108,15 @@
         <div id="sheet-body" class="hidden max-h-[70vh] overflow-y-auto border-t border-line"></div>
       </div>
     </div>
+  </div>
+
+  <!-- Game detail drawer -->
+  <div id="drawer" class="hidden fixed inset-0 z-50">
+    <div data-close-drawer class="absolute inset-0 bg-void/75"></div>
+    <aside role="dialog" aria-modal="true" aria-labelledby="drawer-title"
+           class="absolute right-0 top-0 h-full w-full sm:w-[34rem] bg-panel border-l-2 border-cyan overflow-y-auto overscroll-contain shadow-[-12px_0_40px_rgba(0,0,0,.6)]">
+      <div id="drawer-body"></div>
+    </aside>
   </div>
 
   <div id="toast" role="status" aria-live="polite"
@@ -198,7 +208,9 @@ function emptyPanel(title, text, cta) {
 }
 
 // ---------- State ----------
-let data = null, history = null, board = null, finals = {};
+let data = null, history = null, board = null, finals = {}, edges = { arbs: [], middles: [] }, closes = {};
+let bankroll = +store.get('betrr.bankroll', 0) || 0;
+const KELLY_FRACTION = 0.25, KELLY_CAP = 0.03;   // matches pipeline/config.py
 let view = 'picks', pickSport = 'all', buildSport = 'all', sheetOpen = false;
 let slip = store.get('betrr.slip', { legs: [], stake: DEFAULT_STAKE, mode: 'parlay' });
 let bets = store.get('betrr.bets', []);
@@ -219,9 +231,36 @@ function settle(leg, f) {
   return leg.side === (home > away ? 'home' : 'away') ? 'win' : 'loss';
 }
 
+// ---------- Kelly sizing and closing line value ----------
+function kellyShare(prob, dec) {
+  const b = dec - 1;
+  if (!(prob > 0) || b <= 0) return 0;
+  return Math.min(Math.max(0, (b * prob - (1 - prob)) / b) * KELLY_FRACTION, KELLY_CAP);
+}
+// How much better the price taken was than the fair price at close. Needs the
+// game to have started and the line itself (spread or total) not to have moved.
+function legClv(l) {
+  if (l.clv != null) return l.clv;
+  if (new Date(l.start_time_utc) > new Date()) return null;
+  const c = closes[l.id];
+  if (!c || (c.point ?? null) !== (l.point ?? null)) return null;
+  return +(c.fair * toDecimal(l.odds) - 1).toFixed(4);
+}
+function betClv(b) {
+  const cs = b.legs.map(legClv);
+  if (!cs.length || cs.some(c => c == null)) return null;
+  return +(cs.reduce((p, c) => p * (1 + c), 1) - 1).toFixed(4);   // parlay: product of each leg's
+}
+const clvTag = c => c == null ? '' :
+  `<span class="tag ${c >= 0 ? 'border border-cyan text-cyan' : 'border border-alert text-alert'}" title="Closing line value">CLV ${signedPct(c)}</span>`;
+function avgClv(list) {
+  const cs = list.map(betClv).filter(c => c != null);
+  return cs.length ? { avg: cs.reduce((a, c) => a + c, 0) / cs.length, n: cs.length, beat: cs.filter(c => c > 0).length } : null;
+}
+
 function gradeBet(bet) {
-  if (bet.result) return bet;   // already settled and stored
-  const legs = bet.legs.map(l => ({ ...l, result: l.result || (finals[l.event_id] ? settle(l, finals[l.event_id]) : null) }));
+  const legs = bet.legs.map(l => ({ ...l, result: l.result || (finals[l.event_id] ? settle(l, finals[l.event_id]) : null), clv: legClv(l) }));
+  if (bet.result) return { ...bet, legs };   // already settled; only closing line value can still fill in
   let result = null, profit = null;
   if (legs.some(l => l.result === 'loss')) { result = 'loss'; profit = -bet.stake; }
   else if (legs.every(l => l.result)) {
@@ -354,6 +393,15 @@ function slipHTML(sheet = false) {
                  class="w-20 bg-transparent px-1 py-1.5 text-right font-semibold text-ink outline-none" aria-label="Stake in dollars">
         </span>
       </label>
+      <label class="flex items-center justify-between gap-3">
+        <span class="label">Bankroll</span>
+        <span class="flex items-center bg-void border border-line focus-within:border-cyan">
+          <span class="pl-2 text-rose">$</span>
+          <input type="number" inputmode="decimal" min="0" step="10" value="${bankroll || ''}" placeholder="Set" data-bankroll
+                 class="w-20 bg-transparent px-1 py-1.5 text-right font-semibold text-ink outline-none" aria-label="Bankroll in dollars">
+        </span>
+      </label>
+      ${kellyRow(m)}
       <dl class="space-y-1.5 text-sm">${rows.map(([k, v]) =>
         `<div class="flex items-baseline justify-between gap-3"><dt class="text-rose">${k}</dt><dd>${v}</dd></div>`).join('')}</dl>
       ${warnings.map(w => `<p class="text-xs text-rose leading-relaxed">${esc(w)}</p>`).join('')}
@@ -362,6 +410,23 @@ function slipHTML(sheet = false) {
         <button type="button" data-copy class="btn btn-ghost">Copy</button>
       </div>
     </div>
+  </div>`;
+}
+
+function kellySuggestion(m) {
+  if (!bankroll) return null;
+  if (m.parlay) return m.fair != null ? bankroll * kellyShare(m.fair, m.dec) : null;
+  const shares = slip.legs.filter(l => l.fair_prob != null).map(l => kellyShare(l.fair_prob, toDecimal(l.odds)));
+  return shares.length === slip.legs.length ? bankroll * Math.min(...shares) : null;   // one stake for every single
+}
+function kellyRow(m) {
+  if (!bankroll) return '<p class="text-xs text-rose -mt-2">Set a bankroll for a suggested stake (a quarter of the Kelly amount, capped at 3%).</p>';
+  const k = kellySuggestion(m);
+  if (k == null) return '';
+  if (k < 0.5) return `<p class="text-xs text-rose -mt-2">Quarter Kelly suggests no bet: there's no edge at these prices.</p>`;
+  return `<div class="flex items-center justify-between gap-3 -mt-1 text-sm">
+    <span class="text-rose">Suggested stake <span class="text-xs">(¼ Kelly${m.parlay ? '' : ', per bet'})</span></span>
+    <button type="button" data-usekelly="${k.toFixed(2)}" class="font-hud font-bold text-lg text-cyan hover:underline underline-offset-4">${dollars(k)}</button>
   </div>`;
 }
 
@@ -439,6 +504,34 @@ document.addEventListener('click', e => {
     if (confirm('Delete this saved bet?')) { bets = bets.filter(b => b.id !== t.dataset.delete); store.set('betrr.bets', bets); renderBets(); renderSlip(); }
   }
 });
+document.addEventListener('click', e => {
+  const gameBtn = e.target.closest('[data-game]');
+  if (gameBtn) { openDrawer(gameBtn.dataset.game, gameBtn); return; }
+  if (e.target.closest('[data-close-drawer]')) { closeDrawer(); return; }
+  const lb = e.target.closest('[data-legbook]');
+  if (lb) {
+    const [eid, market, key, book] = lb.dataset.legbook.split('|');
+    const g = board.games.find(x => x.event_id === eid);
+    const s = g?.markets[market]?.selections.find(x => x.key === key);
+    const price = s?.books?.find(b => b[0] === book)?.[1];
+    if (price == null) return;
+    const leg = { ...legFromSelection(g, market, s), odds: price, book };
+    slip.legs = slip.legs.filter(l => !(l.event_id === leg.event_id && l.market === leg.market));
+    slip.legs.push(leg); saveSlip(); renderSlip(); renderBoard(); renderPickButtons();
+    toast(`Added ${s.label} ${odds(price)} at ${book}`);
+    return;
+  }
+  const uk = e.target.closest('[data-usekelly]');
+  if (uk) { slip.stake = String(Math.max(1, Math.round(+uk.dataset.usekelly))); saveSlip(); renderSlip(); toast(`Stake set to ${dollars(+slip.stake)}`); }
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
+document.addEventListener('change', e => {
+  if (e.target.matches('[data-bankroll]')) {
+    bankroll = Math.max(0, +e.target.value || 0);
+    store.set('betrr.bankroll', bankroll);
+    render();
+  }
+});
 document.addEventListener('input', e => {
   if (e.target.matches('[data-stake]')) {
     slip.stake = e.target.value; saveSlip();
@@ -506,6 +599,12 @@ function renderPickButtons() {
   });
 }
 
+function kellyLine(p) {
+  const share = p.kelly ?? kellyShare(p.fair_win_prob, toDecimal(p.odds));
+  if (!share) return '';
+  return `<p class="text-sm text-rose -mt-1">Suggested stake: <span class="text-ink font-semibold">${(share * 100).toFixed(1)}% of bankroll</span>${bankroll ? ` <span class="text-cyan font-semibold">(${dollars(bankroll * share)})</span>` : ''}</p>`;
+}
+
 function tagSport(sport) {
   return `<span class="tag bg-red text-void">${esc(sportName(sport))}</span>`;
 }
@@ -539,6 +638,7 @@ function renderFeatured(p) {
             </dl>
           </div>
           ${confidenceBar(p, true)}
+          ${kellyLine(p)}
           ${addButton(p, true)}
         </div>
       </div>
@@ -558,6 +658,7 @@ function renderCard(p) {
       <span class="text-sm text-rose text-right">${esc(p.sportsbook)}<br>Edge <span class="text-cyan font-semibold">${signedPct(p.expected_value)}</span></span>
     </div>
     <div class="mt-auto">${confidenceBar(p, false)}</div>
+    ${kellyLine(p)}
     ${caution ? `<ul class="text-sm -mt-1">${reasons(p, ['caution'])}</ul>` : ''}
     ${addButton(p, true)}
   </article>`;
@@ -608,7 +709,8 @@ function renderYourBets() {
   $('yours').innerHTML = `
     <div class="grid grid-cols-1 items-start gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.2fr)]">
       <div class="hud hud-cyan p-5">
-        <dl class="grid grid-cols-2 gap-4">
+        <dl class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+          ${clvStat()}
           ${stat('Record', settled.length ? record(s) : '–')}
           ${stat('Profit', settled.length ? money(s.profit) : '–', settled.length ? tone(s.profit) : 'text-ink')}
           ${stat('Return', s.n ? signedPct(s.roi) : '–', s.n ? tone(s.roi) : 'text-ink')}
@@ -627,12 +729,18 @@ function renderYourBets() {
             ${statusBadge(b.result)}
             <div class="min-w-0 flex-1">
               <p class="font-semibold truncate">${esc(title)}</p>
-              <p class="truncate text-xs text-rose">${dollars(b.stake)} stake, saved ${shortDate(b.created)}</p>
+              <p class="truncate text-xs text-rose">${dollars(b.stake)} stake, saved ${shortDate(b.created)} ${clvTag(betClv(b))}</p>
             </div>
             <span class="shrink-0">${right}</span></li>`;
         }).join('')}</ul>
       </div>
     </div>`;
+}
+
+function clvStat() {
+  const c = avgClv(bets);
+  return stat('Avg CLV', c ? signedPct(c.avg) : '–', c ? tone(c.avg) : 'text-ink')
+    .replace('</dd></div>', `</dd><dd class="text-xs text-rose">${c ? `Beat the close on ${c.beat} of ${c.n}` : 'Fills in as games start'}</dd></div>`);
 }
 
 // ---------- Shared result helpers ----------
@@ -661,9 +769,10 @@ function priceButton(game, market, sel) {
   const id = `${game.event_id}|${market}|${sel.key}`, on = inSlip(id);
   const line = market === 'spreads' ? fmtPoint(sel.point) : market === 'totals' ? `${sel.key === 'over' ? 'O' : 'U'} ${sel.point}` : '';
   const edge = sel.ev != null && sel.ev >= EDGE_MARK ? `<span class="block text-[11px] font-semibold text-cyan">${signedPct(sel.ev)}</span>` : '';
+  const heat = sel.ev != null && sel.ev > 0 ? Math.min(sel.ev / 0.08, 1) : 0;   // full glow at an 8% edge
   return `<button type="button" data-sel="${esc(id)}" aria-pressed="${on}"
-    aria-label="${esc(sel.label)} ${MARKET_NAMES[market]} ${odds(sel.odds)} at ${esc(sel.book)}"
-    class="slot ${on ? 'slot-on' : ''}">
+    aria-label="${esc(sel.label)} ${MARKET_NAMES[market]} ${odds(sel.odds)} at ${esc(sel.book)}${sel.ev > 0 ? `, ${signedPct(sel.ev)} edge` : ''}"
+    class="slot ${on ? 'slot-on' : heat ? 'slot-heat' : ''}" ${heat && !on ? `style="--heat:${heat.toFixed(2)}"` : ''}>
     ${line ? `<span class="block text-xs ${on ? 'text-cyan/80' : 'text-rose'}">${line}</span>` : ''}
     <span class="block font-hud font-bold text-lg leading-none ${on ? 'text-cyan' : 'text-ink'}">${odds(sel.odds)}</span>${edge}</button>`;
 }
@@ -680,7 +789,8 @@ function gameCard(g) {
   return `<article class="hud p-4 sm:p-5">
     <div class="flex items-center justify-between gap-2 mb-3">
       <span class="flex items-center gap-2">${tagSport(g.sport)}<span class="text-sm text-rose">${esc(clock(g.start_time_utc))}</span></span>
-      <span class="label">${books} book${books > 1 ? 's' : ''}</span>
+      <button type="button" data-game="${esc(g.event_id)}" class="label hover:text-red inline-flex items-center gap-1" aria-label="Compare every sportsbook for ${esc(g.away_team)} at ${esc(g.home_team)}">
+        ${books} book${books > 1 ? 's' : ''} <span aria-hidden="true">▸</span>${gameEdgeCount(g.event_id) ? `<span class="tag bg-gold text-void ml-1">${gameEdgeCount(g.event_id)} edge${gameEdgeCount(g.event_id) > 1 ? 's' : ''}</span>` : ''}</button>
     </div>
     <div class="grid grid-cols-3 sm:grid-cols-[minmax(0,1fr)_6.5rem_6.5rem_6.5rem] gap-x-2 gap-y-1.5">
       <span class="hidden sm:block"></span>
@@ -692,8 +802,38 @@ function gameCard(g) {
   </article>`;
 }
 
+const upcomingEdges = () => [...edges.arbs, ...edges.middles].filter(e => data?.sample || new Date(e.start_time_utc) > new Date());
+const gameEdgeCount = id => upcomingEdges().filter(e => e.event_id === id).length;
+const middleHits = e => { const out = []; for (let n = Math.floor(e.window[0]) + 1; n < e.window[1]; n++) out.push(n); return out; };
+
+function edgeCard(e) {
+  const head = e.kind === 'arb'
+    ? `<span class="tag bg-cyan text-void">Arbitrage</span> <span class="font-hud font-bold text-xl text-cyan">${signedPct(e.profit_pct)}</span> <span class="text-sm text-rose">locked in, whatever happens</span>`
+    : `<span class="tag bg-gold text-void">Middle</span> <span class="text-sm text-ink">Both win if the ${e.market === 'totals' ? 'total is' : `${esc(shortTeam(e.home_team))} margin is`} <b>${middleHits(e).join(' or ')}</b></span>`;
+  const foot = e.kind === 'arb'
+    ? `Stake ${dollars(e.total_stake)} split as shown to collect about ${dollars(e.total_stake * (1 + e.profit_pct))}.`
+    : `$100 each: win ${dollars(e.if_hits)} if it lands, ${money(e.if_misses)} if it doesn't.`;
+  return `<li class="py-3 border-t border-line first:border-t-0">
+    <p class="flex flex-wrap items-center gap-2">${head}</p>
+    <p class="text-xs text-rose mt-1">${esc(sportName(e.sport))} ${esc(MARKET_NAMES[e.market])}, ${esc(e.away_team)} at ${esc(e.home_team)}, ${esc(gameTime(e.start_time_utc))}</p>
+    <ul class="mt-2 grid gap-1 text-sm">${e.legs.map(l => `<li class="flex items-baseline justify-between gap-3">
+      <span class="min-w-0"><span class="font-semibold">${esc(l.label)}</span> <span class="text-rose">at ${esc(l.book)}</span></span>
+      <span class="shrink-0"><span class="font-hud font-bold text-lg text-ink">${odds(l.price)}</span> <span class="text-rose text-xs">${dollars(l.stake)}</span></span></li>`).join('')}</ul>
+    <p class="text-xs text-rose mt-1">${foot}</p>
+  </li>`;
+}
+
+function renderEdges() {
+  const list = upcomingEdges().filter(e => buildSport === 'all' || e.sport === buildSport);
+  if (!list.length) { $('edges-panel').innerHTML = ''; return; }
+  $('edges-panel').innerHTML = `<section class="mb-8">${sectionHead('Arbitrage and middles', `<span class="label">${list.length} found</span>`)}
+    <div class="hud hud-gold px-5 py-2"><ul>${list.slice(0, 8).map(edgeCard).join('')}</ul></div>
+    <p class="text-xs text-rose mt-2">These come from books disagreeing. They can vanish within minutes and books may limit accounts that take them, so check the live prices before betting.</p></section>`;
+}
+
 function renderBoard() {
   if (view !== 'build') return;
+  renderEdges();
   const games = (board?.games || []).filter(g => data?.sample || new Date(g.start_time_utc) > new Date());
   buildSport = chips($('build-filters'), [...new Set(games.map(g => g.sport))], buildSport, 'data-buildsport');
   const shown = games.filter(g => buildSport === 'all' || g.sport === buildSport);
@@ -707,6 +847,89 @@ function renderBoard() {
   $('board').innerHTML = Object.entries(days).map(([day, gs]) => `
     <section>${sectionHead(day, `<span class="label">${gs.length} game${gs.length > 1 ? 's' : ''}</span>`)}
       <div class="space-y-3">${gs.map(gameCard).join('')}</div></section>`).join('');
+}
+
+// ---------- Game detail drawer ----------
+let drawerReturn = null;
+const fairAmerican = prob => prob > 0 && prob < 1 ? odds(toAmerican(1 / prob)) : '–';
+
+function sparkline(hist) {
+  if (!hist || hist.length < 2) return '<p class="text-xs text-rose">Line history builds with each update.</p>';
+  const W = 220, H = 44, P = 4, vals = hist.map(x => x[1]);
+  let lo = Math.min(...vals), hi = Math.max(...vals);
+  if (hi - lo < 0.02) { const mid = (hi + lo) / 2; lo = mid - 0.01; hi = mid + 0.01; }
+  const x = i => P + i * (W - 2 * P) / (hist.length - 1);
+  const y = v => H - P - (v - lo) * (H - 2 * P) / (hi - lo);
+  const pts = vals.map((v, i) => `${x(i).toFixed(1)},${y(v).toFixed(1)}`).join(' ');
+  const last = vals.at(-1), first = vals[0], moved = last - first;
+  return `<svg viewBox="0 0 ${W} ${H}" class="w-full h-11" role="img" aria-label="Fair chance moved from ${pct(first)} to ${pct(last)}">
+      <polyline points="${pts}" fill="none" stroke="#4E2026" stroke-width="6" stroke-linejoin="round"/>
+      <polyline points="${pts}" fill="none" stroke="${moved >= 0 ? '#4FF0F5' : '#FF3D5A'}" stroke-width="2" stroke-linejoin="round"/>
+      <circle cx="${x(vals.length - 1)}" cy="${y(last)}" r="3.5" fill="${moved >= 0 ? '#4FF0F5' : '#FF3D5A'}"/>
+    </svg>
+    <p class="text-xs text-rose">${pct(first)} → <span class="${tone(moved)}">${pct(last)}</span> over ${hist.length} updates</p>`;
+}
+
+function marketTable(g, market) {
+  const m = g.markets[market];
+  if (!m) return '';
+  const sels = m.selections;
+  const books = [...new Set(sels.flatMap(s => (s.books || []).map(b => b[0])))].sort();
+  const priceOf = (s, book) => (s.books || []).find(b => b[0] === book)?.[1];
+  const head = sels.map(s => `<th class="label font-semibold text-right pb-2 px-2">${esc(market === 'h2h' ? shortTeam(s.label) : s.label.replace(g.home_team, shortTeam(g.home_team)).replace(g.away_team, shortTeam(g.away_team)))}</th>`).join('');
+  const rows = books.map(book => `<tr class="border-t border-line">
+      <td class="py-1.5 pr-2 text-rose">${esc(book)}</td>
+      ${sels.map(s => {
+        const pr = priceOf(s, book);
+        if (pr == null) return '<td class="text-right px-2 text-line">–</td>';
+        const best = pr === s.odds;
+        const leg = `${g.event_id}|${market}|${s.key}|${book}`;
+        return `<td class="text-right px-1"><button type="button" data-legbook="${esc(leg)}"
+          class="px-1.5 py-0.5 font-hud font-bold text-base ${best ? 'text-cyan' : 'text-ink'} hover:bg-red/10"
+          aria-label="Add ${esc(s.label)} at ${odds(pr)} from ${esc(book)}">${odds(pr)}</button></td>`;
+      }).join('')}</tr>`).join('');
+  return `<section class="mb-7">
+    <div class="sec-head mb-2"><h3 class="font-hud font-bold uppercase tracking-[.12em] text-red text-lg">${MARKET_NAMES[market]}</h3><span class="sec-rule"></span>
+      ${m.line != null ? `<span class="label">Main line ${market === 'spreads' ? fmtPoint(m.line) : m.line}</span>` : ''}</div>
+    <div class="overflow-x-auto"><table class="w-full text-sm" style="font-variant-numeric:tabular-nums">
+      <thead><tr><th class="label font-semibold text-left pb-2">Book</th>${head}</tr></thead>
+      <tbody>${rows}
+        <tr class="border-t-2 border-line"><td class="py-1.5 pr-2 label">Fair odds</td>${sels.map(s => `<td class="text-right px-2 font-hud font-bold text-gold">${fairAmerican(s.fair_prob)}</td>`).join('')}</tr>
+        <tr><td class="py-1 pr-2 label">Fair chance</td>${sels.map(s => `<td class="text-right px-2">${s.fair_prob != null ? pct(s.fair_prob) : '–'}</td>`).join('')}</tr>
+        <tr><td class="py-1 pr-2 label">Best edge</td>${sels.map(s => `<td class="text-right px-2 font-semibold ${s.ev != null ? tone(s.ev) : ''}">${s.ev != null ? signedPct(s.ev) : '–'}</td>`).join('')}</tr>
+      </tbody></table></div>
+    <div class="grid grid-cols-2 gap-4 mt-3">${sels.filter(s => s.key !== 'draw').map(s => `<div><p class="label mb-1">${esc(market === 'h2h' ? shortTeam(s.label) : s.label)}</p>${sparkline(s.hist)}</div>`).join('')}</div>
+  </section>`;
+}
+
+function openDrawer(eventId, trigger) {
+  const g = board?.games.find(x => x.event_id === eventId);
+  if (!g) return;
+  drawerReturn = trigger || document.activeElement;
+  const gameEdges = upcomingEdges().filter(e => e.event_id === eventId);
+  $('drawer-body').innerHTML = `
+    <div class="sticky top-0 z-10 bg-panel border-b border-line px-5 py-4 flex items-start justify-between gap-3">
+      <div class="min-w-0">
+        <p class="flex items-center gap-2 mb-1">${tagSport(g.sport)}<span class="text-sm text-rose">${esc(gameTime(g.start_time_utc))}</span></p>
+        <h2 id="drawer-title" class="font-hud font-bold text-2xl uppercase tracking-[.04em] leading-tight">${esc(g.away_team)} <span class="text-rose text-base">at</span> ${esc(g.home_team)}</h2>
+      </div>
+      <button type="button" data-close-drawer class="key inline-flex mb-0 shrink-0" aria-label="Close">✕</button>
+    </div>
+    <div class="px-5 py-5">
+      <p class="text-sm text-rose mb-6">Every sportsbook's price at the main line. The best price is in cyan; tap any price to add that exact bet to your slip. Fair odds have each book's margin removed.</p>
+      ${gameEdges.length ? `<section class="mb-7"><div class="sec-head mb-2"><h3 class="font-hud font-bold uppercase tracking-[.12em] text-gold text-lg">Edges in this game</h3><span class="sec-rule"></span></div><ul>${gameEdges.map(edgeCard).join('')}</ul></section>` : ''}
+      ${['h2h', 'spreads', 'totals'].map(mk => marketTable(g, mk)).join('')}
+    </div>`;
+  $('drawer').classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+  $('drawer').querySelector('[data-close-drawer].key').focus();
+}
+
+function closeDrawer() {
+  if ($('drawer').classList.contains('hidden')) return;
+  $('drawer').classList.add('hidden');
+  document.body.style.overflow = '';
+  drawerReturn?.focus?.();
 }
 
 // ---------- My bets ----------
@@ -726,7 +949,8 @@ function renderBets() {
     : r === 'push' ? '<span class="text-rose" aria-label="push">–</span>' : '<span class="text-line" aria-label="open">◇</span>';
   $('bets').innerHTML = `
     <div class="hud p-5 mb-5">
-      <dl class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+      <dl class="grid grid-cols-2 sm:grid-cols-5 gap-4">
+        ${clvStat()}
         ${stat('Record', settled.length ? record(s) : '–')}
         ${stat('Profit', settled.length ? money(s.profit) : '–', settled.length ? tone(s.profit) : 'text-ink')}
         ${stat('Return', s.n ? signedPct(s.roi) : '–', s.n ? tone(s.roi) : 'text-ink')}
@@ -742,11 +966,13 @@ function renderBets() {
         <div class="flex flex-wrap items-center gap-x-3 gap-y-1">
           ${statusBadge(b.result)}
           <p class="font-hud font-bold text-lg uppercase tracking-[.08em]">${title}</p>
+          ${clvTag(betClv(b))}
           <p class="text-sm w-full sm:w-auto sm:ml-auto"><span class="text-rose">Stake</span> ${dollars(b.stake)}, ${outcome}</p>
         </div>
         <ul class="mt-3 space-y-1.5 text-sm">${b.legs.map(l => `<li class="flex items-start gap-2">
           <span class="w-4 shrink-0 text-center">${legMark(l.result)}</span>
-          <span class="min-w-0 flex-1"><span class="font-medium">${esc(l.label)}</span> <span class="text-rose">${odds(l.odds)}, ${esc(MARKET_NAMES[l.market])}, ${esc(shortTeam(l.away_team))} at ${esc(shortTeam(l.home_team))}, ${shortDate(l.start_time_utc)}</span></span>
+          <span class="min-w-0 flex-1"><span class="font-medium">${esc(l.label)}</span> <span class="text-rose">${odds(l.odds)}, ${esc(MARKET_NAMES[l.market])}, ${esc(shortTeam(l.away_team))} at ${esc(shortTeam(l.home_team))}, ${shortDate(l.start_time_utc)}</span>
+            ${b.legs.length > 1 && legClv(l) != null ? `<span class="text-xs ${tone(legClv(l))}">CLV ${signedPct(legClv(l))}</span>` : ''}</span>
         </li>`).join('')}</ul>
         <div class="mt-3 pt-3 border-t border-line flex items-center justify-between text-xs text-rose">
           <span>Saved ${shortDate(b.created)}${b.legs[0].book && b.type === 'single' ? `, ${esc(b.legs[0].book)}` : ''}</span>
@@ -754,7 +980,7 @@ function renderBets() {
         </div>
       </li>`;
     }).join('')}</ul>
-    <p class="mt-4 text-xs text-rose">Results use final scores, including overtime. Saved bets live in this browser, so they won't show up on another device.</p>`;
+    <p class="mt-4 text-xs text-rose">Results use final scores, including overtime. CLV (closing line value) compares your price with the fair price at the last update before the game started: beating the close regularly is the best sign of real edge, even before results catch up. Saved bets live in this browser, so they won't show up on another device.</p>`;
 }
 
 // ---------- Page ----------
@@ -807,7 +1033,7 @@ async function getJSON(name) {
 }
 
 async function load() {
-  const [p, h, b, s] = await Promise.allSettled(['picks.json', 'history.json', 'board.json', 'scores.json'].map(getJSON));
+  const [p, h, b, s, e, c] = await Promise.allSettled(['picks.json', 'history.json', 'board.json', 'scores.json', 'edges.json', 'closes.json'].map(getJSON));
   if (p.status === 'rejected') {
     $('notice').innerHTML = `<p>Couldn't load the picks data (${esc(p.reason.message)}). If you opened this file directly, run
       <code>python -m http.server -d docs</code> and go to http://localhost:8000 instead.</p>`;
@@ -818,6 +1044,8 @@ async function load() {
   history = h.status === 'fulfilled' ? h.value : { picks: [] };
   board = b.status === 'fulfilled' ? b.value : null;
   finals = s.status === 'fulfilled' ? (s.value.finals || {}) : {};
+  edges = e.status === 'fulfilled' ? { arbs: e.value.arbs || [], middles: e.value.middles || [] } : { arbs: [], middles: [] };
+  closes = c.status === 'fulfilled' ? c.value : {};
   // drop slip legs for games that have started
   const before = slip.legs.length;
   slip.legs = slip.legs.filter(l => new Date(l.start_time_utc) > new Date() || data.sample);
@@ -845,6 +1073,7 @@ document.addEventListener('click', e => {
 // Q and E switch sections, like a game menu
 document.addEventListener('keydown', e => {
   if (e.metaKey || e.ctrlKey || e.altKey || e.target.closest('input, textarea, select, [contenteditable]')) return;
+  if (!$('drawer').classList.contains('hidden')) return;
   const k = e.key.toLowerCase();
   if (k === 'q') stepView(-1);
   if (k === 'e') stepView(1);

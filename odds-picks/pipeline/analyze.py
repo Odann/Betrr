@@ -4,15 +4,16 @@ Prices every game's main bets and finds picks among them.
 For each market (moneyline, spread, total) on each game:
 1. Main line: spreads and totals are compared at the line most books offer
    (e.g. -1.5 or 6.5), so every price in the average is for the same bet.
-2. Fair chance: strip each book's margin (the "vig") so its outcomes add to
-   100%, then average across books.
-3. Value: the best price available pays more than the fair chance says it
+2. Fair chance: each book's margin is removed with Shin's method, which
+   takes more margin off longshots than favourites (books shade longshots
+   the most), then the books are averaged.
+3. Value: the best price available pays more than that fair chance says it
    should:  EV = fair_chance * decimal_odds - 1  >=  MIN_EDGE
 4. Line move: the fair chance moved MOVE_THRESHOLD or more since the last run.
-   A move toward a side can qualify it on its own (if the price still isn't a
-   losing bet); a move against a pick lowers its confidence.
 5. Confidence (0-100): edge size, number of books, how closely they agree,
    and line movement.
+6. Kelly: the share of bankroll a full Kelly bet would stake; picks carry a
+   quarter of that (KELLY_FRACTION), capped at KELLY_CAP.
 """
 
 from collections import Counter
@@ -21,6 +22,7 @@ from statistics import mean, pstdev
 from . import config
 
 MARKET_LABELS = {"h2h": "Moneyline", "spreads": "Spread", "totals": "Total"}
+HISTORY_POINTS = 40          # line-history points kept per selection
 
 
 def american_to_prob(price: int) -> float:
@@ -33,6 +35,45 @@ def american_to_decimal(price: int) -> float:
 
 def fmt_point(p: float) -> str:
     return "PK" if p == 0 else f"{p:+g}"
+
+
+# ---------- Margin removal ----------
+
+def shin(implied: dict) -> dict:
+    """
+    Shin's method: finds the share of "insider" money z that explains the
+    book's margin, and removes margin in proportion to how longshot-heavy
+    each outcome is. Falls back to proportional when the book has no margin.
+    """
+    total = sum(implied.values())
+    if total <= 1:
+        return {k: p / total for k, p in implied.items()}
+
+    def probs(z):
+        return {k: ((z * z + 4 * (1 - z) * q * q / total) ** 0.5 - z) / (2 * (1 - z))
+                for k, q in implied.items()}
+
+    lo, hi = 0.0, 0.4
+    for _ in range(60):
+        z = (lo + hi) / 2
+        if sum(probs(z).values()) > 1:
+            lo = z
+        else:
+            hi = z
+    p = probs((lo + hi) / 2)
+    s = sum(p.values())
+    return {k: v / s for k, v in p.items()}
+
+
+def kelly_fraction(prob: float, price: int) -> float:
+    """Full-Kelly share of bankroll for a bet at this price, 0 if no edge."""
+    b = american_to_decimal(price) - 1
+    f = (b * prob - (1 - prob)) / b
+    return max(0.0, f)
+
+
+def suggested_kelly(prob: float, price: int) -> float:
+    return round(min(kelly_fraction(prob, price) * config.KELLY_FRACTION, config.KELLY_CAP), 4)
 
 
 def confidence_score(ev: float, n_books: int, spread: float, movement: float | None) -> int:
@@ -48,7 +89,9 @@ def rating(score: int) -> str:
     return "High" if score >= 70 else "Medium" if score >= 45 else "Low"
 
 
-def _book_sides(market: str, book: dict, home: str, away: str) -> tuple[object, dict] | None:
+# ---------- One book's offer ----------
+
+def _book_sides(market: str, book: dict, home: str, away: str):
     """One book's offer as (line, {selection_key: (price, point)}), or None if incomplete."""
     sides = {}
     for o in book["outcomes"]:
@@ -83,19 +126,20 @@ def _label(market: str, key: str, point, home: str, away: str) -> str:
 
 
 def price_market(market: str, offers: list[dict], home: str, away: str) -> dict | None:
-    """Main line for one market: best price, fair chance and edge per selection."""
+    """
+    Main line for one market: best price, fair chance and edge per selection,
+    plus every book's price at the main line and every book's full offer
+    (all lines) for the arbitrage and middle finder.
+    """
     parsed = [(b["bookmaker"], s) for b in offers if (s := _book_sides(market, b, home, away))]
     if not parsed:
         return None
     line = Counter(s[0] for _, s in parsed).most_common(1)[0][0]
     at_line = [(book, sides) for book, (l, sides) in parsed if l == line]
 
-    # Each book's margin-free chances
     per_book = []
     for _, sides in at_line:
-        raw = {k: american_to_prob(price) for k, (price, _) in sides.items()}
-        total = sum(raw.values())
-        per_book.append({k: p / total for k, p in raw.items()})
+        per_book.append(shin({k: american_to_prob(price) for k, (price, _) in sides.items()}))
 
     keys = [k for k in ("away", "home", "draw", "over", "under") if any(k in s for _, s in at_line)]
     selections = []
@@ -113,20 +157,39 @@ def price_market(market: str, offers: list[dict], home: str, away: str) -> dict 
             "fair_prob": round(fair, 4) if fair is not None else None,
             "ev": round(fair * american_to_decimal(best_price) - 1, 4) if fair is not None else None,
             "agreement": pstdev(probs) if len(probs) >= 2 else None,
+            "books": sorted([[b, p] for p, _, b in prices], key=lambda x: -american_to_decimal(x[1])),
         })
-    return {"line": line, "books": len(at_line), "selections": selections}
+    all_offers = [{"book": book, "line": l, "sides": {k: [p, pt] for k, (p, pt) in sides.items()}}
+                  for book, (l, sides) in parsed]
+    return {"line": line, "books": len(at_line), "selections": selections, "offers": all_offers}
 
 
-def analyze_games(games: list[dict], sport: str, previous_fair: dict) -> tuple[list, dict, list]:
+def _history(prev_game: dict | None, market: str, sel: dict, now_iso: str) -> list:
+    """Line history for one selection: previous points plus this run's."""
+    hist = []
+    if prev_game:
+        for s in prev_game.get("markets", {}).get(market, {}).get("selections", []):
+            if s["key"] == sel["key"]:
+                hist = list(s.get("hist", []))
+    point = [now_iso[:16], sel["fair_prob"], sel["odds"], sel["point"]]
+    if not hist or hist[-1][0] != point[0]:
+        hist.append(point)
+    return hist[-HISTORY_POINTS:]
+
+
+def analyze_games(games: list[dict], sport: str, previous_fair: dict,
+                  previous_board: dict | None = None, now_iso: str = "") -> tuple[list, dict, list]:
     """
     Returns (picks, fair_by_key, board).
     previous_fair is {"event|market|selection|point": chance} from the last run.
-    board is every game with its priced main bets, for the bet builder.
+    previous_board is {event_id: game} from the last board, for line history.
     """
+    previous_board = previous_board or {}
     picks, fair_by_key, board = [], {}, []
 
     for g in games:
         markets = {}
+        prev_game = previous_board.get(g["event_id"])
         for market in config.MARKETS:
             priced = price_market(market, g["markets"].get(market, []), g["home_team"], g["away_team"])
             if not priced:
@@ -135,6 +198,7 @@ def analyze_games(games: list[dict], sport: str, previous_fair: dict) -> tuple[l
                 agreement = sel.pop("agreement")
                 if sel["fair_prob"] is None:
                     continue
+                sel["hist"] = _history(prev_game, market, sel, now_iso)
                 move_key = f"{g['event_id']}|{market}|{sel['key']}|{sel['point']}"
                 fair_by_key[move_key] = sel["fair_prob"]
                 prev = previous_fair.get(move_key)
@@ -170,6 +234,7 @@ def analyze_games(games: list[dict], sport: str, previous_fair: dict) -> tuple[l
                     "sportsbook": sel["book"],
                     "fair_win_prob": sel["fair_prob"],
                     "expected_value": ev,
+                    "kelly": suggested_kelly(sel["fair_prob"], sel["odds"]),
                     "books": priced["books"],
                     "line_movement": round(movement, 4) if movement is not None else None,
                     "confidence": score,

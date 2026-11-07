@@ -49,9 +49,29 @@ def record_finals(scores: dict, sport: str, events: list[dict]) -> int:
     return new
 
 
-def sports_needing_scores(scores: dict, now: datetime) -> set[str]:
-    """Sports with a game that should be over but has no final score yet."""
+def record_espn_finals(scores: dict, espn, now: datetime) -> int:
+    """Fill finals for due games from ESPN. Returns how many were found."""
     due = timedelta(hours=config.GRADE_AFTER_HOURS)
+    found = 0
+    for event_id, g in list(scores["awaiting"].items()):
+        if not g.get("home_team") or now - parse_time(g["start_time_utc"]) < due:
+            continue
+        f = espn.find_final(g["sport"], g["home_team"], g["away_team"], g["start_time_utc"])
+        if not f:
+            continue
+        scores["finals"][event_id] = {
+            "sport": g["sport"], "home_team": g["home_team"], "away_team": g["away_team"],
+            "home_score": f["home_score"], "away_score": f["away_score"],
+            "start_time_utc": g["start_time_utc"], "source": "espn",
+        }
+        scores["awaiting"].pop(event_id, None)
+        found += 1
+    return found
+
+
+def sports_needing_scores(scores: dict, now: datetime, extra_hours: float = 0) -> set[str]:
+    """Sports with a game that should be over but has no final score yet."""
+    due = timedelta(hours=config.GRADE_AFTER_HOURS + extra_hours)
     return {g["sport"] for g in scores["awaiting"].values()
             if now - parse_time(g["start_time_utc"]) >= due}
 
@@ -66,10 +86,27 @@ def prune(scores: dict, now: datetime) -> None:
                         if now - parse_time(v["start_time_utc"]) <= keep_limit}
 
 
-def grade_history(history: list[dict], finals: dict, now: datetime) -> int:
+def clv(close: dict | None, odds: int, point) -> float | None:
+    """
+    Closing line value: how much better the price taken was than the fair
+    price at close, as expected return. Only when the line itself didn't move
+    (a moved spread or total isn't comparable without an alt-line model).
+    """
+    if not close or close.get("fair") is None or close.get("point") != point:
+        return None
+    return round(close["fair"] * american_to_decimal(odds) - 1, 4)
+
+
+def grade_history(history: list[dict], finals: dict, now: datetime, closes: dict | None = None) -> int:
     """Fill in result/profit for logged picks whose games have final scores."""
+    closes = closes or {}
     graded = 0
     for p in history:
+        if p.get("clv") is None and parse_time(p["start_time_utc"]) <= now:
+            c = closes.get(f"{p['event_id']}|{p.get('market', 'h2h')}|{p['side']}")
+            if c:
+                p["close"] = {k: c[k] for k in ("fair", "odds", "point")}
+                p["clv"] = clv(c, p["odds"], p.get("point"))
         if p.get("result") is not None:
             continue
         f = finals.get(p["event_id"])

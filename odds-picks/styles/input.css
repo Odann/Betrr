@@ -114,6 +114,14 @@ input[type=number] { -moz-appearance: textfield; appearance: textfield; }
   }
   .slot:hover { --edge: theme(colors.red); }
   .slot-on, .slot-on:hover { --edge: theme(colors.cyan); }
+  /* Edge heat: --heat runs 0 to 1 (an 8% edge or more) */
+  .slot-heat {
+    --edge: rgba(79, 240, 245, calc(.35 + var(--heat) * .65));
+    border-color: var(--edge);
+    background-color: rgba(79, 240, 245, calc(.04 + var(--heat) * .16));
+    box-shadow: inset 0 0 calc(4px + var(--heat) * 14px) rgba(79, 240, 245, calc(var(--heat) * .35));
+  }
+  .slot-heat:hover { border-color: theme(colors.cyan); }
   .slot-on { @apply border-cyan bg-cyan/10 hover:border-cyan; box-shadow: inset 0 0 14px rgba(79, 240, 245, .25); }
   .slot-empty { @apply h-14 border border-dashed border-line/60; }
 }

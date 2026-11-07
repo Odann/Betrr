@@ -10,11 +10,13 @@ GitHub Actions runs this on a schedule (see .github/workflows/update-picks.yml).
 import json
 import os
 import sys
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
 from . import config
 from .analyze import analyze_games
-from .grade import grade_history, prune, record_finals, sports_needing_scores
+from .edges import find_edges
+from .espn import ESPN
+from .grade import grade_history, prune, record_espn_finals, record_finals, sports_needing_scores
 from .odds_client import OddsAPI, OddsAPIError, parse_games, parse_time
 
 PICKS_FILE = config.DATA_DIR / "picks.json"
@@ -22,6 +24,8 @@ BOARD_FILE = config.DATA_DIR / "board.json"
 HISTORY_FILE = config.DATA_DIR / "history.json"
 SCORES_FILE = config.DATA_DIR / "scores.json"
 SNAPSHOT_FILE = config.DATA_DIR / "snapshots.json"
+CLOSES_FILE = config.DATA_DIR / "closes.json"
+EDGES_FILE = config.DATA_DIR / "edges.json"
 
 
 def load(path, default):
@@ -59,8 +63,28 @@ def credits_ok(api: OddsAPI, cost: int) -> bool:
     return api.remaining is None or api.remaining - cost >= config.CREDIT_FLOOR
 
 
-def run(api: OddsAPI, now: datetime | None = None) -> dict:
+def update_closes(closes: dict, board: list[dict], now: datetime) -> None:
+    """
+    Latest fair price for every selection on the board. Once a game starts it
+    drops off the board, so its last entry here is the closing line.
+    """
+    for g in board:
+        for market, m in g["markets"].items():
+            for s in m["selections"]:
+                if s.get("fair_prob") is None:
+                    continue
+                closes[f"{g['event_id']}|{market}|{s['key']}"] = {
+                    "fair": s["fair_prob"], "odds": s["odds"], "book": s["book"], "point": s["point"],
+                    "at": now.isoformat(), "start": g["start_time_utc"],
+                }
+    keep = timedelta(days=config.KEEP_CLOSES_DAYS)
+    for k in [k for k, c in closes.items() if now - parse_time(c["start"]) > keep]:
+        del closes[k]
+
+
+def run(api: OddsAPI, now: datetime | None = None, espn: ESPN | None = None) -> dict:
     now = now or datetime.now(timezone.utc)
+    espn = espn or ESPN()
     old_picks = load(PICKS_FILE, {})
     old_board = load(BOARD_FILE, {})
     history = load(HISTORY_FILE, {"picks": []})
@@ -71,6 +95,8 @@ def run(api: OddsAPI, now: datetime | None = None) -> dict:
     history["picks"] = dedupe_history(history["picks"])
     scores = load(SCORES_FILE, {"finals": {}, "awaiting": {}})
     snapshots = load(SNAPSHOT_FILE, {})
+    closes = load(CLOSES_FILE, {})
+    prev_board = {g["event_id"]: g for g in old_board.get("games", [])}
 
     notes = []
     try:
@@ -106,7 +132,7 @@ def run(api: OddsAPI, now: datetime | None = None) -> dict:
 
         games = parse_games(events, now)
         prev = snapshots.get(sport, {}).get("lines", {})
-        found, fair, sport_board = analyze_games(games, sport, prev)
+        found, fair, sport_board = analyze_games(games, sport, prev, prev_board, now.isoformat())
         snapshots[sport] = {"taken_at": now.isoformat(), "lines": fair}
         picks += found
         board += sport_board
@@ -123,14 +149,21 @@ def run(api: OddsAPI, now: datetime | None = None) -> dict:
 
     # Every game on the board (and every pending pick) needs a final score later,
     # both for grading picks and for bets saved in the browser.
-    for g in board:
-        scores["awaiting"].setdefault(g["event_id"], {"sport": g["sport"], "start_time_utc": g["start_time_utc"]})
-    for p in history["picks"]:
-        if p.get("result") is None and p["event_id"] not in scores["finals"]:
-            scores["awaiting"].setdefault(p["event_id"], {"sport": p["sport"], "start_time_utc": p["start_time_utc"]})
+    for g in board + [p for p in history["picks"] if p.get("result") is None]:
+        if g["event_id"] in scores["finals"]:
+            continue
+        entry = scores["awaiting"].setdefault(g["event_id"], {"sport": g["sport"], "start_time_utc": g["start_time_utc"]})
+        entry.setdefault("home_team", g["home_team"])
+        entry.setdefault("away_team", g["away_team"])
     prune(scores, now)
+    update_closes(closes, board, now)
 
-    for sport in sorted(sports_needing_scores(scores, now)):
+    # Final scores: ESPN first (free), The Odds API only for what ESPN can't match.
+    from_espn = record_espn_finals(scores, espn, now)
+    print(f"ESPN: {from_espn} final score(s) in {espn.calls} call(s)")
+    # Fallback costs 2 credits per sport, so only for games ESPN still can't
+    # match half a day after they should have finished.
+    for sport in sorted(sports_needing_scores(scores, now, extra_hours=12)):
         if not credits_ok(api, 2):
             notes.append("Skipped checking final scores to save API credits.")
             break
@@ -140,8 +173,9 @@ def run(api: OddsAPI, now: datetime | None = None) -> dict:
         except OddsAPIError as e:
             print(f"{sport} scores: {e}", file=sys.stderr)
 
-    graded = grade_history(history["picks"], scores["finals"], now)
+    graded = grade_history(history["picks"], scores["finals"], now, closes)
     prune(scores, now)
+    edges = find_edges(board)
 
     meta = {
         "generated_at": now.isoformat(),
@@ -157,6 +191,8 @@ def run(api: OddsAPI, now: datetime | None = None) -> dict:
     save(HISTORY_FILE, {"stake": config.STAKE, "picks": history["picks"]})
     save(SCORES_FILE, scores)
     save(SNAPSHOT_FILE, snapshots, indent=None)
+    save(CLOSES_FILE, closes, indent=None)
+    save(EDGES_FILE, {"generated_at": meta["generated_at"], **edges})
     print(f"{len(picks)} pick(s), {len(board)} game(s) from {', '.join(checked) or 'no sports'}; "
           f"graded {graded}; used {api.used_this_run} credit(s), {api.remaining} left.")
     return meta

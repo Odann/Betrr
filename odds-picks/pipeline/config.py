@@ -24,6 +24,13 @@ GRADE_AFTER_HOURS = 4     # look for a final score this long after a game starts
 SCORES_DAYS_BACK = 3      # how far back the scores lookup goes (max 3)
 KEEP_SCORES_DAYS = 30     # final scores kept for grading bets saved in the browser
 
+# Bet sizing: picks suggest this share of a full Kelly stake, capped
+KELLY_FRACTION = 0.25
+KELLY_CAP = 0.03          # never suggest more than 3% of bankroll on one bet
+
+# Closing lines are kept this long for closing line value on saved bets
+KEEP_CLOSES_DAYS = 30
+
 # Stop spending credits when the monthly allowance gets this low
 CREDIT_FLOOR = 25
 

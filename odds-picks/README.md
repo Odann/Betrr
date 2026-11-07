@@ -60,8 +60,9 @@ so the model's track record can be checked there even though the page doesn't sh
 
 All the logic is in `pipeline/analyze.py`.
 
-1. **Fair chance:** each sportsbook's odds include a margin. That is removed for
-   every book, and the books are averaged into a consensus probability. Spreads and
+1. **Fair chance:** each sportsbook's odds include a margin. Shin's method removes
+   it for every book, taking more off longshots (where books pad prices most), and
+   the books are averaged into a consensus probability. Spreads and
    totals are compared at the line most books offer (say −1.5 or 6.5), so every
    price in the average is for the same bet.
 2. **Value:** a pick needs a book whose price pays at least 2% more than that fair
@@ -71,6 +72,21 @@ All the logic is in `pipeline/analyze.py`.
    against a pick lowers its confidence.
 4. **Confidence (0–100):** edge size (up to 50), number of books (up to 20), how
    closely the books agree (up to 15), and line movement (±15).
+
+## Batch 1 upgrades
+
+- **Final scores come from ESPN's public scoreboard** (free, no key), so grading no
+  longer spends Odds API credits. It's unofficial; if it can't match a game for half
+  a day, the pipeline falls back to The Odds API.
+- **Closing line value (CLV):** your saved bets show how your price compared with the
+  fair price at the last update before the game started. Beating the close regularly
+  is the best early sign of real edge.
+- **Kelly sizing:** set a bankroll in the bet slip and picks suggest a stake: a quarter
+  of the Kelly amount, never more than 3% of bankroll.
+- **Arbitrage and middles** appear at the top of Build a bet when books disagree enough.
+- **Game detail drawer:** tap a game's book count to see every sportsbook's price,
+  fair odds and line history. Tap any price to add that exact bet.
+- **Edge heat:** prices that beat fair odds glow cyan, brighter for a bigger edge.
 
 ## Settings
 
@@ -117,11 +133,15 @@ The workflow also rebuilds it on every run.
 | `pipeline/analyze.py` | Odds math and pick rules |
 | `pipeline/grade.py` | Final scores and win/loss/push grading |
 | `pipeline/odds_client.py` | The Odds API calls |
+| `pipeline/espn.py` | Final scores from ESPN's public scoreboard |
+| `pipeline/edges.py` | Arbitrage and middle finder |
 | `pipeline/config.py` | Settings |
 | `docs/index.html` | The dashboard |
 | `docs/data/picks.json` | Current picks (rewritten each run) |
 | `docs/data/board.json` | Every upcoming game's prices, for Build a bet |
-| `docs/data/scores.json` | Recent final scores, for grading |
+| `docs/data/scores.json` | Recent final scores (from ESPN), for grading |
+| `docs/data/closes.json` | Each bet's last fair price before its game started, for closing line value |
+| `docs/data/edges.json` | Arbitrage and middles across books |
 | `docs/data/history.json` | Every pick ever made, with results |
 | `docs/data/snapshots.json` | Last run's fair chances, for line movement |
 | `.github/workflows/update-picks.yml` | The schedule |
