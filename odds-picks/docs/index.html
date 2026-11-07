@@ -812,7 +812,7 @@ function edgeCard(e) {
     : `<span class="tag bg-gold text-void">Middle</span> <span class="text-sm text-ink">Both win if the ${e.market === 'totals' ? 'total is' : `${esc(shortTeam(e.home_team))} margin is`} <b>${middleHits(e).join(' or ')}</b></span>`;
   const foot = e.kind === 'arb'
     ? `Stake ${dollars(e.total_stake)} split as shown to collect about ${dollars(e.total_stake * (1 + e.profit_pct))}.`
-    : `$100 each: win ${dollars(e.if_hits)} if it lands, ${money(e.if_misses)} if it doesn't.`;
+    : `$100 each: win ${dollars(e.if_hits)} if it lands (about ${pct(e.land_chance ?? 0, 0)} of the time), ${money(e.if_misses)} if it doesn't. Expected ${money(e.ev ?? 0)}.`;
   return `<li class="py-3 border-t border-line first:border-t-0">
     <p class="flex flex-wrap items-center gap-2">${head}</p>
     <p class="text-xs text-rose mt-1">${esc(sportName(e.sport))} ${esc(MARKET_NAMES[e.market])}, ${esc(e.away_team)} at ${esc(e.home_team)}, ${esc(gameTime(e.start_time_utc))}</p>

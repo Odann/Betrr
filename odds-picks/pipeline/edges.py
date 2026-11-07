@@ -19,6 +19,29 @@ from .analyze import american_to_decimal, fmt_point
 STAKE = 100                  # stakes and payouts are shown for $100 on each side
 MAX_MIDDLE_COST = 12         # skip middles that lose more than this on $200 if they miss
 
+# Rough chance that a game lands on one exact number, by sport and market.
+# These are typical-season figures: NBA and NFL totals spread thinly across
+# many numbers, NFL margins cluster on 3 and 7, and hockey has few goals.
+# A middle is only kept when its window lands often enough to pay for the
+# small loss when it misses (positive expected value).
+LAND = {
+    ("basketball_nba", "totals"): {}, ("basketball_nba", "spreads"): {},
+    ("americanfootball_nfl", "totals"): {},
+    ("americanfootball_nfl", "spreads"): {3: .15, 7: .09, 6: .05, 10: .05, 4: .045, 14: .045, 1: .035, 17: .03},
+    ("icehockey_nhl", "totals"): {3: .08, 4: .12, 5: .17, 6: .17, 7: .14, 8: .09, 9: .05},
+    ("icehockey_nhl", "spreads"): {1: .33, 2: .15, 3: .09, 4: .04},
+}
+LAND_DEFAULT = {"basketball_nba": .03, "americanfootball_nfl": .025, "icehockey_nhl": .03}
+
+
+def land_chance(sport: str, market: str, numbers: list[int]) -> float:
+    table = LAND.get((sport, market), {})
+    default = LAND_DEFAULT.get(sport, .03)
+    # margins can land on either side (home by 3 or away by 3); only the side
+    # inside the window counts, so use the number's absolute value
+    return min(sum(table.get(abs(n), default) / (2 if market == "spreads" and abs(n) > 0 else 1)
+                   for n in numbers), .95)
+
 
 def _game_meta(g: dict) -> dict:
     return {"event_id": g["event_id"], "sport": g["sport"], "home_team": g["home_team"],
@@ -86,17 +109,23 @@ def find_middles(g: dict) -> list[dict]:
                 miss = round(min(win_a, win_b) - STAKE, 2)
                 if -miss > MAX_MIDDLE_COST:
                     continue
+                numbers = list(range(math.floor(lo) + 1, math.ceil(hi)))
+                chance = land_chance(g["sport"], market, numbers)
+                ev = chance * (win_a + win_b) + (1 - chance) * miss
+                if ev <= 0:
+                    continue
                 key = (pa, pb)
                 if key in seen:
                     continue
                 seen.add(key)
                 out.append({**_game_meta(g), "kind": "middle", "market": market,
                             "window": [lo, hi], "if_hits": round(win_a + win_b, 2), "if_misses": miss,
+                            "land_chance": round(chance, 3), "ev": round(ev, 2),
                             "total_stake": 2 * STAKE,
                             "legs": [{"book": book_a, "label": _label(market, a_key, pa, g), "price": price_a, "point": pa, "stake": STAKE},
                                      {"book": book_b, "label": _label(market, b_key, pb, g), "price": price_b, "point": pb, "stake": STAKE}]})
     # keep the best few per game: widest window, then cheapest miss
-    out.sort(key=lambda x: (-(x["window"][1] - x["window"][0]), -x["if_misses"]))
+    out.sort(key=lambda x: -x["ev"])
     return out[:3]
 
 
