@@ -88,8 +88,15 @@
    ],
    "three_way": false,
    "logged_at": "2026-11-02T22:07:44.732967+00:00",
-   "result": null,
-   "profit": null
+   "result": "loss",
+   "profit": -10,
+   "close": {
+    "fair": 0.1822,
+    "odds": 410,
+    "point": null
+   },
+   "clv": -0.089,
+   "final_score": "New York Jets 12, Kansas City Chiefs 35"
   },
   {
    "id": "44d8c37868b700e90f816db7c5df5cdd|h2h|home",
@@ -119,8 +126,15 @@
    ],
    "three_way": false,
    "logged_at": "2026-11-02T22:07:44.732967+00:00",
-   "result": null,
-   "profit": null
+   "result": "loss",
+   "profit": -10,
+   "close": {
+    "fair": 0.2689,
+    "odds": 260,
+    "point": null
+   },
+   "clv": 0.0622,
+   "final_score": "Detroit Lions 19, Miami Dolphins 9"
   },
   {
    "id": "ac9d38a18d5c92814233a31aa9a48d78|h2h|away",
@@ -151,7 +165,13 @@
    "three_way": false,
    "logged_at": "2026-11-02T22:07:44.732967+00:00",
    "result": null,
-   "profit": null
+   "profit": null,
+   "close": {
+    "fair": 0.1947,
+    "odds": 385,
+    "point": null
+   },
+   "clv": 0.0027
   },
   {
    "id": "c75744790b7acf6260c78ba5e739c0e5|h2h|home",
@@ -246,7 +266,13 @@
    "three_way": false,
    "logged_at": "2026-11-03T14:46:42.373261+00:00",
    "result": null,
-   "profit": null
+   "profit": null,
+   "close": {
+    "fair": 0.2141,
+    "odds": 350,
+    "point": null
+   },
+   "clv": 0.2846
   },
   {
    "id": "6b25f3932db93d4c5ad7658def2645bf|h2h|away",
@@ -658,8 +684,15 @@
    ],
    "three_way": false,
    "logged_at": "2026-11-07T00:04:24.833869+00:00",
-   "result": null,
-   "profit": null
+   "result": "loss",
+   "profit": -10,
+   "close": {
+    "fair": 0.1963,
+    "odds": 382,
+    "point": null
+   },
+   "clv": -0.097,
+   "final_score": "Chicago Blackhawks 2, Carolina Hurricanes 9"
   },
   {
    "id": "b5934d2ce05af5dac632f1e8b7ce5fb6|totals|over",
@@ -690,8 +723,15 @@
    ],
    "three_way": false,
    "logged_at": "2026-11-07T23:37:02.650912+00:00",
-   "result": null,
-   "profit": null
+   "result": "win",
+   "profit": 10.0,
+   "close": {
+    "fair": 0.5095,
+    "odds": 100,
+    "point": 6.5
+   },
+   "clv": 0.019,
+   "final_score": "Tampa Bay Lightning 4, Minnesota Wild 3"
   }
  ]
 }
