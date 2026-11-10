@@ -1,14 +1,44 @@
 {
- "generated_at": "2026-11-08T23:40:26.726181+00:00",
+ "generated_at": "2026-11-10T02:40:38.131413+00:00",
  "sports_checked": [
   "icehockey_nhl",
   "basketball_nba",
   "americanfootball_nfl"
  ],
  "off_season": [],
- "credits_remaining": 385,
+ "credits_remaining": 376,
  "credits_used_this_run": 9,
  "notes": [],
  "stake": 10,
- "picks": []
+ "picks": [
+  {
+   "id": "be0e03cc42fbc9b6962467b22c7bf9dd|h2h|away",
+   "event_id": "be0e03cc42fbc9b6962467b22c7bf9dd",
+   "sport": "americanfootball_nfl",
+   "market": "h2h",
+   "market_label": "Moneyline",
+   "side": "away",
+   "point": null,
+   "pick": "Houston Texans",
+   "home_team": "Cleveland Browns",
+   "away_team": "Houston Texans",
+   "start_time_utc": "2026-11-15T18:00:00+00:00",
+   "odds": -205,
+   "sportsbook": "BetRivers",
+   "fair_win_prob": 0.6747,
+   "expected_value": 0.0039,
+   "kelly": 0.002,
+   "books": 9,
+   "line_movement": 0.0319,
+   "confidence": 49,
+   "rating": "Medium",
+   "reasons": [
+    {
+     "type": "move",
+     "text": "Fair chance up 3.2% since the last update"
+    }
+   ],
+   "three_way": false
+  }
+ ]
 }

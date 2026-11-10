@@ -56,9 +56,16 @@
    ],
    "three_way": false,
    "logged_at": "2026-11-02T06:15:21.487028+00:00",
-   "result": null,
-   "profit": null,
-   "market": "h2h"
+   "result": "loss",
+   "profit": -10,
+   "market": "h2h",
+   "close": {
+    "fair": 0.2869,
+    "odds": 234,
+    "point": null
+   },
+   "clv": -0.0245,
+   "final_score": "Tampa Bay Buccaneers 24, Chicago Bears 27"
   },
   {
    "id": "e354e6a04b1cb9c96e549b863debb92e|h2h|away",
@@ -164,14 +171,15 @@
    ],
    "three_way": false,
    "logged_at": "2026-11-02T22:07:44.732967+00:00",
-   "result": null,
-   "profit": null,
+   "result": "loss",
+   "profit": -10,
    "close": {
     "fair": 0.1947,
     "odds": 385,
     "point": null
    },
-   "clv": 0.0027
+   "clv": 0.0027,
+   "final_score": "Las Vegas Raiders 17, San Francisco 49ers 38"
   },
   {
    "id": "c75744790b7acf6260c78ba5e739c0e5|h2h|home",
@@ -265,14 +273,15 @@
    ],
    "three_way": false,
    "logged_at": "2026-11-03T14:46:42.373261+00:00",
-   "result": null,
-   "profit": null,
+   "result": "loss",
+   "profit": -10,
    "close": {
     "fair": 0.2141,
     "odds": 350,
     "point": null
    },
-   "clv": 0.2846
+   "clv": 0.2846,
+   "final_score": "Arizona Cardinals 3, Seattle Seahawks 17"
   },
   {
    "id": "6b25f3932db93d4c5ad7658def2645bf|h2h|away",
@@ -732,6 +741,38 @@
    },
    "clv": 0.019,
    "final_score": "Tampa Bay Lightning 4, Minnesota Wild 3"
+  },
+  {
+   "id": "be0e03cc42fbc9b6962467b22c7bf9dd|h2h|away",
+   "event_id": "be0e03cc42fbc9b6962467b22c7bf9dd",
+   "sport": "americanfootball_nfl",
+   "market": "h2h",
+   "market_label": "Moneyline",
+   "side": "away",
+   "point": null,
+   "pick": "Houston Texans",
+   "home_team": "Cleveland Browns",
+   "away_team": "Houston Texans",
+   "start_time_utc": "2026-11-15T18:00:00+00:00",
+   "odds": -205,
+   "sportsbook": "BetRivers",
+   "fair_win_prob": 0.6747,
+   "expected_value": 0.0039,
+   "kelly": 0.002,
+   "books": 9,
+   "line_movement": 0.0319,
+   "confidence": 49,
+   "rating": "Medium",
+   "reasons": [
+    {
+     "type": "move",
+     "text": "Fair chance up 3.2% since the last update"
+    }
+   ],
+   "three_way": false,
+   "logged_at": "2026-11-10T02:40:38.131413+00:00",
+   "result": null,
+   "profit": null
   }
  ]
 }
