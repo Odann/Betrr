@@ -1306,15 +1306,72 @@
    "away_score": 93.0,
    "start_time_utc": "2026-11-09T00:40:00+00:00",
    "source": "espn"
+  },
+  "17ad7eff2f7875e20a8109abe40470e3": {
+   "sport": "americanfootball_nfl",
+   "home_team": "Minnesota Vikings",
+   "away_team": "Buffalo Bills",
+   "home_score": 6.0,
+   "away_score": 23.0,
+   "start_time_utc": "2026-11-10T01:15:00+00:00",
+   "source": "espn"
+  },
+  "c0de79c9c801e5fc0d1bb3873b10a164": {
+   "sport": "icehockey_nhl",
+   "home_team": "Edmonton Oilers",
+   "away_team": "New York Rangers",
+   "home_score": 3.0,
+   "away_score": 1.0,
+   "start_time_utc": "2026-11-10T01:00:00+00:00",
+   "source": "espn"
+  },
+  "dc61de43b5db9de357f48f44c8022494": {
+   "sport": "basketball_nba",
+   "home_team": "Houston Rockets",
+   "away_team": "Denver Nuggets",
+   "home_score": 110.0,
+   "away_score": 100.0,
+   "start_time_utc": "2026-11-10T01:40:00+00:00",
+   "source": "espn"
+  },
+  "dc4eb6ae9979b3d3418c35b4210f0c72": {
+   "sport": "basketball_nba",
+   "home_team": "Phoenix Suns",
+   "away_team": "San Antonio Spurs",
+   "home_score": 96.0,
+   "away_score": 122.0,
+   "start_time_utc": "2026-11-10T02:10:00+00:00",
+   "source": "espn"
+  },
+  "d6c28acaab1a3d7db58968f5f33fbf3a": {
+   "sport": "icehockey_nhl",
+   "home_team": "Vancouver Canucks",
+   "away_team": "Philadelphia Flyers",
+   "home_score": 1.0,
+   "away_score": 3.0,
+   "start_time_utc": "2026-11-10T02:30:00+00:00",
+   "source": "espn"
+  },
+  "4b345990c8a04ff88ce31d233a406011": {
+   "sport": "icehockey_nhl",
+   "home_team": "San Jose Sharks",
+   "away_team": "New York Islanders",
+   "home_score": 3.0,
+   "away_score": 2.0,
+   "start_time_utc": "2026-11-10T03:00:00+00:00",
+   "source": "espn"
+  },
+  "3619e1cf4b0a325c3e0ba5b1fb7f3d91": {
+   "sport": "basketball_nba",
+   "home_team": "Golden State Warriors",
+   "away_team": "New Orleans Pelicans",
+   "home_score": 138.0,
+   "away_score": 87.0,
+   "start_time_utc": "2026-11-10T03:10:00+00:00",
+   "source": "espn"
   }
  },
  "awaiting": {
-  "17ad7eff2f7875e20a8109abe40470e3": {
-   "sport": "americanfootball_nfl",
-   "start_time_utc": "2026-11-10T01:15:00+00:00",
-   "home_team": "Minnesota Vikings",
-   "away_team": "Buffalo Bills"
-  },
   "a6555e8b7252dfb32f1817fc8c59ad83": {
    "sport": "basketball_nba",
    "start_time_utc": "2026-12-25T17:10:00+00:00",
@@ -1427,42 +1484,6 @@
    "home_team": "Baltimore Ravens",
    "away_team": "Los Angeles Chargers"
   },
-  "c0de79c9c801e5fc0d1bb3873b10a164": {
-   "sport": "icehockey_nhl",
-   "start_time_utc": "2026-11-10T01:00:00+00:00",
-   "home_team": "Edmonton Oilers",
-   "away_team": "New York Rangers"
-  },
-  "dc61de43b5db9de357f48f44c8022494": {
-   "sport": "basketball_nba",
-   "start_time_utc": "2026-11-10T01:40:00+00:00",
-   "home_team": "Houston Rockets",
-   "away_team": "Denver Nuggets"
-  },
-  "dc4eb6ae9979b3d3418c35b4210f0c72": {
-   "sport": "basketball_nba",
-   "start_time_utc": "2026-11-10T02:10:00+00:00",
-   "home_team": "Phoenix Suns",
-   "away_team": "San Antonio Spurs"
-  },
-  "d6c28acaab1a3d7db58968f5f33fbf3a": {
-   "sport": "icehockey_nhl",
-   "start_time_utc": "2026-11-10T02:30:00+00:00",
-   "home_team": "Vancouver Canucks",
-   "away_team": "Philadelphia Flyers"
-  },
-  "4b345990c8a04ff88ce31d233a406011": {
-   "sport": "icehockey_nhl",
-   "start_time_utc": "2026-11-10T03:00:00+00:00",
-   "home_team": "San Jose Sharks",
-   "away_team": "New York Islanders"
-  },
-  "3619e1cf4b0a325c3e0ba5b1fb7f3d91": {
-   "sport": "basketball_nba",
-   "start_time_utc": "2026-11-10T03:10:00+00:00",
-   "home_team": "Golden State Warriors",
-   "away_team": "New Orleans Pelicans"
-  },
   "54a0d86217b79fbc969d6fca0e1564e8": {
    "sport": "icehockey_nhl",
    "start_time_utc": "2026-11-11T00:10:00+00:00",
@@ -1534,6 +1555,168 @@
    "start_time_utc": "2026-11-11T04:10:00+00:00",
    "home_team": "Portland Trail Blazers",
    "away_team": "Oklahoma City Thunder"
+  },
+  "8178ff2ec61f604b61dfe6d7b8d71103": {
+   "sport": "basketball_nba",
+   "start_time_utc": "2026-11-11T02:10:00+00:00",
+   "home_team": "Phoenix Suns",
+   "away_team": "Los Angeles Clippers"
+  },
+  "79041ec71c97248859299c4b6211cc17": {
+   "sport": "icehockey_nhl",
+   "start_time_utc": "2026-11-12T00:10:00+00:00",
+   "home_team": "Buffalo Sabres",
+   "away_team": "Tampa Bay Lightning"
+  },
+  "e9545a3084389f5f3429e19fea891124": {
+   "sport": "basketball_nba",
+   "start_time_utc": "2026-11-12T00:10:00+00:00",
+   "home_team": "Indiana Pacers",
+   "away_team": "Washington Wizards"
+  },
+  "d6fb69c3f844f53b1bb2619066cd7947": {
+   "sport": "icehockey_nhl",
+   "start_time_utc": "2026-11-12T00:40:00+00:00",
+   "home_team": "Calgary Flames",
+   "away_team": "New York Rangers"
+  },
+  "e6a37eea1dddcbd0384c81237e81f47f": {
+   "sport": "basketball_nba",
+   "start_time_utc": "2026-11-12T01:10:00+00:00",
+   "home_team": "New Orleans Pelicans",
+   "away_team": "Brooklyn Nets"
+  },
+  "8e0fdbf07b1f288b00ec5b370f6c1e2d": {
+   "sport": "basketball_nba",
+   "start_time_utc": "2026-11-12T01:10:00+00:00",
+   "home_team": "Chicago Bulls",
+   "away_team": "San Antonio Spurs"
+  },
+  "21792501482fecfaacd3a4a24776c9e6": {
+   "sport": "basketball_nba",
+   "start_time_utc": "2026-11-12T01:10:00+00:00",
+   "home_team": "Memphis Grizzlies",
+   "away_team": "Denver Nuggets"
+  },
+  "78267bbb84304764c453515236c3ccce": {
+   "sport": "icehockey_nhl",
+   "start_time_utc": "2026-11-12T02:10:00+00:00",
+   "home_team": "Edmonton Oilers",
+   "away_team": "Philadelphia Flyers"
+  },
+  "81ee484309522975fbb4df2f859fa136": {
+   "sport": "icehockey_nhl",
+   "start_time_utc": "2026-11-12T02:40:00+00:00",
+   "home_team": "Vegas Golden Knights",
+   "away_team": "Utah Mammoth"
+  },
+  "f41d186dc7a7dcf01adab32579a82ca3": {
+   "sport": "basketball_nba",
+   "start_time_utc": "2026-11-12T02:40:00+00:00",
+   "home_team": "Houston Rockets",
+   "away_team": "Golden State Warriors"
+  },
+  "43a0ad5ba8bff6cdca19964348b53eff": {
+   "sport": "icehockey_nhl",
+   "start_time_utc": "2026-11-12T03:10:00+00:00",
+   "home_team": "Anaheim Ducks",
+   "away_team": "Nashville Predators"
+  },
+  "e75aa3d5c3b4939e080de0739fc8196a": {
+   "sport": "icehockey_nhl",
+   "start_time_utc": "2026-11-12T03:10:00+00:00",
+   "home_team": "San Jose Sharks",
+   "away_team": "Pittsburgh Penguins"
+  },
+  "d4f288eeb0132970825be17748f2b4f0": {
+   "sport": "basketball_nba",
+   "start_time_utc": "2026-11-12T03:10:00+00:00",
+   "home_team": "Portland Trail Blazers",
+   "away_team": "Oklahoma City Thunder"
+  },
+  "5a2820b80e20b69258bd5eb25c18eb78": {
+   "sport": "icehockey_nhl",
+   "start_time_utc": "2026-11-12T17:00:00+00:00",
+   "home_team": "Seattle Kraken",
+   "away_team": "Carolina Hurricanes"
+  },
+  "66f9e83cf025d58acee12bce18661fb3": {
+   "sport": "americanfootball_nfl",
+   "start_time_utc": "2026-11-20T01:15:00+00:00",
+   "home_team": "Houston Texans",
+   "away_team": "Indianapolis Colts"
+  },
+  "403a88701352da05b0710a9e883b803e": {
+   "sport": "americanfootball_nfl",
+   "start_time_utc": "2026-11-22T18:00:00+00:00",
+   "home_team": "Kansas City Chiefs",
+   "away_team": "Arizona Cardinals"
+  },
+  "4527f57f5bc32742d8194af1ccf7da7e": {
+   "sport": "americanfootball_nfl",
+   "start_time_utc": "2026-11-22T18:00:00+00:00",
+   "home_team": "Carolina Panthers",
+   "away_team": "Baltimore Ravens"
+  },
+  "4c5b1c0843a260278e95eb93e7787576": {
+   "sport": "americanfootball_nfl",
+   "start_time_utc": "2026-11-22T18:00:00+00:00",
+   "home_team": "Buffalo Bills",
+   "away_team": "Miami Dolphins"
+  },
+  "3ea90704fb576633bd1e2fa5aafd9ea3": {
+   "sport": "americanfootball_nfl",
+   "start_time_utc": "2026-11-22T18:00:00+00:00",
+   "home_team": "Chicago Bears",
+   "away_team": "New Orleans Saints"
+  },
+  "5e63079b678f8c13419adc169fff02d3": {
+   "sport": "americanfootball_nfl",
+   "start_time_utc": "2026-11-22T18:00:00+00:00",
+   "home_team": "Dallas Cowboys",
+   "away_team": "Tennessee Titans"
+  },
+  "41e2dd69bddd65d7e823d9ed61cc2afc": {
+   "sport": "americanfootball_nfl",
+   "start_time_utc": "2026-11-22T18:00:00+00:00",
+   "home_team": "Detroit Lions",
+   "away_team": "Tampa Bay Buccaneers"
+  },
+  "cbe45bafcc2615fc1d96cbc12840377a": {
+   "sport": "americanfootball_nfl",
+   "start_time_utc": "2026-11-22T18:00:00+00:00",
+   "home_team": "Philadelphia Eagles",
+   "away_team": "Pittsburgh Steelers"
+  },
+  "4b20b742b6168aaca4f25d87f11b1526": {
+   "sport": "americanfootball_nfl",
+   "start_time_utc": "2026-11-22T21:05:00+00:00",
+   "home_team": "Los Angeles Chargers",
+   "away_team": "New York Jets"
+  },
+  "1940706a79cbcbafacdcbf231069716b": {
+   "sport": "americanfootball_nfl",
+   "start_time_utc": "2026-11-22T21:25:00+00:00",
+   "home_team": "Denver Broncos",
+   "away_team": "Las Vegas Raiders"
+  },
+  "8ba112fabf4e87639338a5f437c5abfe": {
+   "sport": "americanfootball_nfl",
+   "start_time_utc": "2026-11-22T21:25:00+00:00",
+   "home_team": "New York Giants",
+   "away_team": "Jacksonville Jaguars"
+  },
+  "60e1d27b083a335b722c2c852ea85612": {
+   "sport": "americanfootball_nfl",
+   "start_time_utc": "2026-11-23T01:20:00+00:00",
+   "home_team": "San Francisco 49ers",
+   "away_team": "Minnesota Vikings"
+  },
+  "3a60ed1d20004aa4d4772b2c1a2272e7": {
+   "sport": "americanfootball_nfl",
+   "start_time_utc": "2026-11-24T01:15:00+00:00",
+   "home_team": "Washington Commanders",
+   "away_team": "Cincinnati Bengals"
   }
  }
 }
