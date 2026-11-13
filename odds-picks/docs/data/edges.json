@@ -1,5 +1,176 @@
 {
- "generated_at": "2026-11-12T01:52:52.185910+00:00",
+ "generated_at": "2026-11-13T01:00:37.665196+00:00",
  "arbs": [],
- "middles": []
+ "middles": [
+  {
+   "event_id": "6669b911691463c669a5c10574742e8e",
+   "sport": "basketball_nba",
+   "home_team": "Indiana Pacers",
+   "away_team": "New York Knicks",
+   "start_time_utc": "2026-11-14T00:10:00+00:00",
+   "kind": "middle",
+   "market": "totals",
+   "window": [
+    219.5,
+    221.5
+   ],
+   "if_hits": 188.95,
+   "if_misses": -9.09,
+   "land_chance": 0.06,
+   "ev": 2.79,
+   "total_stake": 200,
+   "legs": [
+    {
+     "book": "LowVig.ag",
+     "label": "Over 219.5",
+     "price": -102,
+     "point": 219.5,
+     "stake": 100
+    },
+    {
+     "book": "DraftKings",
+     "label": "Under 221.5",
+     "price": -110,
+     "point": 221.5,
+     "stake": 100
+    }
+   ]
+  },
+  {
+   "event_id": "80ffc963f864f3d4fcefa82fd02b7d7b",
+   "sport": "basketball_nba",
+   "home_team": "Chicago Bulls",
+   "away_team": "Atlanta Hawks",
+   "start_time_utc": "2026-11-14T01:10:00+00:00",
+   "kind": "middle",
+   "market": "totals",
+   "window": [
+    244.5,
+    246.5
+   ],
+   "if_hits": 181.82,
+   "if_misses": -9.09,
+   "land_chance": 0.06,
+   "ev": 2.36,
+   "total_stake": 200,
+   "legs": [
+    {
+     "book": "FanDuel",
+     "label": "Over 244.5",
+     "price": -110,
+     "point": 244.5,
+     "stake": 100
+    },
+    {
+     "book": "DraftKings",
+     "label": "Under 246.5",
+     "price": -110,
+     "point": 246.5,
+     "stake": 100
+    }
+   ]
+  },
+  {
+   "event_id": "80ffc963f864f3d4fcefa82fd02b7d7b",
+   "sport": "basketball_nba",
+   "home_team": "Chicago Bulls",
+   "away_team": "Atlanta Hawks",
+   "start_time_utc": "2026-11-14T01:10:00+00:00",
+   "kind": "middle",
+   "market": "totals",
+   "window": [
+    244.0,
+    246.5
+   ],
+   "if_hits": 181.82,
+   "if_misses": -9.09,
+   "land_chance": 0.06,
+   "ev": 2.36,
+   "total_stake": 200,
+   "legs": [
+    {
+     "book": "BetOnline.ag",
+     "label": "Over 244",
+     "price": -110,
+     "point": 244.0,
+     "stake": 100
+    },
+    {
+     "book": "DraftKings",
+     "label": "Under 246.5",
+     "price": -110,
+     "point": 246.5,
+     "stake": 100
+    }
+   ]
+  },
+  {
+   "event_id": "58b860d500be69ebf853926aa1ac8271",
+   "sport": "basketball_nba",
+   "home_team": "Miami Heat",
+   "away_team": "Cleveland Cavaliers",
+   "start_time_utc": "2026-11-14T01:10:00+00:00",
+   "kind": "middle",
+   "market": "totals",
+   "window": [
+    235.5,
+    237.5
+   ],
+   "if_hits": 181.82,
+   "if_misses": -9.09,
+   "land_chance": 0.06,
+   "ev": 2.36,
+   "total_stake": 200,
+   "legs": [
+    {
+     "book": "FanDuel",
+     "label": "Over 235.5",
+     "price": -110,
+     "point": 235.5,
+     "stake": 100
+    },
+    {
+     "book": "DraftKings",
+     "label": "Under 237.5",
+     "price": -110,
+     "point": 237.5,
+     "stake": 100
+    }
+   ]
+  },
+  {
+   "event_id": "8a40b260e8fa0d67c1f2bc2b39a24982",
+   "sport": "basketball_nba",
+   "home_team": "New Orleans Pelicans",
+   "away_team": "Memphis Grizzlies",
+   "start_time_utc": "2026-11-14T01:10:00+00:00",
+   "kind": "middle",
+   "market": "totals",
+   "window": [
+    233.5,
+    235.5
+   ],
+   "if_hits": 184.52,
+   "if_misses": -10.71,
+   "land_chance": 0.06,
+   "ev": 1.0,
+   "total_stake": 200,
+   "legs": [
+    {
+     "book": "BetRivers",
+     "label": "Over 233.5",
+     "price": -112,
+     "point": 233.5,
+     "stake": 100
+    },
+    {
+     "book": "BetOnline.ag",
+     "label": "Under 235.5",
+     "price": -105,
+     "point": 235.5,
+     "stake": 100
+    }
+   ]
+  }
+ ]
 }
