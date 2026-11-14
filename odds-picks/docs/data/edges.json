@@ -1,5 +1,34 @@
 {
- "generated_at": "2026-11-14T00:51:39.680801+00:00",
- "arbs": [],
+ "generated_at": "2026-11-14T23:51:00.007358+00:00",
+ "arbs": [
+  {
+   "event_id": "9df5283f800c7d4c2d0bd38b7c5f4846",
+   "sport": "icehockey_nhl",
+   "home_team": "Tampa Bay Lightning",
+   "away_team": "Detroit Red Wings",
+   "start_time_utc": "2026-11-15T00:10:00+00:00",
+   "kind": "arb",
+   "market": "h2h",
+   "line": null,
+   "profit_pct": 0.0037,
+   "total_stake": 200,
+   "legs": [
+    {
+     "book": "BetRivers",
+     "label": "Detroit Red Wings",
+     "price": 188,
+     "point": null,
+     "stake": 69.7
+    },
+    {
+     "book": "LowVig.ag",
+     "label": "Tampa Bay Lightning",
+     "price": -185,
+     "point": null,
+     "stake": 130.3
+    }
+   ]
+  }
+ ],
  "middles": []
 }
