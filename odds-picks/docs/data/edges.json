@@ -1,5 +1,97 @@
 {
- "generated_at": "2026-11-17T02:54:13.315184+00:00",
- "arbs": [],
- "middles": []
+ "generated_at": "2026-11-18T02:22:00.112268+00:00",
+ "arbs": [
+  {
+   "event_id": "2cdaecba7c0bff9b58a48a82e6ee17a7",
+   "sport": "americanfootball_nfl",
+   "home_team": "Tampa Bay Buccaneers",
+   "away_team": "Carolina Panthers",
+   "start_time_utc": "2026-12-01T01:15:00+00:00",
+   "kind": "arb",
+   "market": "h2h",
+   "line": null,
+   "profit_pct": 0.0061,
+   "total_stake": 200,
+   "legs": [
+    {
+     "book": "DraftKings",
+     "label": "Carolina Panthers",
+     "price": 124,
+     "point": null,
+     "stake": 89.83
+    },
+    {
+     "book": "BetRivers",
+     "label": "Tampa Bay Buccaneers",
+     "price": -121,
+     "point": null,
+     "stake": 110.17
+    }
+   ]
+  },
+  {
+   "event_id": "eaa993c3d62d6b5aeb6142cdd7862fd5",
+   "sport": "americanfootball_nfl",
+   "home_team": "Cleveland Browns",
+   "away_team": "Las Vegas Raiders",
+   "start_time_utc": "2026-11-30T01:20:00+00:00",
+   "kind": "arb",
+   "market": "h2h",
+   "line": null,
+   "profit_pct": 0.0037,
+   "total_stake": 200,
+   "legs": [
+    {
+     "book": "BetRivers",
+     "label": "Las Vegas Raiders",
+     "price": 188,
+     "point": null,
+     "stake": 69.7
+    },
+    {
+     "book": "DraftKings",
+     "label": "Cleveland Browns",
+     "price": -185,
+     "point": null,
+     "stake": 130.3
+    }
+   ]
+  }
+ ],
+ "middles": [
+  {
+   "event_id": "5b612899d6dcdf998107f2c6c6e49a58",
+   "sport": "americanfootball_nfl",
+   "home_team": "Los Angeles Rams",
+   "away_team": "Green Bay Packers",
+   "start_time_utc": "2026-11-26T01:00:00+00:00",
+   "kind": "middle",
+   "market": "totals",
+   "window": [
+    45.5,
+    46.5
+   ],
+   "if_hits": 190.48,
+   "if_misses": -4.76,
+   "land_chance": 0.025,
+   "ev": 0.12,
+   "total_stake": 200,
+   "legs": [
+    {
+     "book": "FanDuel",
+     "label": "Over 45.5",
+     "price": -105,
+     "point": 45.5,
+     "stake": 100
+    },
+    {
+     "book": "DraftKings",
+     "label": "Under 46.5",
+     "price": -105,
+     "point": 46.5,
+     "stake": 100
+    }
+   ]
+  }
+ ]
 }
