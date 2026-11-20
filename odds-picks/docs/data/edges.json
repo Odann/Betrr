@@ -1,37 +1,71 @@
 {
- "generated_at": "2026-11-19T01:51:37.632540+00:00",
+ "generated_at": "2026-11-20T01:45:01.482159+00:00",
  "arbs": [],
  "middles": [
   {
-   "event_id": "ffeefa47d95e7ee9505d1955c62e3ae4",
+   "event_id": "6e1faf38d3fed9e0396d6613891770e1",
    "sport": "basketball_nba",
-   "home_team": "Denver Nuggets",
-   "away_team": "Boston Celtics",
-   "start_time_utc": "2026-11-19T02:40:00+00:00",
+   "home_team": "Brooklyn Nets",
+   "away_team": "Orlando Magic",
+   "start_time_utc": "2026-11-21T00:40:00+00:00",
    "kind": "middle",
    "market": "totals",
    "window": [
-    218.5,
-    220.5
+    220.5,
+    222.5
    ],
-   "if_hits": 181.09,
-   "if_misses": -11.5,
+   "if_hits": 185.25,
+   "if_misses": -9.09,
    "land_chance": 0.06,
-   "ev": 0.06,
+   "ev": 2.57,
    "total_stake": 200,
    "legs": [
     {
-     "book": "DraftKings",
-     "label": "Over 218.5",
-     "price": -113,
-     "point": 218.5,
+     "book": "FanDuel",
+     "label": "Over 220.5",
+     "price": -110,
+     "point": 220.5,
      "stake": 100
     },
     {
-     "book": "BetRivers",
-     "label": "Under 220.5",
-     "price": -108,
-     "point": 220.5,
+     "book": "DraftKings",
+     "label": "Under 222.5",
+     "price": -106,
+     "point": 222.5,
+     "stake": 100
+    }
+   ]
+  },
+  {
+   "event_id": "d6ed1e97c331fc604506e4c354ab1cdc",
+   "sport": "basketball_nba",
+   "home_team": "Chicago Bulls",
+   "away_team": "Washington Wizards",
+   "start_time_utc": "2026-11-21T01:10:00+00:00",
+   "kind": "middle",
+   "market": "totals",
+   "window": [
+    240.5,
+    242.5
+   ],
+   "if_hits": 184.37,
+   "if_misses": -9.09,
+   "land_chance": 0.06,
+   "ev": 2.52,
+   "total_stake": 200,
+   "legs": [
+    {
+     "book": "LowVig.ag",
+     "label": "Over 240.5",
+     "price": -107,
+     "point": 240.5,
+     "stake": 100
+    },
+    {
+     "book": "FanDuel",
+     "label": "Under 242.5",
+     "price": -110,
+     "point": 242.5,
      "stake": 100
     }
    ]
