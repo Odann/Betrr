@@ -1,40 +1,5 @@
 {
- "generated_at": "2026-11-22T00:17:19.549474+00:00",
+ "generated_at": "2026-11-23T00:47:39.205787+00:00",
  "arbs": [],
- "middles": [
-  {
-   "event_id": "37e3f99d7ee68587400e99e417db0e6a",
-   "sport": "basketball_nba",
-   "home_team": "Minnesota Timberwolves",
-   "away_team": "Memphis Grizzlies",
-   "start_time_utc": "2026-11-22T01:10:00+00:00",
-   "kind": "middle",
-   "market": "totals",
-   "window": [
-    227.5,
-    229.5
-   ],
-   "if_hits": 181.82,
-   "if_misses": -9.09,
-   "land_chance": 0.06,
-   "ev": 2.36,
-   "total_stake": 200,
-   "legs": [
-    {
-     "book": "DraftKings",
-     "label": "Over 227.5",
-     "price": -110,
-     "point": 227.5,
-     "stake": 100
-    },
-    {
-     "book": "BetMGM",
-     "label": "Under 229.5",
-     "price": -110,
-     "point": 229.5,
-     "stake": 100
-    }
-   ]
-  }
- ]
+ "middles": []
 }
