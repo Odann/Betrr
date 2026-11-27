@@ -794,6 +794,38 @@
    },
    "clv": 0.0025,
    "final_score": "Houston Texans 24, Cleveland Browns 27"
+  },
+  {
+   "id": "c64ceba13ede564e8658693e3171e7f9|h2h|away",
+   "event_id": "c64ceba13ede564e8658693e3171e7f9",
+   "sport": "americanfootball_nfl",
+   "market": "h2h",
+   "market_label": "Moneyline",
+   "side": "away",
+   "point": null,
+   "pick": "New England Patriots",
+   "home_team": "Los Angeles Chargers",
+   "away_team": "New England Patriots",
+   "start_time_utc": "2026-11-29T21:05:00+00:00",
+   "odds": -120,
+   "sportsbook": "FanDuel",
+   "fair_win_prob": 0.5494,
+   "expected_value": 0.0071,
+   "kelly": 0.0022,
+   "books": 9,
+   "line_movement": 0.0316,
+   "confidence": 50,
+   "rating": "Medium",
+   "reasons": [
+    {
+     "type": "move",
+     "text": "Fair chance up 3.2% since the last update"
+    }
+   ],
+   "three_way": false,
+   "logged_at": "2026-11-27T02:47:04.919003+00:00",
+   "result": null,
+   "profit": null
   }
  ]
 }

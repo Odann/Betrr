@@ -1,5 +1,69 @@
 {
- "generated_at": "2026-11-26T02:45:47.507322+00:00",
- "arbs": [],
- "middles": []
+ "generated_at": "2026-11-27T02:47:04.919003+00:00",
+ "arbs": [
+  {
+   "event_id": "326e8215b0369df0d4d65e5c0afe9ff5",
+   "sport": "basketball_nba",
+   "home_team": "Detroit Pistons",
+   "away_team": "Milwaukee Bucks",
+   "start_time_utc": "2026-11-28T00:40:00+00:00",
+   "kind": "arb",
+   "market": "spreads",
+   "line": -8.5,
+   "profit_pct": 0.0093,
+   "total_stake": 200,
+   "legs": [
+    {
+     "book": "BetRivers",
+     "label": "Milwaukee Bucks +8.5",
+     "price": 110,
+     "point": 8.5,
+     "stake": 96.13
+    },
+    {
+     "book": "LowVig.ag",
+     "label": "Detroit Pistons -8.5",
+     "price": -106,
+     "point": -8.5,
+     "stake": 103.87
+    }
+   ]
+  }
+ ],
+ "middles": [
+  {
+   "event_id": "428050645d1dc8b16d84287e21de55fa",
+   "sport": "basketball_nba",
+   "home_team": "Utah Jazz",
+   "away_team": "Denver Nuggets",
+   "start_time_utc": "2026-11-28T02:40:00+00:00",
+   "kind": "middle",
+   "market": "totals",
+   "window": [
+    228.5,
+    229.5
+   ],
+   "if_hits": 190.48,
+   "if_misses": -4.76,
+   "land_chance": 0.03,
+   "ev": 1.1,
+   "total_stake": 200,
+   "legs": [
+    {
+     "book": "Bovada",
+     "label": "Over 228.5",
+     "price": -105,
+     "point": 228.5,
+     "stake": 100
+    },
+    {
+     "book": "BetRivers",
+     "label": "Under 229.5",
+     "price": -105,
+     "point": 229.5,
+     "stake": 100
+    }
+   ]
+  }
+ ]
 }
