@@ -1,41 +1,41 @@
 {
- "generated_at": "2026-11-27T02:47:04.919003+00:00",
+ "generated_at": "2026-11-28T02:37:35.538153+00:00",
  "sports_checked": [
   "icehockey_nhl",
   "basketball_nba",
   "americanfootball_nfl"
  ],
  "off_season": [],
- "credits_remaining": 223,
+ "credits_remaining": 214,
  "credits_used_this_run": 9,
  "notes": [],
  "stake": 10,
  "picks": [
   {
-   "id": "c64ceba13ede564e8658693e3171e7f9|h2h|away",
-   "event_id": "c64ceba13ede564e8658693e3171e7f9",
-   "sport": "americanfootball_nfl",
+   "id": "b23cbb8c5378e792e7ac624fec34b7f5|h2h|away",
+   "event_id": "b23cbb8c5378e792e7ac624fec34b7f5",
+   "sport": "icehockey_nhl",
    "market": "h2h",
    "market_label": "Moneyline",
    "side": "away",
    "point": null,
-   "pick": "New England Patriots",
-   "home_team": "Los Angeles Chargers",
-   "away_team": "New England Patriots",
-   "start_time_utc": "2026-11-29T21:05:00+00:00",
-   "odds": -120,
-   "sportsbook": "FanDuel",
-   "fair_win_prob": 0.5494,
-   "expected_value": 0.0071,
+   "pick": "San Jose Sharks",
+   "home_team": "Colorado Avalanche",
+   "away_team": "San Jose Sharks",
+   "start_time_utc": "2026-11-29T02:10:00+00:00",
+   "odds": 235,
+   "sportsbook": "BetRivers",
+   "fair_win_prob": 0.3047,
+   "expected_value": 0.0208,
    "kelly": 0.0022,
    "books": 9,
-   "line_movement": 0.0316,
-   "confidence": 50,
-   "rating": "Medium",
+   "line_movement": null,
+   "confidence": 44,
+   "rating": "Low",
    "reasons": [
     {
-     "type": "move",
-     "text": "Fair chance up 3.2% since the last update"
+     "type": "value",
+     "text": "2.1% better than the market's fair price"
     }
    ],
    "three_way": false

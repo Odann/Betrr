@@ -1,66 +1,71 @@
 {
- "generated_at": "2026-11-27T02:47:04.919003+00:00",
- "arbs": [
-  {
-   "event_id": "326e8215b0369df0d4d65e5c0afe9ff5",
-   "sport": "basketball_nba",
-   "home_team": "Detroit Pistons",
-   "away_team": "Milwaukee Bucks",
-   "start_time_utc": "2026-11-28T00:40:00+00:00",
-   "kind": "arb",
-   "market": "spreads",
-   "line": -8.5,
-   "profit_pct": 0.0093,
-   "total_stake": 200,
-   "legs": [
-    {
-     "book": "BetRivers",
-     "label": "Milwaukee Bucks +8.5",
-     "price": 110,
-     "point": 8.5,
-     "stake": 96.13
-    },
-    {
-     "book": "LowVig.ag",
-     "label": "Detroit Pistons -8.5",
-     "price": -106,
-     "point": -8.5,
-     "stake": 103.87
-    }
-   ]
-  }
- ],
+ "generated_at": "2026-11-28T02:37:35.538153+00:00",
+ "arbs": [],
  "middles": [
   {
-   "event_id": "428050645d1dc8b16d84287e21de55fa",
+   "event_id": "13d9ca3bcb664829c603755d31401002",
    "sport": "basketball_nba",
-   "home_team": "Utah Jazz",
-   "away_team": "Denver Nuggets",
+   "home_team": "San Antonio Spurs",
+   "away_team": "Los Angeles Lakers",
    "start_time_utc": "2026-11-28T02:40:00+00:00",
    "kind": "middle",
    "market": "totals",
    "window": [
-    228.5,
-    229.5
+    226.5,
+    228.5
    ],
-   "if_hits": 190.48,
-   "if_misses": -4.76,
-   "land_chance": 0.03,
-   "ev": 1.1,
+   "if_hits": 180.19,
+   "if_misses": -10.71,
+   "land_chance": 0.06,
+   "ev": 0.74,
    "total_stake": 200,
    "legs": [
     {
-     "book": "Bovada",
-     "label": "Over 228.5",
-     "price": -105,
-     "point": 228.5,
+     "book": "FanDuel",
+     "label": "Over 226.5",
+     "price": -112,
+     "point": 226.5,
      "stake": 100
     },
     {
      "book": "BetRivers",
-     "label": "Under 229.5",
-     "price": -105,
-     "point": 229.5,
+     "label": "Under 228.5",
+     "price": -110,
+     "point": 228.5,
+     "stake": 100
+    }
+   ]
+  },
+  {
+   "event_id": "1ef1f5b9c8c88c584772f64a0d9a9435",
+   "sport": "basketball_nba",
+   "home_team": "Chicago Bulls",
+   "away_team": "Indiana Pacers",
+   "start_time_utc": "2026-11-29T01:10:00+00:00",
+   "kind": "middle",
+   "market": "totals",
+   "window": [
+    234.5,
+    236.5
+   ],
+   "if_hits": 181.82,
+   "if_misses": -9.09,
+   "land_chance": 0.06,
+   "ev": 2.36,
+   "total_stake": 200,
+   "legs": [
+    {
+     "book": "BetMGM",
+     "label": "Over 234.5",
+     "price": -110,
+     "point": 234.5,
+     "stake": 100
+    },
+    {
+     "book": "FanDuel",
+     "label": "Under 236.5",
+     "price": -110,
+     "point": 236.5,
      "stake": 100
     }
    ]
